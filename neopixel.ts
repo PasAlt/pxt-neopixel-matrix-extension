@@ -61,12 +61,22 @@ namespace neopixel {
         //% blockId="neopixel_set_strip_color" block="%strip|show color %rgb=neopixel_colors"
         //% strip.defl=strip
         //% weight=85 blockGap=8
-        //% parts="neopixel"
+        //% parts="neopixel" advanced=true
         showColor(rgb: number) {
             rgb = rgb >> 0;
             this.setAllRGB(rgb);
             this.show();
         }
+
+        //% blockId="neopixel_set_strip_color_real" block="%strip|set color %rgb=neopixel_colors"
+        //% strip.defl=strip
+        //% weight=85
+        //% parts="neopixel" advanced=true
+        setColor(rgb: number) {
+            rgb = rgb >> 0;
+            this.setAllRGB(rgb);
+        }
+
 
         /**
          * Shows a rainbow pattern on all LEDs.
@@ -324,7 +334,7 @@ namespace neopixel {
         //% weight=89
         //% blockId="neopixel_range" block="%strip|range from %start|with %length|leds"
         //% strip.defl=strip
-        //% parts="neopixel"
+        //% parts="neopixel" advanced=true
         //% blockSetVariable=range
         range(start: number, length: number): Strip {
             start = start >> 0;
