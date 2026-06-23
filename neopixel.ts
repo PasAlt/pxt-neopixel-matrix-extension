@@ -71,7 +71,7 @@ namespace neopixel {
         //% blockId="neopixel_set_strip_color_real" block="%strip|set color %rgb=neopixel_colors"
         //% strip.defl=strip
         //% weight=85
-        //% parts="neopixel" advanced=true
+        //% parts="neopixel"
         setColor(rgb: number) {
             rgb = rgb >> 0;
             this.setAllRGB(rgb);
@@ -592,32 +592,8 @@ namespace neopixel {
         return [v1, v2, v3, v4, v5]
     }
 
-    //% block="%v1 %v2"
-    //% blockId="colorDouble" 
-    //% v1.shadow="colorNumberPickerLarge"
-    //% v2.shadow="colorNumberPickerLarge"
-    export function colorDouble(v1: number, v2: number): number[] {
-        return [v1, v2]
-    }
-
-    //% block="%v1 %v2"
-    //% blockId="colorQuadruple" 
-    //% v1.shadow="colorDouble"
-    //% v2.shadow="colorDouble"
-    export function colorQuadruple(v1: number[], v2: number[]): number[] {
-        return v1.concat(v2)
-    }
-
-    //% block="%v1 %v2"
-    //% blockId="colorRow" 
-    //% v1.shadow="colorQuadruple"
-    //% v2.shadow="colorQuadruple"
-    export function row(v1: number[], v2: number[]): number[] {
-        return v1.concat(v2)
-    }
-
     /**
-     * Get the color wheel field editor
+     * Create a larger color field editor
      * @param color color
      */
     //% blockId="colorNumberPickerLarge" block="%value"
