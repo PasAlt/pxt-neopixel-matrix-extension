@@ -76,7 +76,7 @@ namespace neopixel {
         //% blockId="neopixel_set_strip_rainbow" block="%strip|show rainbow from %startHue|to %endHue"
         //% strip.defl=strip
         //% weight=85 blockGap=8
-        //% parts="neopixel"
+        //% parts="neopixel" advanced=true
         showRainbow(startHue: number = 1, endHue: number = 360) {
             if (this._length <= 0) return;
 
@@ -144,7 +144,7 @@ namespace neopixel {
         //% blockId=neopixel_show_bar_graph block="%strip|show bar graph of %value|up to %high"
         //% strip.defl=strip
         //% icon="\uf080"
-        //% parts="neopixel"
+        //% parts="neopixel" advanced=true
         showBarGraph(value: number, high: number): void {
             if (high <= 0) {
                 this.clear();
