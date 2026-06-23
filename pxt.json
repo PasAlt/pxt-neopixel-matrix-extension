@@ -1,6 +1,6 @@
 {
-    "name": "neopixel",
-    "version": "0.7.6",
+    "name": "neopixel-matrix-extended",
+    "version": "0.8.0",
     "description": "AdaFruit NeoPixel driver",
     "license": "MIT",
     "dependencies": {
@@ -22,6 +22,10 @@
         "neotest.ts"
     ],
     "public": true,
+    "targetVersions": {
+        "target": "8.0.22",
+        "targetId": "microbit"
+    },
     "supportedTargets": [
         "microbit"
     ],

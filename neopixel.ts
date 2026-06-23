@@ -320,6 +320,7 @@ namespace neopixel {
          * @param start offset in the LED strip to start the range
          * @param length number of LEDs in the range. eg: 4
          */
+
         //% weight=89
         //% blockId="neopixel_range" block="%strip|range from %start|with %length|leds"
         //% strip.defl=strip
@@ -480,6 +481,143 @@ namespace neopixel {
             let buf = this.buf;
             buf[pixeloffset + 3] = white;
         }
+
+        // -- Pascals extension -- //
+
+        //% block="set NeoPixel 5x5 %strip | %v1 %v2 %v3 %v4 %v5"
+        //% v1.shadow="neoPixelRow5"
+        //% v2.shadow="neoPixelRow5"
+        //% v3.shadow="neoPixelRow5"
+        //% v4.shadow="neoPixelRow5"
+        //% v5.shadow="neoPixelRow5"
+        //% inlineInputMode=external
+        //% strip.defl=strip
+        //% parts="neopixel"
+        setMatrix25(v1: number[],
+            v2: number[],
+            v3: number[],
+            v4: number[],
+            v5: number[]): void {
+            if (this.length() != 25) {
+                throw "Matrix is not 5x5. Please check matrix creation!"
+            }
+            v2.reverse()
+            v4.reverse()
+            v1 = v1.concat(v2.concat(v3.concat(v4.concat(v5))))
+            v1.forEach((color: number, index: number) => {
+                this.setPixelColor(index, color)
+            })
+        }
+
+        //% block="set NeoPixel %strip | %v1 %v2 %v3 %v4 %v5 %v6 %v7 %v8"
+        //% v1.shadow="neoPixelRow8"
+        //% v2.shadow="neoPixelRow8"
+        //% v3.shadow="neoPixelRow8"
+        //% v4.shadow="neoPixelRow8"
+        //% v5.shadow="neoPixelRow8"
+        //% v6.shadow="neoPixelRow8"
+        //% v7.shadow="neoPixelRow8"
+        //% v8.shadow="neoPixelRow8"
+        //% inlineInputMode=external
+        //% strip.defl=strip
+        //% parts="neopixel"
+        setMatrix64(v1: number[],
+            v2: number[],
+            v3: number[],
+            v4: number[],
+            v5: number[],
+            v6: number[],
+            v7: number[],
+            v8: number[]): void {
+            if (this.length() != 64) {
+                throw "Matrix is not 8x8. Please check matrix creation!"
+            }
+            v2.reverse()
+            v4.reverse()
+            v6.reverse()
+            v8.reverse()
+            v1 = v1.concat(v2.concat(v3.concat(v4.concat(v5))))
+            v1 = v1.concat(v6.concat(v7.concat(v8)))
+            v1.forEach((color: number, index: number) => {
+                this.setPixelColor(index, color)
+            })
+        }
+    }
+
+    //% block="%v1 %v2 %v3 %v4 %v5 %v6 %v7 %v8"
+    //% blockId="neoPixelRow8" 
+    //% v1.shadow="colorNumberPickerLarge"
+    //% v2.shadow="colorNumberPickerLarge"
+    //% v3.shadow="colorNumberPickerLarge"
+    //% v4.shadow="colorNumberPickerLarge"
+    //% v5.shadow="colorNumberPickerLarge"
+    //% v6.shadow="colorNumberPickerLarge"
+    //% v7.shadow="colorNumberPickerLarge"
+    //% v8.shadow="colorNumberPickerLarge"
+    //% inlineInputMode=inline
+    export function neopixelRow8(v1: number,
+        v2: number,
+        v3: number,
+        v4: number,
+        v5: number,
+        v6: number,
+        v7: number,
+        v8: number): number[] {
+        return [v1, v2, v3, v4, v5, v6, v7, v8]
+    }
+
+    //% block="%v1 %v2 %v3 %v4 %v5"
+    //% blockId="neoPixelRow5" 
+    //% v1.shadow="colorNumberPickerLarge"
+    //% v2.shadow="colorNumberPickerLarge"
+    //% v3.shadow="colorNumberPickerLarge"
+    //% v4.shadow="colorNumberPickerLarge"
+    //% v5.shadow="colorNumberPickerLarge"
+    //% inlineInputMode=inline
+    export function neopixelRow5(v1: number,
+        v2: number,
+        v3: number,
+        v4: number,
+        v5: number): number[] {
+        return [v1, v2, v3, v4, v5]
+    }
+
+    //% block="%v1 %v2"
+    //% blockId="colorDouble" 
+    //% v1.shadow="colorNumberPickerLarge"
+    //% v2.shadow="colorNumberPickerLarge"
+    export function colorDouble(v1: number, v2: number): number[] {
+        return [v1, v2]
+    }
+
+    //% block="%v1 %v2"
+    //% blockId="colorQuadruple" 
+    //% v1.shadow="colorDouble"
+    //% v2.shadow="colorDouble"
+    export function colorQuadruple(v1: number[], v2: number[]): number[] {
+        return v1.concat(v2)
+    }
+
+    //% block="%v1 %v2"
+    //% blockId="colorRow" 
+    //% v1.shadow="colorQuadruple"
+    //% v2.shadow="colorQuadruple"
+    export function row(v1: number[], v2: number[]): number[] {
+        return v1.concat(v2)
+    }
+
+    /**
+     * Get the color wheel field editor
+     * @param color color
+     */
+    //% blockId="colorNumberPickerLarge" block="%value"
+    //% shim=TD_ID colorSecondary="#FFFFFF"
+    //% value.fieldEditor="colornumber" value.fieldOptions.decompileLiterals=true
+    //% value.defl='0xff0000'
+    //% value.fieldOptions.colours='["#FFFFFF", "#FFF1E6", "#FFE4B5", "#FFD700", "#FFA500", "#FF8C00", "#FF4500", "#E60026", "#FFB6C1", "#FF69C1", "#FF1493", "#DA70D6", "#BA55D3", "#8A2BE2", "#4B0082", "#2E0854", "#E6E6FA", "#B0C4DE", "#87CEEB", "#00BFFF", "#1E90FF", "#0000CD", "#191970", "#000080", "#E0FFFF", "#AFEEEE", "#40E0D0", "#00CED1", "#008B8B", "#2E8B57", "#006400", "#003300", "#F0FFF0", "#ADFF2F", "#7FFF00", "#32CD32", "#228B22", "#9ACD32", "#6B8E23", "#556B2F", "#FFFFE0", "#FFFACD", "#FFEFD5", "#FFDAB9", "#D2B48C", "#A0522D", "#8B4513", "#5C4033", "#F5F5DC", "#DCDCDC", "#A9A9A9", "#808080", "#696969", "#4D4D4D", "#2F2F2F", "#1A1A1A", "#FAFAFA", "#E0E0E0", "#B8B8B8", "#909090", "#686868", "#404040", "#202020", "#000000"]'
+    //% value.fieldOptions.columns=8 value.fieldOptions.className='rgbColorPicker'
+    export function colorNumberPicker(value: number) {
+        return value;
     }
 
     /**
@@ -513,7 +651,6 @@ namespace neopixel {
      */
     //% weight=1
     //% blockId="neopixel_rgb" block="red %red|green %green|blue %blue"
-    //% advanced=true
     export function rgb(red: number, green: number, blue: number): number {
         return packRGB(red, green, blue);
     }
@@ -523,7 +660,6 @@ namespace neopixel {
     */
     //% weight=2 blockGap=8
     //% blockId="neopixel_colors" block="%color"
-    //% advanced=true
     export function colors(color: NeoPixelColors): number {
         return color;
     }
@@ -551,6 +687,7 @@ namespace neopixel {
      * @param l luminosity from 0 to 99
      */
     //% blockId=neopixelHSL block="hue %h|saturation %s|luminosity %l"
+    //% advanced=true
     export function hsl(h: number, s: number, l: number): number {
         h = Math.round(h);
         s = Math.round(s);
