@@ -22,8 +22,7 @@ namespace neopixel {
      */
     //% blockId="neopixel_create" 
     //% block="NeoPixel at pin %pin|with %numleds|leds as %mode"
-    //% weight=90 
-    //% blockGap=8
+    //% weight=1000
     //% parts="neopixel"
     //% trackArgs=0,2
     //% blockSetVariable=strip
@@ -39,48 +38,6 @@ namespace neopixel {
         strip.setBrightness(128)
         strip.setPin(pin)
         return strip;
-    }
-
-    //% block="%v1 %v2 %v3 %v4 %v5 %v6 %v7 %v8"
-    //% blockId="neoPixelRow8" 
-    //% v1.shadow="colorNumberPickerLarge"
-    //% v2.shadow="colorNumberPickerLarge"
-    //% v3.shadow="colorNumberPickerLarge"
-    //% v4.shadow="colorNumberPickerLarge"
-    //% v5.shadow="colorNumberPickerLarge"
-    //% v6.shadow="colorNumberPickerLarge"
-    //% v7.shadow="colorNumberPickerLarge"
-    //% v8.shadow="colorNumberPickerLarge"
-    //% inlineInputMode=inline
-    //% group="Matrix"
-    //% weight=63
-    export function neopixelRow8(v1: number,
-        v2: number,
-        v3: number,
-        v4: number,
-        v5: number,
-        v6: number,
-        v7: number,
-        v8: number): number[] {
-        return [v1, v2, v3, v4, v5, v6, v7, v8]
-    }
-
-    //% block="%v1 %v2 %v3 %v4 %v5"
-    //% blockId="neoPixelRow5" 
-    //% v1.shadow="colorNumberPickerLarge"
-    //% v2.shadow="colorNumberPickerLarge"
-    //% v3.shadow="colorNumberPickerLarge"
-    //% v4.shadow="colorNumberPickerLarge"
-    //% v5.shadow="colorNumberPickerLarge"
-    //% inlineInputMode=inline
-    //% group="Matrix"
-    //% weight=24
-    export function neopixelRow5(v1: number,
-        v2: number,
-        v3: number,
-        v4: number,
-        v5: number): number[] {
-        return [v1, v2, v3, v4, v5]
     }
 
     /**
@@ -165,6 +122,48 @@ namespace neopixel {
         Clockwise,
         CounterClockwise,
         Shortest
+    }
+
+    //% block="%v1 %v2 %v3 %v4 %v5 %v6 %v7 %v8"
+    //% blockId="neoPixelRow8" 
+    //% v1.shadow="colorNumberPickerLarge"
+    //% v2.shadow="colorNumberPickerLarge"
+    //% v3.shadow="colorNumberPickerLarge"
+    //% v4.shadow="colorNumberPickerLarge"
+    //% v5.shadow="colorNumberPickerLarge"
+    //% v6.shadow="colorNumberPickerLarge"
+    //% v7.shadow="colorNumberPickerLarge"
+    //% v8.shadow="colorNumberPickerLarge"
+    //% inlineInputMode=inline
+    //% group="Matrix"
+    //% weight=64
+    export function neopixelRow8(v1: number,
+        v2: number,
+        v3: number,
+        v4: number,
+        v5: number,
+        v6: number,
+        v7: number,
+        v8: number): number[] {
+        return [v1, v2, v3, v4, v5, v6, v7, v8]
+    }
+
+    //% block="%v1 %v2 %v3 %v4 %v5"
+    //% blockId="neoPixelRow5" 
+    //% v1.shadow="colorNumberPickerLarge"
+    //% v2.shadow="colorNumberPickerLarge"
+    //% v3.shadow="colorNumberPickerLarge"
+    //% v4.shadow="colorNumberPickerLarge"
+    //% v5.shadow="colorNumberPickerLarge"
+    //% inlineInputMode=inline
+    //% group="Matrix"
+    //% weight=24
+    export function neopixelRow5(v1: number,
+        v2: number,
+        v3: number,
+        v4: number,
+        v5: number): number[] {
+        return [v1, v2, v3, v4, v5]
     }
 
     /**
