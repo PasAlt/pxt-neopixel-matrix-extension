@@ -41,6 +41,132 @@ namespace neopixel {
         return strip;
     }
 
+    //% block="%v1 %v2 %v3 %v4 %v5 %v6 %v7 %v8"
+    //% blockId="neoPixelRow8" 
+    //% v1.shadow="colorNumberPickerLarge"
+    //% v2.shadow="colorNumberPickerLarge"
+    //% v3.shadow="colorNumberPickerLarge"
+    //% v4.shadow="colorNumberPickerLarge"
+    //% v5.shadow="colorNumberPickerLarge"
+    //% v6.shadow="colorNumberPickerLarge"
+    //% v7.shadow="colorNumberPickerLarge"
+    //% v8.shadow="colorNumberPickerLarge"
+    //% inlineInputMode=inline
+    //% group="Matrix"
+    //% weight=63
+    export function neopixelRow8(v1: number,
+        v2: number,
+        v3: number,
+        v4: number,
+        v5: number,
+        v6: number,
+        v7: number,
+        v8: number): number[] {
+        return [v1, v2, v3, v4, v5, v6, v7, v8]
+    }
+
+    //% block="%v1 %v2 %v3 %v4 %v5"
+    //% blockId="neoPixelRow5" 
+    //% v1.shadow="colorNumberPickerLarge"
+    //% v2.shadow="colorNumberPickerLarge"
+    //% v3.shadow="colorNumberPickerLarge"
+    //% v4.shadow="colorNumberPickerLarge"
+    //% v5.shadow="colorNumberPickerLarge"
+    //% inlineInputMode=inline
+    //% group="Matrix"
+    //% weight=24
+    export function neopixelRow5(v1: number,
+        v2: number,
+        v3: number,
+        v4: number,
+        v5: number): number[] {
+        return [v1, v2, v3, v4, v5]
+    }
+
+    /**
+     * RGB Color selection from a range
+     * of 64 colors.
+     * @param color color
+     */
+    //% blockId="colorNumberPickerLarge" 
+    //% block="%value"
+    //% group="Colors"
+    //% weight=1
+    //% shim=TD_ID colorSecondary="#FFFFFF"
+    //% value.fieldEditor="colornumber" value.fieldOptions.decompileLiterals=true
+    //% value.defl='0xff0000'
+    //% value.fieldOptions.colours='["#FFFFFF", "#FFF1E6", "#FFE4B5", "#FFD700", "#FFA500", "#FF8C00", "#FF4500", "#E60026", "#FFB6C1", "#FF69C1", "#FF1493", "#DA70D6", "#BA55D3", "#8A2BE2", "#4B0082", "#2E0854", "#E6E6FA", "#B0C4DE", "#87CEEB", "#00BFFF", "#1E90FF", "#0000CD", "#191970", "#000080", "#E0FFFF", "#AFEEEE", "#40E0D0", "#00CED1", "#008B8B", "#2E8B57", "#006400", "#003300", "#F0FFF0", "#ADFF2F", "#7FFF00", "#32CD32", "#228B22", "#9ACD32", "#6B8E23", "#556B2F", "#FFFFE0", "#FFFACD", "#FFEFD5", "#FFDAB9", "#D2B48C", "#A0522D", "#8B4513", "#5C4033", "#F5F5DC", "#DCDCDC", "#A9A9A9", "#808080", "#696969", "#4D4D4D", "#2F2F2F", "#1A1A1A", "#FAFAFA", "#E0E0E0", "#B8B8B8", "#909090", "#686868", "#404040", "#202020", "#000000"]'
+    //% value.fieldOptions.columns=8 value.fieldOptions.className='rgbColorPicker'
+    export function colorNumberPicker(value: number) {
+        return value;
+    }
+
+    /**
+     * Converts red, green, blue channels into a RGB color
+     * @param red value of the red channel between 0 and 255. eg: 255
+     * @param green value of the green channel between 0 and 255. eg: 255
+     * @param blue value of the blue channel between 0 and 255. eg: 255
+     */
+    //% weight=1
+    //% blockId="neopixel_rgb" 
+    //% block="red %red|green %green|blue %blue"
+    //% group="Colors"
+    export function rgb(red: number, green: number, blue: number): number {
+        return packRGB(red, green, blue);
+    }
+
+    /**
+     * Converts a hue saturation luminosity value into a RGB color
+     * @param h hue from 0 to 360
+     * @param s saturation from 0 to 99
+     * @param l luminosity from 0 to 99
+     */
+    //% blockId=neopixelHSL 
+    //% block="hue %h|saturation %s|luminosity %l"
+    //% advanced=true
+    //% group="Colors"
+    export function hsl(h: number, s: number, l: number): number {
+        h = Math.round(h);
+        s = Math.round(s);
+        l = Math.round(l);
+
+        h = h % 360;
+        s = Math.clamp(0, 99, s);
+        l = Math.clamp(0, 99, l);
+        let c = Math.idiv((((100 - Math.abs(2 * l - 100)) * s) << 8), 10000); //chroma, [0,255]
+        let h1 = Math.idiv(h, 60);//[0,6]
+        let h2 = Math.idiv((h - h1 * 60) * 256, 60);//[0,255]
+        let temp = Math.abs((((h1 % 2) << 8) + h2) - 256);
+        let x = (c * (256 - (temp))) >> 8;//[0,255], second largest component of this color
+        let r$: number;
+        let g$: number;
+        let b$: number;
+        if (h1 == 0) {
+            r$ = c; g$ = x; b$ = 0;
+        } else if (h1 == 1) {
+            r$ = x; g$ = c; b$ = 0;
+        } else if (h1 == 2) {
+            r$ = 0; g$ = c; b$ = x;
+        } else if (h1 == 3) {
+            r$ = 0; g$ = x; b$ = c;
+        } else if (h1 == 4) {
+            r$ = x; g$ = 0; b$ = c;
+        } else if (h1 == 5) {
+            r$ = c; g$ = 0; b$ = x;
+        }
+        let m = Math.idiv((Math.idiv((l * 2 << 8), 100) - c), 2);
+        let r = r$ + m;
+        let g = g$ + m;
+        let b = b$ + m;
+        return packRGB(r, g, b);
+    }
+
+    export enum HueInterpolationDirection {
+        Clockwise,
+        CounterClockwise,
+        Shortest
+    }
+
     /**
      * A NeoPixel strip
      */
@@ -258,7 +384,6 @@ namespace neopixel {
          * @param start offset in the LED strip to start the range
          * @param length number of LEDs in the range. eg: 4
          */
-
         //% weight=89
         //% blockId="neopixel_range" 
         //% block="%strip|range from %start|with %length|leds"
@@ -432,7 +557,6 @@ namespace neopixel {
         //% weight=84
         //% blockId=neopixel_show_bar_graph block="%strip|show bar graph of %value|up to %high"
         //% strip.defl=strip
-        //% icon="\uf080"
         //% parts="neopixel" 
         //% advanced=true
         //% group="Show"
@@ -550,6 +674,14 @@ namespace neopixel {
 
         // -- Pascals extension -- //
 
+        /**
+         * Sets the LED in a NeoPixel strip of
+         * 25 NeoPixels expecting them to be
+         * arranged in a 5x5 matrix.
+         *
+         * You will to need to use #show() to make
+         * the changes visible.
+         */
         //% block="set NeoPixel 5x5 %strip | %v1 %v2 %v3 %v4 %v5"
         //% v1.shadow="neoPixelRow5"
         //% v2.shadow="neoPixelRow5"
@@ -559,6 +691,7 @@ namespace neopixel {
         //% inlineInputMode=external
         //% strip.defl=strip
         //% parts="neopixel"
+        //% weight=25
         //% group="Matrix"
         setMatrix25(v1: number[],
             v2: number[],
@@ -576,6 +709,14 @@ namespace neopixel {
             })
         }
 
+        /**
+         * Sets the LED in a NeoPixel strip of
+         * 64 NeoPixels expecting them to be
+         * arranged in a 8x8 matrix.
+         * 
+         * You will to need to use #show() to make
+         * the changes visible.
+         */
         //% block="set NeoPixel 8x8 %strip | %v1 %v2 %v3 %v4 %v5 %v6 %v7 %v8"
         //% v1.shadow="neoPixelRow8"
         //% v2.shadow="neoPixelRow8"
@@ -596,7 +737,7 @@ namespace neopixel {
             v5: number[],
             v6: number[],
             v7: number[],
-            v8: number[]): void {
+            v8: number[]):  void {
             if (this.length() != 64) {
                 throw "Matrix is not 8x8. Please check matrix creation!"
             }
@@ -612,140 +753,52 @@ namespace neopixel {
         }
     }
 
-    //% block="%v1 %v2 %v3 %v4 %v5 %v6 %v7 %v8"
-    //% blockId="neoPixelRow8" 
-    //% v1.shadow="colorNumberPickerLarge"
-    //% v2.shadow="colorNumberPickerLarge"
-    //% v3.shadow="colorNumberPickerLarge"
-    //% v4.shadow="colorNumberPickerLarge"
-    //% v5.shadow="colorNumberPickerLarge"
-    //% v6.shadow="colorNumberPickerLarge"
-    //% v7.shadow="colorNumberPickerLarge"
-    //% v8.shadow="colorNumberPickerLarge"
-    //% inlineInputMode=inline
-    //% group="Matrix"
-    export function neopixelRow8(v1: number,
-        v2: number,
-        v3: number,
-        v4: number,
-        v5: number,
-        v6: number,
-        v7: number,
-        v8: number): number[] {
-        return [v1, v2, v3, v4, v5, v6, v7, v8]
-    }
-
-    //% block="%v1 %v2 %v3 %v4 %v5"
-    //% blockId="neoPixelRow5" 
-    //% v1.shadow="colorNumberPickerLarge"
-    //% v2.shadow="colorNumberPickerLarge"
-    //% v3.shadow="colorNumberPickerLarge"
-    //% v4.shadow="colorNumberPickerLarge"
-    //% v5.shadow="colorNumberPickerLarge"
-    //% inlineInputMode=inline
-    //% group="Matrix"
-    export function neopixelRow5(v1: number,
-        v2: number,
-        v3: number,
-        v4: number,
-        v5: number): number[] {
-        return [v1, v2, v3, v4, v5]
+    /**
+     * Combines/packs three numbers into one 
+     * 24 bit RGB number.
+     * 
+     * First 8 bit are red,
+     * second 8 bits are green and
+     * third 8 bits are blue
+     * 
+     * @param r - red part (0-255)
+     * @param g - green part (0-255)
+     * @param b - blue part (0-255)
+     */
+    function packRGB(r: number, g: number, b: number): number {
+        return ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
     }
 
     /**
-     * Create a larger color field editor
-     * @param color color
+     * Extracts/unpacks the red part from 
+     * a number representing an rgb number.
+     * 
+     * @param rgb : rgb number
      */
-    //% blockId="colorNumberPickerLarge" 
-    //% block="%value"
-    //% shim=TD_ID colorSecondary="#FFFFFF"
-    //% value.fieldEditor="colornumber" value.fieldOptions.decompileLiterals=true
-    //% value.defl='0xff0000'
-    //% value.fieldOptions.colours='["#FFFFFF", "#FFF1E6", "#FFE4B5", "#FFD700", "#FFA500", "#FF8C00", "#FF4500", "#E60026", "#FFB6C1", "#FF69C1", "#FF1493", "#DA70D6", "#BA55D3", "#8A2BE2", "#4B0082", "#2E0854", "#E6E6FA", "#B0C4DE", "#87CEEB", "#00BFFF", "#1E90FF", "#0000CD", "#191970", "#000080", "#E0FFFF", "#AFEEEE", "#40E0D0", "#00CED1", "#008B8B", "#2E8B57", "#006400", "#003300", "#F0FFF0", "#ADFF2F", "#7FFF00", "#32CD32", "#228B22", "#9ACD32", "#6B8E23", "#556B2F", "#FFFFE0", "#FFFACD", "#FFEFD5", "#FFDAB9", "#D2B48C", "#A0522D", "#8B4513", "#5C4033", "#F5F5DC", "#DCDCDC", "#A9A9A9", "#808080", "#696969", "#4D4D4D", "#2F2F2F", "#1A1A1A", "#FAFAFA", "#E0E0E0", "#B8B8B8", "#909090", "#686868", "#404040", "#202020", "#000000"]'
-    //% value.fieldOptions.columns=8 value.fieldOptions.className='rgbColorPicker'
-    export function colorNumberPicker(value: number) {
-        return value;
-    }
-
-    /**
-     * Converts red, green, blue channels into a RGB color
-     * @param red value of the red channel between 0 and 255. eg: 255
-     * @param green value of the green channel between 0 and 255. eg: 255
-     * @param blue value of the blue channel between 0 and 255. eg: 255
-     */
-    //% weight=1
-    //% blockId="neopixel_rgb" 
-    //% block="red %red|green %green|blue %blue"
-    //% group="Colors"
-    export function rgb(red: number, green: number, blue: number): number {
-        return packRGB(red, green, blue);
-    }
-
-    function packRGB(a: number, b: number, c: number): number {
-        return ((a & 0xFF) << 16) | ((b & 0xFF) << 8) | (c & 0xFF);
-    }
     function unpackR(rgb: number): number {
         let r = (rgb >> 16) & 0xFF;
         return r;
     }
+
+    /**
+     * Extracts/unpacks the green part from
+     * a number representing an rgb number.
+     *
+     * @param rgb : rgb number
+     */
     function unpackG(rgb: number): number {
         let g = (rgb >> 8) & 0xFF;
         return g;
     }
+
+    /**
+     * Extracts/unpacks the blue part from
+     * a number representing an rgb number.
+     *
+     * @param rgb : rgb number
+     */
     function unpackB(rgb: number): number {
         let b = (rgb) & 0xFF;
         return b;
-    }
-
-    /**
-     * Converts a hue saturation luminosity value into a RGB color
-     * @param h hue from 0 to 360
-     * @param s saturation from 0 to 99
-     * @param l luminosity from 0 to 99
-     */
-    //% blockId=neopixelHSL 
-    //% block="hue %h|saturation %s|luminosity %l"
-    //% advanced=true
-    //% group="Colors"
-    export function hsl(h: number, s: number, l: number): number {
-        h = Math.round(h);
-        s = Math.round(s);
-        l = Math.round(l);
-
-        h = h % 360;
-        s = Math.clamp(0, 99, s);
-        l = Math.clamp(0, 99, l);
-        let c = Math.idiv((((100 - Math.abs(2 * l - 100)) * s) << 8), 10000); //chroma, [0,255]
-        let h1 = Math.idiv(h, 60);//[0,6]
-        let h2 = Math.idiv((h - h1 * 60) * 256, 60);//[0,255]
-        let temp = Math.abs((((h1 % 2) << 8) + h2) - 256);
-        let x = (c * (256 - (temp))) >> 8;//[0,255], second largest component of this color
-        let r$: number;
-        let g$: number;
-        let b$: number;
-        if (h1 == 0) {
-            r$ = c; g$ = x; b$ = 0;
-        } else if (h1 == 1) {
-            r$ = x; g$ = c; b$ = 0;
-        } else if (h1 == 2) {
-            r$ = 0; g$ = c; b$ = x;
-        } else if (h1 == 3) {
-            r$ = 0; g$ = x; b$ = c;
-        } else if (h1 == 4) {
-            r$ = x; g$ = 0; b$ = c;
-        } else if (h1 == 5) {
-            r$ = c; g$ = 0; b$ = x;
-        }
-        let m = Math.idiv((Math.idiv((l * 2 << 8), 100) - c), 2);
-        let r = r$ + m;
-        let g = g$ + m;
-        let b = b$ + m;
-        return packRGB(r, g, b);
-    }
-
-    export enum HueInterpolationDirection {
-        Clockwise,
-        CounterClockwise,
-        Shortest
     }
 }
