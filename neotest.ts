@@ -12,22 +12,22 @@
         basic.pause(100)
     }
     
-    strip.showColor(NeoPixelColors.Red)
+    strip.showColor(0xff0000)
     basic.pause(2000)
-    strip.showColor(NeoPixelColors.Green)
+    strip.showColor(0x00ff00)
     basic.pause(1000)
     for (let i = 0; i <= strip.length(); i++) {
-        strip.setPixelColor(i, neopixel.colors(NeoPixelColors.Blue))
+        strip.setPixelColor(i, 0x0000ff)
         strip.show()
         basic.pause(100)
     }
     for (let i = 0; i <= strip.length(); i++) {
-        strip.setPixelColor(i, neopixel.colors(NeoPixelColors.Green))
+        strip.setPixelColor(i, 0x00ff00)
         strip.show()
         basic.pause(100)
     }
     let sub = strip.range(10, 20)
-    sub.showColor(NeoPixelColors.Yellow);
+    sub.showColor(0x00ffff);
     basic.pause(200);
 
     sub.showBarGraph(5, 10);
