@@ -224,7 +224,6 @@ namespace neopixel {
         //% weight=80
         //% rgb.shadow="colorNumberPickerLarge"
         //% parts="neopixel" 
-        //% advanced=true
         //% group="Colors"
         setPixelColor(pixeloffset: number, rgb: number): void {
             this.setPixelRGB(pixeloffset >> 0, rgb >> 0);
