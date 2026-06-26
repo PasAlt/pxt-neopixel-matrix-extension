@@ -59,10 +59,11 @@ namespace neopixel {
          * @param rgb RGB color of the LED
          */
         //% blockId="neopixel_set_strip_color" 
-        //% block="%strip|show color %rgb=neopixel_colors"
+        //% block="%strip|show color %rgb"
         //% strip.defl=strip
         //% weight=85 
         //% blockGap=8
+        //% rgb.shadow="colorNumberPickerLarge"
         //% parts="neopixel" 
         //% advanced=true
         //% group="Colors"
@@ -73,9 +74,10 @@ namespace neopixel {
         }
 
         //% blockId="neopixel_set_strip_color_real" 
-        //% block="%strip|set color %rgb=neopixel_colors"
+        //% block="%strip|set color %rgb"
         //% strip.defl=strip
         //% weight=85
+        //% rgb.shadow="colorNumberPickerLarge"
         //% parts="neopixel"
         //% group="Colors"
         setColor(rgb: number) {
@@ -90,7 +92,7 @@ namespace neopixel {
          * @param rgb RGB color of the LED
          */
         //% blockId="neopixel_set_pixel_color" 
-        //% block="%strip|set pixel color at %pixeloffset|to %rgb=neopixel_colors"
+        //% block="%strip|set pixel color at %pixeloffset|to %rgb"
         //% strip.defl=strip
         //% blockGap=8
         //% weight=80
@@ -126,7 +128,7 @@ namespace neopixel {
          * @param rgb RGB color of the LED
          */
         //% blockId="neopixel_set_matrix_color" 
-        //% block="%strip|set matrix color at x %x|y %y|to %rgb=neopixel_colors"
+        //% block="%strip|set matrix color at x %x|y %y|to %rgb"
         //% strip.defl=strip
         //% weight=4
         //% parts="neopixel" 
