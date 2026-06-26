@@ -61,7 +61,9 @@ namespace neopixel {
         //% blockId="neopixel_set_strip_color" block="%strip|show color %rgb=neopixel_colors"
         //% strip.defl=strip
         //% weight=85 blockGap=8
-        //% parts="neopixel" advanced=true
+        //% parts="neopixel" 
+        //% advanced=true
+        //% group="Farben"
         showColor(rgb: number) {
             rgb = rgb >> 0;
             this.setAllRGB(rgb);

@@ -34,5 +34,9 @@
   "neopixel.rgb|block": "rot %red|grün %green|blau %blue",
   "neopixel.Strip.setMatrixColor|block": "%strip|setze Matrix Farbe an Position x %x|y %y|auf %rgb=neopixel_colors",
   "neopixel.Strip.setMatrixWidth|block": "%strip|setze Matrix Breite %width",
-  "{id:category}Neopixel": "NeoPixel"
+  "{id:category}Neopixel": "NeoPixel",
+
+  "neopixel.Strip.setColor|block": "%strip|setze Farbe %rgb=neopixel_colors",
+  "neopixel.Strip.setMatrix25|block": "setze 5x5 NeoPixel-Matrix %strip|%v1 %v2 %v3 %v4 %v5",
+  "neopixel.Strip.setMatrix64|block": "setze 8x8 NeoPixel-Matrix %strip|%v1 %v2 %v3 %v4 %v5 %v6 %v7 %v8"
 }
