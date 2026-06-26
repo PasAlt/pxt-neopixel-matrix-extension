@@ -1,30 +1,4 @@
 /**
- * Well known colors for a NeoPixel strip
- */
-enum NeoPixelColors {
-    //% block=red
-    Red = 0xFF0000,
-    //% block=orange
-    Orange = 0xFFA500,
-    //% block=yellow
-    Yellow = 0xFFFF00,
-    //% block=green
-    Green = 0x00FF00,
-    //% block=blue
-    Blue = 0x0000FF,
-    //% block=indigo
-    Indigo = 0x4b0082,
-    //% block=violet
-    Violet = 0x8a2be2,
-    //% block=purple
-    Purple = 0xFF00FF,
-    //% block=white
-    White = 0xFFFFFF,
-    //% block=black
-    Black = 0x000000
-}
-
-/**
  * Different modes for RGB or RGB+W NeoPixel strips
  */
 enum NeoPixelMode {
@@ -46,7 +20,8 @@ namespace neopixel {
      * @param pin the pin where the neopixel is connected.
      * @param numleds number of leds in the strip, eg: 24,30,60,64
      */
-    //% blockId="neopixel_create" block="NeoPixel at pin %pin|with %numleds|leds as %mode"
+    //% blockId="neopixel_create" 
+    //% block="NeoPixel at pin %pin|with %numleds|leds as %mode"
     //% weight=90 
     //% blockGap=8
     //% parts="neopixel"
@@ -119,6 +94,7 @@ namespace neopixel {
         //% strip.defl=strip
         //% blockGap=8
         //% weight=80
+        //% rgb.shadow="colorNumberPickerLarge"
         //% parts="neopixel" 
         //% advanced=true
         //% group="Colors"
@@ -154,6 +130,7 @@ namespace neopixel {
         //% strip.defl=strip
         //% weight=4
         //% parts="neopixel" 
+        //% rgb.shadow="colorNumberPickerLarge"
         //% advanced=true
         //% group="Colors"
         setMatrixColor(x: number, y: number, rgb: number) {
@@ -458,7 +435,7 @@ namespace neopixel {
         showBarGraph(value: number, high: number): void {
             if (high <= 0) {
                 this.clear();
-                this.setPixelColor(0, NeoPixelColors.Yellow);
+                this.setPixelColor(0, 0xFFFF00);
                 this.show();
                 return;
             }
@@ -511,6 +488,7 @@ namespace neopixel {
                 this.setBufferRGB(i * stride, red, green, blue)
             }
         }
+
         private setAllW(white: number) {
             if (this._mode !== NeoPixelMode.RGBW)
                 return;
@@ -526,6 +504,7 @@ namespace neopixel {
                 buf[ledoffset + 3] = white;
             }
         }
+
         private setPixelRGB(pixeloffset: number, rgb: number): void {
             if (pixeloffset < 0
                 || pixeloffset >= this._length)
@@ -546,6 +525,7 @@ namespace neopixel {
             }
             this.setBufferRGB(pixeloffset, red, green, blue)
         }
+        
         private setPixelW(pixeloffset: number, white: number): void {
             if (this._mode !== NeoPixelMode.RGBW)
                 return;
@@ -695,18 +675,6 @@ namespace neopixel {
     //% group="Colors"
     export function rgb(red: number, green: number, blue: number): number {
         return packRGB(red, green, blue);
-    }
-
-    /**
-     * Gets the RGB value of a known color
-    */
-    //% weight=2 
-    //% blockGap=8
-    //% blockId="neopixel_colors" 
-    //% block="%color"
-    //% group="Colors"
-    export function colors(color: NeoPixelColors): number {
-        return color;
     }
 
     function packRGB(a: number, b: number, c: number): number {
