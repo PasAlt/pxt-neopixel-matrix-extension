@@ -125,7 +125,7 @@ namespace neopixel {
     }
 
     //% block="%v1 %v2 %v3 %v4 %v5 %v6 %v7 %v8"
-    //% blockId="neoPixelRow8" 
+    //% blockId="rowOf8"
     //% v1.shadow="colorNumberPickerLarge"
     //% v2.shadow="colorNumberPickerLarge"
     //% v3.shadow="colorNumberPickerLarge"
@@ -137,7 +137,7 @@ namespace neopixel {
     //% inlineInputMode=inline
     //% group="Matrix"
     //% weight=64
-    export function neopixelRow8(v1: number,
+    export function rowOf8(v1: number,
         v2: number,
         v3: number,
         v4: number,
@@ -149,7 +149,7 @@ namespace neopixel {
     }
 
     //% block="%v1 %v2 %v3 %v4 %v5"
-    //% blockId="neoPixelRow5" 
+    //% blockId="rowOf5"
     //% v1.shadow="colorNumberPickerLarge"
     //% v2.shadow="colorNumberPickerLarge"
     //% v3.shadow="colorNumberPickerLarge"
@@ -158,7 +158,7 @@ namespace neopixel {
     //% inlineInputMode=inline
     //% group="Matrix"
     //% weight=24
-    export function neopixelRow5(v1: number,
+    export function rowOf5(v1: number,
         v2: number,
         v3: number,
         v4: number,
@@ -681,11 +681,11 @@ namespace neopixel {
          * the changes visible.
          */
         //% block="set NeoPixel 5x5 %strip | %v1 %v2 %v3 %v4 %v5"
-        //% v1.shadow="neoPixelRow5"
-        //% v2.shadow="neoPixelRow5"
-        //% v3.shadow="neoPixelRow5"
-        //% v4.shadow="neoPixelRow5"
-        //% v5.shadow="neoPixelRow5"
+        //% v1.shadow="rowOf5"
+        //% v2.shadow="rowOf5"
+        //% v3.shadow="rowOf5"
+        //% v4.shadow="rowOf5"
+        //% v5.shadow="rowOf5"
         //% inlineInputMode=external
         //% strip.defl=strip
         //% parts="neopixel"
@@ -716,14 +716,14 @@ namespace neopixel {
          * the changes visible.
          */
         //% block="set NeoPixel 8x8 %strip | %v1 %v2 %v3 %v4 %v5 %v6 %v7 %v8"
-        //% v1.shadow="neoPixelRow8"
-        //% v2.shadow="neoPixelRow8"
-        //% v3.shadow="neoPixelRow8"
-        //% v4.shadow="neoPixelRow8"
-        //% v5.shadow="neoPixelRow8"
-        //% v6.shadow="neoPixelRow8"
-        //% v7.shadow="neoPixelRow8"
-        //% v8.shadow="neoPixelRow8"
+        //% v1.shadow="rowOf8"
+        //% v2.shadow="rowOf8"
+        //% v3.shadow="rowOf8"
+        //% v4.shadow="rowOf8"
+        //% v5.shadow="rowOf8"
+        //% v6.shadow="rowOf8"
+        //% v7.shadow="rowOf8"
+        //% v8.shadow="rowOf8"
         //% inlineInputMode=external
         //% strip.defl=strip
         //% parts="neopixel"
