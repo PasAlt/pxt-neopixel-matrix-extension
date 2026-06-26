@@ -1,6 +1,6 @@
 {
     "name": "neopixel-matrix-extended",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "AdaFruit NeoPixel driver extenden by Pascal Zaugg (PHBern)",
     "license": "MIT",
     "dependencies": {
