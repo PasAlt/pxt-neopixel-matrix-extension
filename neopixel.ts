@@ -42,6 +42,31 @@ enum NeoPixelMode {
 //% weight=1000 color=#ffa500 icon="\uf110"
 namespace neopixel {
     /**
+     * Create a new NeoPixel driver for `numleds` LEDs.
+     * @param pin the pin where the neopixel is connected.
+     * @param numleds number of leds in the strip, eg: 24,30,60,64
+     */
+    //% blockId="neopixel_create" block="NeoPixel at pin %pin|with %numleds|leds as %mode"
+    //% weight=90 
+    //% blockGap=8
+    //% parts="neopixel"
+    //% trackArgs=0,2
+    //% blockSetVariable=strip
+    //% group="Initialization"
+    export function create(pin: DigitalPin, numleds: number, mode: NeoPixelMode): Strip {
+        let strip = new Strip();
+        let stride = mode === NeoPixelMode.RGBW ? 4 : 3;
+        strip.buf = pins.createBuffer(numleds * stride);
+        strip.start = 0;
+        strip._length = numleds;
+        strip._mode = mode || NeoPixelMode.RGB;
+        strip._matrixWidth = 0;
+        strip.setBrightness(128)
+        strip.setPin(pin)
+        return strip;
+    }
+
+    /**
      * A NeoPixel strip
      */
     export class Strip {
@@ -61,7 +86,8 @@ namespace neopixel {
         //% blockId="neopixel_set_strip_color" 
         //% block="%strip|show color %rgb=neopixel_colors"
         //% strip.defl=strip
-        //% weight=85 blockGap=8
+        //% weight=85 
+        //% blockGap=8
         //% parts="neopixel" 
         //% advanced=true
         //% group="Colors"
@@ -80,116 +106,6 @@ namespace neopixel {
         setColor(rgb: number) {
             rgb = rgb >> 0;
             this.setAllRGB(rgb);
-        }
-
-
-        /**
-         * Shows a rainbow pattern on all LEDs.
-         * @param startHue the start hue value for the rainbow, eg: 1
-         * @param endHue the end hue value for the rainbow, eg: 360
-         */
-        //% blockId="neopixel_set_strip_rainbow" block="%strip|show rainbow from %startHue|to %endHue"
-        //% strip.defl=strip
-        //% weight=85 blockGap=8
-        //% parts="neopixel" 
-        //% advanced=true
-        //% group="Show"
-        showRainbow(startHue: number = 1, endHue: number = 360) {
-            if (this._length <= 0) return;
-
-            startHue = startHue >> 0;
-            endHue = endHue >> 0;
-            const saturation = 100;
-            const luminance = 50;
-            const steps = this._length;
-            const direction = HueInterpolationDirection.Clockwise;
-
-            //hue
-            const h1 = startHue;
-            const h2 = endHue;
-            const hDistCW = ((h2 + 360) - h1) % 360;
-            const hStepCW = Math.idiv((hDistCW * 100), steps);
-            const hDistCCW = ((h1 + 360) - h2) % 360;
-            const hStepCCW = Math.idiv(-(hDistCCW * 100), steps);
-            let hStep: number;
-            if (direction === HueInterpolationDirection.Clockwise) {
-                hStep = hStepCW;
-            } else if (direction === HueInterpolationDirection.CounterClockwise) {
-                hStep = hStepCCW;
-            } else {
-                hStep = hDistCW < hDistCCW ? hStepCW : hStepCCW;
-            }
-            const h1_100 = h1 * 100; //we multiply by 100 so we keep more accurate results while doing interpolation
-
-            //sat
-            const s1 = saturation;
-            const s2 = saturation;
-            const sDist = s2 - s1;
-            const sStep = Math.idiv(sDist, steps);
-            const s1_100 = s1 * 100;
-
-            //lum
-            const l1 = luminance;
-            const l2 = luminance;
-            const lDist = l2 - l1;
-            const lStep = Math.idiv(lDist, steps);
-            const l1_100 = l1 * 100
-
-            //interpolate
-            if (steps === 1) {
-                this.setPixelColor(0, hsl(h1 + hStep, s1 + sStep, l1 + lStep))
-            } else {
-                this.setPixelColor(0, hsl(startHue, saturation, luminance));
-                for (let i = 1; i < steps - 1; i++) {
-                    const h = Math.idiv((h1_100 + i * hStep), 100) + 360;
-                    const s = Math.idiv((s1_100 + i * sStep), 100);
-                    const l = Math.idiv((l1_100 + i * lStep), 100);
-                    this.setPixelColor(i, hsl(h, s, l));
-                }
-                this.setPixelColor(steps - 1, hsl(endHue, saturation, luminance));
-            }
-            this.show();
-        }
-
-        /**
-         * Displays a vertical bar graph based on the `value` and `high` value.
-         * If `high` is 0, the chart gets adjusted automatically.
-         * @param value current value to plot
-         * @param high maximum value, eg: 255
-         */
-        //% weight=84
-        //% blockId=neopixel_show_bar_graph block="%strip|show bar graph of %value|up to %high"
-        //% strip.defl=strip
-        //% icon="\uf080"
-        //% parts="neopixel" 
-        //% advanced=true
-        //% group="Show"
-        showBarGraph(value: number, high: number): void {
-            if (high <= 0) {
-                this.clear();
-                this.setPixelColor(0, NeoPixelColors.Yellow);
-                this.show();
-                return;
-            }
-
-            value = Math.abs(value);
-            const n = this._length;
-            const n1 = n - 1;
-            let v = Math.idiv((value * n), high);
-            if (v == 0) {
-                this.setPixelColor(0, 0x666600);
-                for (let i = 1; i < n; ++i)
-                    this.setPixelColor(i, 0);
-            } else {
-                for (let i = 0; i < n; ++i) {
-                    if (i <= v) {
-                        const b = Math.idiv(i * 255, n1);
-                        this.setPixelColor(i, neopixel.rgb(b, 0, 255 - b));
-                    }
-                    else this.setPixelColor(i, 0);
-                }
-            }
-            this.show();
         }
 
         /**
@@ -455,6 +371,118 @@ namespace neopixel {
                 + Math.idiv(p * 480, 10000); /* rought approximation */
         }
 
+
+
+        /**
+         * Shows a rainbow pattern on all LEDs.
+         * @param startHue the start hue value for the rainbow, eg: 1
+         * @param endHue the end hue value for the rainbow, eg: 360
+         */
+        //% blockId="neopixel_set_strip_rainbow" block="%strip|show rainbow from %startHue|to %endHue"
+        //% strip.defl=strip
+        //% weight=85 
+        //% blockGap=8
+        //% parts="neopixel" 
+        //% advanced=true
+        //% group="Show"
+        showRainbow(startHue: number = 1, endHue: number = 360) {
+            if (this._length <= 0) return;
+
+            startHue = startHue >> 0;
+            endHue = endHue >> 0;
+            const saturation = 100;
+            const luminance = 50;
+            const steps = this._length;
+            const direction = HueInterpolationDirection.Clockwise;
+
+            //hue
+            const h1 = startHue;
+            const h2 = endHue;
+            const hDistCW = ((h2 + 360) - h1) % 360;
+            const hStepCW = Math.idiv((hDistCW * 100), steps);
+            const hDistCCW = ((h1 + 360) - h2) % 360;
+            const hStepCCW = Math.idiv(-(hDistCCW * 100), steps);
+            let hStep: number;
+            if (direction === HueInterpolationDirection.Clockwise) {
+                hStep = hStepCW;
+            } else if (direction === HueInterpolationDirection.CounterClockwise) {
+                hStep = hStepCCW;
+            } else {
+                hStep = hDistCW < hDistCCW ? hStepCW : hStepCCW;
+            }
+            const h1_100 = h1 * 100; //we multiply by 100 so we keep more accurate results while doing interpolation
+
+            //sat
+            const s1 = saturation;
+            const s2 = saturation;
+            const sDist = s2 - s1;
+            const sStep = Math.idiv(sDist, steps);
+            const s1_100 = s1 * 100;
+
+            //lum
+            const l1 = luminance;
+            const l2 = luminance;
+            const lDist = l2 - l1;
+            const lStep = Math.idiv(lDist, steps);
+            const l1_100 = l1 * 100
+
+            //interpolate
+            if (steps === 1) {
+                this.setPixelColor(0, hsl(h1 + hStep, s1 + sStep, l1 + lStep))
+            } else {
+                this.setPixelColor(0, hsl(startHue, saturation, luminance));
+                for (let i = 1; i < steps - 1; i++) {
+                    const h = Math.idiv((h1_100 + i * hStep), 100) + 360;
+                    const s = Math.idiv((s1_100 + i * sStep), 100);
+                    const l = Math.idiv((l1_100 + i * lStep), 100);
+                    this.setPixelColor(i, hsl(h, s, l));
+                }
+                this.setPixelColor(steps - 1, hsl(endHue, saturation, luminance));
+            }
+            this.show();
+        }
+
+        /**
+         * Displays a vertical bar graph based on the `value` and `high` value.
+         * If `high` is 0, the chart gets adjusted automatically.
+         * @param value current value to plot
+         * @param high maximum value, eg: 255
+         */
+        //% weight=84
+        //% blockId=neopixel_show_bar_graph block="%strip|show bar graph of %value|up to %high"
+        //% strip.defl=strip
+        //% icon="\uf080"
+        //% parts="neopixel" 
+        //% advanced=true
+        //% group="Show"
+        showBarGraph(value: number, high: number): void {
+            if (high <= 0) {
+                this.clear();
+                this.setPixelColor(0, NeoPixelColors.Yellow);
+                this.show();
+                return;
+            }
+
+            value = Math.abs(value);
+            const n = this._length;
+            const n1 = n - 1;
+            let v = Math.idiv((value * n), high);
+            if (v == 0) {
+                this.setPixelColor(0, 0x666600);
+                for (let i = 1; i < n; ++i)
+                    this.setPixelColor(i, 0);
+            } else {
+                for (let i = 0; i < n; ++i) {
+                    if (i <= v) {
+                        const b = Math.idiv(i * 255, n1);
+                        this.setPixelColor(i, neopixel.rgb(b, 0, 255 - b));
+                    }
+                    else this.setPixelColor(i, 0);
+                }
+            }
+            this.show();
+        }
+
         private setBufferRGB(offset: number, red: number, green: number, blue: number): void {
             if (this._mode === NeoPixelMode.RGB_RGB) {
                 this.buf[offset + 0] = red;
@@ -564,7 +592,7 @@ namespace neopixel {
             })
         }
 
-        //% block="set NeoPixel %strip | %v1 %v2 %v3 %v4 %v5 %v6 %v7 %v8"
+        //% block="set NeoPixel 8x8 %strip | %v1 %v2 %v3 %v4 %v5 %v6 %v7 %v8"
         //% v1.shadow="neoPixelRow8"
         //% v2.shadow="neoPixelRow8"
         //% v3.shadow="neoPixelRow8"
@@ -653,31 +681,6 @@ namespace neopixel {
     //% value.fieldOptions.columns=8 value.fieldOptions.className='rgbColorPicker'
     export function colorNumberPicker(value: number) {
         return value;
-    }
-
-    /**
-     * Create a new NeoPixel driver for `numleds` LEDs.
-     * @param pin the pin where the neopixel is connected.
-     * @param numleds number of leds in the strip, eg: 24,30,60,64
-     */
-    //% blockId="neopixel_create" block="NeoPixel at pin %pin|with %numleds|leds as %mode"
-    //% weight=90 
-    //% blockGap=8
-    //% parts="neopixel"
-    //% trackArgs=0,2
-    //% blockSetVariable=strip
-    //% group="Initialization"
-    export function create(pin: DigitalPin, numleds: number, mode: NeoPixelMode): Strip {
-        let strip = new Strip();
-        let stride = mode === NeoPixelMode.RGBW ? 4 : 3;
-        strip.buf = pins.createBuffer(numleds * stride);
-        strip.start = 0;
-        strip._length = numleds;
-        strip._mode = mode || NeoPixelMode.RGB;
-        strip._matrixWidth = 0;
-        strip.setBrightness(128)
-        strip.setPin(pin)
-        return strip;
     }
 
     /**
