@@ -482,7 +482,7 @@ namespace neopixel {
         * Sets the direction how the matrix is wired on the
         * board.
         */
-        //% block="set direction %dir of %strip as NeoPixel matrix"
+        //% block="set matrix direction to $dir of $strip"
         //% strip.defl=strip
         //% parts="neopixel"
         //% weight=0
