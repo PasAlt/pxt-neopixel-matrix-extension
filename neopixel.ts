@@ -51,6 +51,8 @@ namespace neopixel {
         return strip;
     }
 
+    //% block="%direction"
+    //% group="Initialization"
     export function setMatrixDirection(direction : NeoPixelMatrixDirection) {
         
     }
