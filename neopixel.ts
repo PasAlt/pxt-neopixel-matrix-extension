@@ -13,6 +13,7 @@ enum NeoPixelMode {
 /*
 * Different matrix directions
 */
+//%blockId="neopixel_matrix_direction"
 enum NeoPixelMatrixDirection {
     //% block="Right top to the left"
     RightTopToTheLeft = 1,
@@ -477,7 +478,7 @@ namespace neopixel {
         //% strip.defl=strip
         //% parts="neopixel"
         //% weight=0
-        //% trackArgs=0
+        //% direction.shadow="neopixel_matrix_direction"
         //% group="Matrix"
         setMatrixDirection(direction : NeoPixelMatrixDirection) {
             this._matrixDirection = direction
