@@ -1,7 +1,7 @@
 {
     "name": "neopixel-matrix-extended",
     "version": "0.1.7",
-    "description": "AdaFruit NeoPixel driver extenden by Pascal Zaugg (PHBern)",
+    "description": "AdaFruit NeoPixel driver extended by Pascal Zaugg (PHBern)",
     "license": "MIT",
     "dependencies": {
         "core": "*",
@@ -10,13 +10,8 @@
     "files": [
         "README.md",
         "neopixel.ts",
-        "_locales/ja/neopixel-strings.json",
-        "_locales/de/neopixel-strings.json",
-        "_locales/de/neopixel-jsdoc-strings.json",
-        "_locales/es-ES/neopixel-strings.json",
-        "_locales/fr/neopixel-strings.json",
-        "_locales/fr/neopixel-jsdoc-strings.json",
-        "_locales/zh/neopixel-strings.json"
+        "_locales/de/neopixel-matrix-extended-strings.json",
+        "_locales/de/neopixel-matrix-extended-jsdoc-strings.json",
     ],
     "testFiles": [
         "neotest.ts"

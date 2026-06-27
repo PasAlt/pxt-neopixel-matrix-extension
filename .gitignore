@@ -6,3 +6,4 @@ pxt_modules
 projects
 *.db
 *.tgz
+package-lock.json
