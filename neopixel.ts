@@ -488,7 +488,7 @@ namespace neopixel {
         //% weight=0
         //% group="Matrix"
         // direction.shadow="neopixel_matrix_direction_selector"
-        setMatrixDirection(dir : number) {
+        setMatrixDirection(dir : NeoPixelMatrixDirection) {
             this._matrixDirection = dir
         }
 
