@@ -334,7 +334,6 @@ namespace neopixel {
         /**
          * Set the pin where the neopixel is connected, defaults to P0.
          */
-        //% block="Set pin %pin"
         //% weight=10
         //% parts="neopixel" 
         //% advanced=true
@@ -483,7 +482,7 @@ namespace neopixel {
         * Sets the direction how the matrix is wired on the
         * board.
         */
-        //% block="set direction of NeoPixel matrix %direction"
+        //% block="set direction of NeoPixel matrix %dir"
         //% strip.defl=strip
         //% parts="neopixel"
         //% weight=0
