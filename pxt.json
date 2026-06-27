@@ -11,8 +11,7 @@
         "README.md",
         "neopixel.ts",
         "_locales/de/neopixel-matrix-extended-strings.json",
-        "_locales/de/neopixel-matrix-extended-jsdoc-strings.json",
-        "tutorial.md"
+        "_locales/de/neopixel-matrix-extended-jsdoc-strings.json"
     ],
     "testFiles": [
         "neotest.ts"
