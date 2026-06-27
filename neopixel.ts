@@ -16,9 +16,9 @@ enum NeoPixelMode {
 //%blockId="neopixel_matrix_direction"
 enum NeoPixelMatrixDirection {
     //% block="Right top to the left"
-    RightTopToTheLeft = 1,
+    RightTopToTheLeft,
     //% block="Left top to the right"
-    LeftTopToTheRight = 2,
+    LeftTopToTheRight,
 }
 
 /**
@@ -50,6 +50,10 @@ namespace neopixel {
         strip.setBrightness(128)
         strip.setPin(pin)
         return strip;
+    }
+
+    export function setMatrixDirection(direction : NeoPixelMatrixDirection) {
+        
     }
 
     /**
