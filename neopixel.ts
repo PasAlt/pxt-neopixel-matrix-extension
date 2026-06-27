@@ -324,6 +324,7 @@ namespace neopixel {
         /**
          * Set the pin where the neopixel is connected, defaults to P0.
          */
+        //% block="Set pin %pin"
         //% weight=10
         //% parts="neopixel" 
         //% advanced=true
@@ -476,6 +477,7 @@ namespace neopixel {
         //% strip.defl=strip
         //% parts="neopixel"
         //% weight=0
+        //% trackArgs=0
         //% group="Matrix"
         setMatrixDirection(direction : NeoPixelMatrixDirection) {
             this._matrixDirection = direction
