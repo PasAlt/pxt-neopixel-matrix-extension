@@ -29,6 +29,7 @@
   "neopixel.rowOf8|block": "%v1 %v2 %v3 %v4 %v5 %v6 %v7 %v8",
   "neopixel|block": "neopixel",
   "{id:category}Neopixel": "NeoPixel",
+  "{id:category}Neopixel|block": "NeoPixel",
   "{id:group}Colors": "Farben",
   "{id:group}Initialization": "Vorbereitung/Initialisierung",
   "{id:group}Manipulation": "Pixel verändern",
