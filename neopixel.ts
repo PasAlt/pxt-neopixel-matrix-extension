@@ -534,9 +534,10 @@ namespace neopixel {
                 rows[4].reverse()
             }
             
+            let index = 0
             rows.forEach((row : number[]) => {
                 row.forEach((color: number, index: number) => {
-                    this.setPixelColor(index, color)
+                    this.setPixelColor(index++, color)
                 })
             })
         }
