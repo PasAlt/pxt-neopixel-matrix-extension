@@ -23,7 +23,7 @@
   "neopixel.Strip.show|block": "%strip|Veränderungen anzeigen",
   "neopixel.colorNumberPicker|block": "%value",
   "neopixel.create|block": "NeoPixels an Pin %pin|mit %numleds|Pixeln und Modus %mode",
-  "neopixel.hsl|block": "HSL-Farbe: Farbwert %hue|Sättigung %sat|Helligkeit %lum",
+  "neopixel.hsl|block": "HSL-Farbe: Farbwert %h|Sättigung %s|Helligkeit %l",
   "neopixel.rgb|block": "rot %red|grün %green|blau %blue",
   "neopixel.rowOf5|block": "%v1 %v2 %v3 %v4 %v5",
   "neopixel.rowOf8|block": "%v1 %v2 %v3 %v4 %v5 %v6 %v7 %v8",
