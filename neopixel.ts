@@ -57,7 +57,7 @@ namespace neopixel {
          * Send all the changes to the strip.
          */
         //% blockId="neopixel_show" 
-        //% block="%strip|show" blockGap=8
+        //% block="%strip|show"
         //% strip.defl=strip
         //% weight=10
         //% parts="neopixel"
@@ -76,7 +76,6 @@ namespace neopixel {
         //% block="%strip|show color %rgb"
         //% strip.defl=strip
         //% weight=85 
-        //% blockGap=8
         //% rgb.shadow="colorNumberPickerLarge"
         //% parts="neopixel" 
         //% advanced=true
@@ -108,7 +107,6 @@ namespace neopixel {
         //% blockId="neopixel_set_pixel_color" 
         //% block="%strip|set pixel color at %pixeloffset|to %rgb"
         //% strip.defl=strip
-        //% blockGap=8
         //% weight=80
         //% rgb.shadow="colorNumberPickerLarge"
         //% parts="neopixel" 
@@ -124,7 +122,6 @@ namespace neopixel {
         //% blockId=neopixel_set_matrix_width 
         //% block="%strip|set matrix width %width"
         //% strip.defl=strip
-        //% blockGap=8
         //% weight=5
         //% parts="neopixel" 
         //% advanced=true
@@ -167,7 +164,6 @@ namespace neopixel {
         //% blockId="neopixel_set_pixel_white" 
         //% block="%strip|set pixel white LED at %pixeloffset|to %white"
         //% strip.defl=strip
-        //% blockGap=8
         //% weight=80
         //% parts="neopixel" 
         //% advanced=true
@@ -197,7 +193,7 @@ namespace neopixel {
          * Gets the number of pixels declared on the strip
          */
         //% blockId="neopixel_length" 
-        //% block="%strip|length" blockGap=8
+        //% block="%strip|length"
         //% strip.defl=strip
         //% weight=60 
         //% advanced=true
@@ -210,7 +206,8 @@ namespace neopixel {
          * Set the brightness of the strip. This flag only applies to future operation.
          * @param brightness a measure of LED brightness in 0-255. eg: 255
          */
-        //% blockId="neopixel_set_brightness" block="%strip|set brightness %brightness" blockGap=8
+        //% blockId="neopixel_set_brightness" 
+        //% block="%strip|set brightness %brightness"
         //% strip.defl=strip
         //% weight=59
         //% parts="neopixel" 
@@ -225,7 +222,6 @@ namespace neopixel {
          **/
         //% blockId="neopixel_each_brightness" 
         //% block="%strip|ease brightness" 
-        //% blockGap=8
         //% strip.defl=strip
         //% weight=58
         //% parts="neopixel" 
@@ -284,7 +280,8 @@ namespace neopixel {
          * You need to call ``show`` to make the changes visible.
          * @param offset number of pixels to shift forward, eg: 1
          */
-        //% blockId="neopixel_shift" block="%strip|shift pixels by %offset" blockGap=8
+        //% blockId="neopixel_shift" 
+        //% block="%strip|shift pixels by %offset" 
         //% strip.defl=strip
         //% weight=40
         //% parts="neopixel"
@@ -302,7 +299,6 @@ namespace neopixel {
          */
         //% blockId="neopixel_rotate" 
         //% block="%strip|rotate pixels by %offset" 
-        //% blockGap=8
         //% strip.defl=strip
         //% weight=39
         //% parts="neopixel"
@@ -360,7 +356,6 @@ namespace neopixel {
         //% block="%strip|show rainbow from %startHue|to %endHue"
         //% strip.defl=strip
         //% weight=85 
-        //% blockGap=8
         //% parts="neopixel" 
         //% advanced=true
         //% group="Show"
@@ -478,7 +473,7 @@ namespace neopixel {
         //% inlineInputMode=external
         //% strip.defl=strip
         //% parts="neopixel"
-        //% weight=25
+        //% weight=23
         //% group="Matrix"
         setMatrix25(v1: number[],
             v2: number[],
@@ -517,6 +512,7 @@ namespace neopixel {
         //% strip.defl=strip
         //% parts="neopixel"
         //% group="Matrix"
+        //% weight="63"
         setMatrix64(v1: number[],
             v2: number[],
             v3: number[],
@@ -623,6 +619,8 @@ namespace neopixel {
             buf[pixeloffset + 3] = white;
         }
     }
+
+    // ---- END OF STRIP ---- //
 
     /**
      * RGB Color selection from a range
