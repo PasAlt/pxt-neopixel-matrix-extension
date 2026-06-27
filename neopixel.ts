@@ -524,19 +524,20 @@ namespace neopixel {
 
             if(this._matrixDirection == NeoPixelMatrixDirection.LeftTopToTheRight
                 || this._matrixDirection == NeoPixelMatrixDirection.LeftBottomToTheRight) {
-                v2.reverse()
-                v4.reverse()
+                rows[1].reverse()
+                rows[3].reverse()
             }
             else if (this._matrixDirection == NeoPixelMatrixDirection.RightTopToTheLeft
                 || this._matrixDirection == NeoPixelMatrixDirection.RightBottomToTheLeft) {
-                v1.reverse()
-                v3.reverse()
-                v5.reverse()
+                rows[0].reverse()
+                rows[2].reverse()
+                rows[4].reverse()
             }
             
-            v1 = v1.concat(v2.concat(v3.concat(v4.concat(v5))))
-            v1.forEach((color: number, index: number) => {
-                this.setPixelColor(index, color)
+            rows.forEach((row : number[]) => {
+                row.forEach((color: number, index: number) => {
+                    this.setPixelColor(index, color)
+                })
             })
         }
 
