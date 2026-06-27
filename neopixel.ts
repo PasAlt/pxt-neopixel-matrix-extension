@@ -69,6 +69,33 @@ namespace neopixel {
         }
 
         /**
+         * Create a range of LEDs.
+         * @param start offset in the LED strip to start the range
+         * @param length number of LEDs in the range. eg: 4
+         */
+        //% weight=89
+        //% blockId="neopixel_range" 
+        //% block="%strip|range from %start|with %length|leds"
+        //% strip.defl=strip
+        //% parts="neopixel" 
+        //% advanced=true
+        //% blockSetVariable=range
+        //% group="Initialization"
+        range(start: number, length: number): Strip {
+            start = start >> 0;
+            length = length >> 0;
+            let strip = new Strip();
+            strip.buf = this.buf;
+            strip.pin = this.pin;
+            strip.brightness = this.brightness;
+            strip.start = this.start + Math.clamp(0, this._length - 1, start);
+            strip._length = Math.clamp(0, this._length - (strip.start - this.start), length);
+            strip._matrixWidth = 0;
+            strip._mode = this._mode;
+            return strip;
+        }
+
+        /**
          * Shows all LEDs to a given color (range 0-255 for r, g, b).
          * @param rgb RGB color of the LED
          */
@@ -246,33 +273,6 @@ namespace neopixel {
                     const w = (buf[ledoffset + 3] * br) >> 8; buf[ledoffset + 3] = w;
                 }
             }
-        }
-
-        /**
-         * Create a range of LEDs.
-         * @param start offset in the LED strip to start the range
-         * @param length number of LEDs in the range. eg: 4
-         */
-        //% weight=89
-        //% blockId="neopixel_range" 
-        //% block="%strip|range from %start|with %length|leds"
-        //% strip.defl=strip
-        //% parts="neopixel" 
-        //% advanced=true
-        //% blockSetVariable=range
-        //% group="Initialization"
-        range(start: number, length: number): Strip {
-            start = start >> 0;
-            length = length >> 0;
-            let strip = new Strip();
-            strip.buf = this.buf;
-            strip.pin = this.pin;
-            strip.brightness = this.brightness;
-            strip.start = this.start + Math.clamp(0, this._length - 1, start);
-            strip._length = Math.clamp(0, this._length - (strip.start - this.start), length);
-            strip._matrixWidth = 0;
-            strip._mode = this._mode;
-            return strip;
         }
 
         /**
