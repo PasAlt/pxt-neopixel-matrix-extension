@@ -22,7 +22,7 @@
   "neopixel.Strip.showRainbow|block": "%strip|zeige Regenbogen von Farbton %startHue|bis %endHue",
   "neopixel.Strip.show|block": "%strip|Veränderungen anzeigen",
   "neopixel.colorNumberPicker|block": "%value",
-  "neopixel.create|block": "NeoPixels an Pin %pin|mit %numleds|Pixeln und Modus %mode",
+  "neopixel.create|block": "NeoPixels an Pin %pin|mit %numleds|NeoPixeln und Modus %mode",
   "neopixel.hsl|block": "HSL-Farbe: Farbwert %h|Sättigung %s|Helligkeit %l",
   "neopixel.rgb|block": "rot %red|grün %green|blau %blue",
   "neopixel.rowOf5|block": "%v1 %v2 %v3 %v4 %v5",
@@ -30,10 +30,10 @@
   "neopixel|block": "neopixel",
   "{id:category}Neopixel": "NeoPixel",
   "{id:category}Neopixel|block": "NeoPixel",
-  "{id:group}Colors": "Farben",
-  "{id:group}Initialization": "Vorbereitung/Initialisierung",
+  "{id:group}Colors": "Farben der NeoPixel setzen",
+  "{id:group}Initialization": "Vorbereitung und Initialisierung",
   "{id:group}Manipulation": "Pixel verändern",
-  "{id:group}Matrix": "Matrix",
-  "{id:group}Show": "Pixel anzeigen",
-  "{id:group}Variables": "Variablen"
+  "{id:group}Matrix": "Farben als Matrix setzen",
+  "{id:group}Show": "Alle NeoPixel anzeigen",
+  "{id:group}Variables": "Informationen"
 }
