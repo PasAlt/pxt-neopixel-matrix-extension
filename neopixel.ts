@@ -10,16 +10,6 @@ enum NeoPixelMode {
     RGB_RGB = 3
 }
 
-/*
-* Different matrix directions
-*/
-enum NeoPixelMatrixDirection {
-    //% block="Right top to the left"
-    RightTopToTheLeft,
-    //% block="Left top to the right"
-    LeftTopToTheRight,
-}
-
 /**
  * Functions to operate NeoPixel strips.
  */
@@ -51,9 +41,19 @@ namespace neopixel {
         return strip;
     }
 
+    /*
+    * Different matrix directions
+    */
+    export enum NeoPixelMatrixDirection {
+        //% block="Right top to the left"
+        RightTopToTheLeft,
+        //% block="Left top to the right"
+        LeftTopToTheRight
+    }
+
     //% blockId="neopixel_matrix_direction_selector"
     //% block="%direction"
-    //% group="Initialization"$
+    //% group="Initialization"
     // This is just here because I was not able
     // to create a dropdown menu for the enum
     // inside the Strip
@@ -488,9 +488,9 @@ namespace neopixel {
         //% parts="neopixel"
         //% weight=0
         //% group="Matrix"
-        //% direction.shadow="neopixel_matrix_direction_selector"
-        setMatrixDirection(direction : number) {
-            this._matrixDirection = direction
+        // direction.shadow="neopixel_matrix_direction_selector"
+        setMatrixDirection(dir : number) {
+            this._matrixDirection = dir
         }
 
         /**
