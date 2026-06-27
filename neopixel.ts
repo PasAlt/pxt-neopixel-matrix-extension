@@ -57,7 +57,7 @@ namespace neopixel {
     // This is just here because I was not able
     // to create a dropdown menu for the enum
     // inside the Strip
-    export function _setMatrixDirection(direction : NeoPixelMatrixDirection) : NeoPixelMatrixDirection {
+    export function setMatrixDirection(direction : NeoPixelMatrixDirection) : NeoPixelMatrixDirection {
         return direction
     }
 
@@ -488,6 +488,7 @@ namespace neopixel {
         //% parts="neopixel"
         //% weight=0
         //% group="Matrix"
+        //% direction.shadow="neopixel_matrix_direction_selector"
         setMatrixDirection(direction : NeoPixelMatrixDirection) {
             this._matrixDirection = direction
         }
