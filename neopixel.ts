@@ -193,7 +193,7 @@ namespace neopixel {
         //% advanced=true
         //% group="Colors"
         showColor(rgb: number) {
-            rgb = rgb >> 0;
+            rgb = rgb >> 0; // ensure rgb to be a (signed) integer
             this.setAllRGB(rgb);
             this.show();
         }
@@ -206,7 +206,7 @@ namespace neopixel {
         //% parts="neopixel"
         //% group="Colors"
         setColor(rgb: number) {
-            rgb = rgb >> 0;
+            rgb = rgb >> 0; // ensure rgb to be a (signed) integer
             this.setAllRGB(rgb);
         }
 
@@ -292,9 +292,10 @@ namespace neopixel {
         /**
          * Send all the changes to the strip.
          */
-        //% blockId="neopixel_show" block="%strip|show" blockGap=8
+        //% blockId="neopixel_show" 
+        //% block="%strip|show" blockGap=8
         //% strip.defl=strip
-        //% weight=79
+        //% weight=1000
         //% parts="neopixel"
         //% group="Show"
         show() {
@@ -312,7 +313,7 @@ namespace neopixel {
         //% strip.defl=strip
         //% weight=76
         //% parts="neopixel"
-        //% group="Show"
+        //% group="Manipulation"
         clear(): void {
             const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
             this.buf.fill(0, this.start * stride, this._length * stride);
