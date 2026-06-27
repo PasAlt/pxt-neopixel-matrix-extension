@@ -51,16 +51,6 @@ namespace neopixel {
         LeftTopToTheRight
     }
 
-    //% blockId="neopixel_matrix_direction_selector"
-    //% block="%direction"
-    //% group="Initialization"
-    // This is just here because I was not able
-    // to create a dropdown menu for the enum
-    // inside the Strip
-    export function setMatrixDirection(direction : NeoPixelMatrixDirection) : NeoPixelMatrixDirection {
-        return direction
-    }
-
     /**
      * A NeoPixel strip
      */
