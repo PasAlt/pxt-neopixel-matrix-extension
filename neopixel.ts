@@ -10,21 +10,21 @@ enum NeoPixelMode {
     RGB_RGB = 3
 }
 
+/*
+* Different matrix directions
+*/
+enum NeoPixelMatrixDirection {
+    //% block="Right top to the left"
+    RightTopToTheLeft = 1,
+    //% block="Left top to the right"
+    LeftTopToTheRight = 2,
+}
+
 /**
  * Functions to operate NeoPixel strips.
  */
 //% weight=1000 color=#ffa500 icon="\uf110"
 namespace neopixel {
-    /*
-    * Different matrix directions
-    */
-    enum NeoPixelMatrixDirection {
-        //% block="Right top to the left"
-        RightTopToTheLeft = 1,
-        //% block="Left top to the right"
-        LeftTopToTheRight = 2,
-    }
-
     /**
      * Create a new NeoPixel driver for `numleds` LEDs.
      * @param pin the pin where the neopixel is connected.
