@@ -15,6 +15,16 @@ enum NeoPixelMode {
  */
 //% weight=1000 color=#ffa500 icon="\uf110"
 namespace neopixel {
+    /*
+    * Different matrix directions
+    */
+    enum NeoPixelMatrixDirection {
+        //% block="Right top to the left"
+        RightTopToTheLeft = 1,
+        //% block="Left top to the right"
+        LeftTopToTheRight = 2,
+    }
+
     /**
      * Create a new NeoPixel driver for `numleds` LEDs.
      * @param pin the pin where the neopixel is connected.
@@ -33,6 +43,7 @@ namespace neopixel {
         strip.buf = pins.createBuffer(numleds * stride);
         strip.start = 0;
         strip._length = numleds;
+        strip._matrixDirection = NeoPixelMatrixDirection.LeftTopToTheRight
         strip._mode = mode || NeoPixelMode.RGB;
         strip._matrixWidth = 0;
         strip.setBrightness(128)
@@ -52,6 +63,7 @@ namespace neopixel {
         _length: number; // number of LEDs
         _mode: NeoPixelMode;
         _matrixWidth: number; // number of leds in a matrix - if any
+        _matrixDirection: NeoPixelMatrixDirection
 
         /**
          * Send all the changes to the strip.
@@ -457,6 +469,19 @@ namespace neopixel {
         }
 
         /**
+        * Sets the direction how the matrix is wired on the
+        * board.
+        */
+        //% block="set direction of NeoPixel matrix %direction"
+        //% strip.defl=strip
+        //% parts="neopixel"
+        //% weight=0
+        //% group="Matrix"
+        setMatrixDirection(direction : NeoPixelMatrixDirection) {
+            this._matrixDirection = direction
+        }
+
+        /**
          * Sets the LED in a NeoPixel strip of
          * 25 NeoPixels expecting them to be
          * arranged in a 5x5 matrix.
@@ -483,8 +508,17 @@ namespace neopixel {
             if (this.length() != 25) {
                 throw "Matrix is not 5x5. Please check matrix creation!"
             }
-            v2.reverse()
-            v4.reverse()
+
+            if(this._matrixDirection == NeoPixelMatrixDirection.LeftTopToTheRight) {
+                v2.reverse()
+                v4.reverse()
+            }
+            else if (this._matrixDirection == NeoPixelMatrixDirection.RightTopToTheLeft) {
+                v1.reverse()
+                v3.reverse()
+                v5.reverse()
+            }
+            
             v1 = v1.concat(v2.concat(v3.concat(v4.concat(v5))))
             v1.forEach((color: number, index: number) => {
                 this.setPixelColor(index, color)
