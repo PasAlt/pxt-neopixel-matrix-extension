@@ -2,7 +2,7 @@
   "NeoPixelMode.RGBW|block": "RGB+W",
   "NeoPixelMode.RGB_RGB|block": "RGB (RGB format)",
   "NeoPixelMode.RGB|block": "RGB (GRB format)",
-  "neopixel.Strip.clear|block": "%strip|clear",
+  "neopixel.Strip.clear|block": "%strip|löschen",
   "neopixel.Strip.easeBrightness|block": "%strip|ease brightness",
   "neopixel.Strip.length|block": "%strip|length",
   "neopixel.Strip.power|block": "%strip|power (mA)",
