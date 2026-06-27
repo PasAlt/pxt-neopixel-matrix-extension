@@ -45,10 +45,14 @@ namespace neopixel {
     * Different matrix directions
     */
     export enum NeoPixelMatrixDirection {
-        //% block="Right top to the left"
+        //% block="Top Right to the left"
         RightTopToTheLeft,
-        //% block="Left top to the right"
-        LeftTopToTheRight
+        //% block="Top left to the right"
+        LeftTopToTheRight,
+        //% block="Bottom left to the right"
+        LeftBottomToTheRight,
+        //% block="Bottom right to the left"
+        RightBottomToTheLeft
     }
 
     /**
@@ -510,11 +514,21 @@ namespace neopixel {
                 throw "Matrix is not 5x5. Please check matrix creation!"
             }
 
-            if(this._matrixDirection == NeoPixelMatrixDirection.LeftTopToTheRight) {
+            let rows = [v1, v2, v3, v4, v5]
+
+            if (this._matrixDirection == NeoPixelMatrixDirection.LeftBottomToTheRight 
+                || this._matrixDirection == NeoPixelMatrixDirection.RightBottomToTheLeft
+            ) {
+                rows.reverse()
+            }
+
+            if(this._matrixDirection == NeoPixelMatrixDirection.LeftTopToTheRight
+                || this._matrixDirection == NeoPixelMatrixDirection.LeftBottomToTheRight) {
                 v2.reverse()
                 v4.reverse()
             }
-            else if (this._matrixDirection == NeoPixelMatrixDirection.RightTopToTheLeft) {
+            else if (this._matrixDirection == NeoPixelMatrixDirection.RightTopToTheLeft
+                || this._matrixDirection == NeoPixelMatrixDirection.RightBottomToTheLeft) {
                 v1.reverse()
                 v3.reverse()
                 v5.reverse()
