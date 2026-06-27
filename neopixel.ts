@@ -536,7 +536,7 @@ namespace neopixel {
             
             let index = 0
             rows.forEach((row : number[]) => {
-                row.forEach((color: number, index: number) => {
+                row.forEach((color: number) => {
                     this.setPixelColor(index++, color)
                 })
             })
