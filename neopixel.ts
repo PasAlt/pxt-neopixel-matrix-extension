@@ -475,6 +475,8 @@ namespace neopixel {
         /**
         * Sets the direction how the matrix is wired on the
         * board.
+        * 
+        * Currently only works for 5x5 matrices
         */
         //% block="%strip set matrix direction to %dir"
         //% strip.defl=strip
@@ -514,6 +516,8 @@ namespace neopixel {
                 throw "Matrix is not 5x5. Please check matrix creation!"
             }
 
+            // Check here for possible rotations:
+            // https://stackoverflow.com/a/58668351
             let rows = [v1, v2, v3, v4, v5]
 
             if (this._matrixDirection == NeoPixelMatrixDirection.LeftBottomToTheRight 
