@@ -52,9 +52,12 @@ namespace neopixel {
     }
 
     //% block="%direction"
-    //% group="Initialization"
+    //% group="Initialization"$
+    // This is just here because I was not able
+    // to create a dropdown menu for the enum
+    // inside the Strip
     export function setMatrixDirection(direction : NeoPixelMatrixDirection) {
-        
+        return direction
     }
 
     /**
