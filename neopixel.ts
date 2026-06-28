@@ -16,7 +16,8 @@ enum NeoPixelMode {
 //% weight=1000 color=#ffa500 icon="\uf110"
 namespace neopixel {
     /**
-     * Create a new NeoPixel driver for `numleds` LEDs.
+     * Create a new NeoPixel driver for `numleds` LEDs with 
+     * brightness set to 128 (~50%).
      * @param pin the pin where the neopixel is connected.
      * @param numleds number of leds in the strip, eg: 24,30,60,64
      */
@@ -42,17 +43,25 @@ namespace neopixel {
     }
 
     /*
-    * Different matrix directions
+    * Different matrix wiring directions
     */
     export enum NeoPixelMatrixDirection {
-        //% block="Top Right to the left"
+        //% block="Top right to the left"
         RightTopToTheLeft,
         //% block="Top left to the right"
         LeftTopToTheRight,
         //% block="Bottom left to the right"
         LeftBottomToTheRight,
         //% block="Bottom right to the left"
-        RightBottomToTheLeft
+        RightBottomToTheLeft,
+        //% block="Top left to the bottom"
+        LeftTopToTheBottom,
+        //% block="Top right to the bottom"
+        RightTopToTheBottom,
+        //% block="Bottom right to the top"
+        RightBottomToTheTop,
+        //% block="Bottom left to the top"
+        LeftBottomToTheTop
     }
 
     /**
@@ -86,8 +95,8 @@ namespace neopixel {
 
         /**
          * Create a range of LEDs.
-         * @param start offset in the LED strip to start the range
-         * @param length number of LEDs in the range. eg: 4
+         * @param start offset in the NeoPixel strip to start the range
+         * @param length number of NeoPixels in the range. eg: 4
          */
         //% weight=89
         //% blockId="neopixel_range" 
@@ -112,8 +121,8 @@ namespace neopixel {
         }
 
         /**
-         * Shows all LEDs to a given color (range 0-255 for r, g, b).
-         * @param rgb RGB color of the LED
+         * Shows all NeoPixel in a given color (range 0-255 for r, g, b).
+         * @param rgb RGB color of the NeoPixels
          */
         //% blockId="neopixel_set_strip_color" 
         //% block="%strip|show color %rgb"
@@ -129,6 +138,11 @@ namespace neopixel {
             this.show();
         }
 
+        /**
+         * Sets all NeoPixel to a given color (range 0-255 for r, g, b) in the buffer.
+         * Call ``show()`` to make the changes visible.
+         * @param rgb RGB color of the NeoPixels
+         */
         //% blockId="neopixel_set_strip_color_real" 
         //% block="%strip|set color %rgb"
         //% strip.defl=strip
@@ -142,20 +156,23 @@ namespace neopixel {
         }
 
         /**
-         * Set LED to a given color (range 0-255 for r, g, b).
-         * You need to call ``show`` to make the changes visible.
-         * @param pixeloffset position of the NeoPixel in the strip
+         * Set NeoPixel at the given position to a given color (range 0-255 for r, g, b) in the buffer. 
+         * 
+         * Does leave all the other NeoPixels as they were.
+         * 
+         * Call ``show()`` to make the changes visible.
+         * @param position position of the NeoPixel in the strip
          * @param rgb RGB color of the LED
          */
         //% blockId="neopixel_set_pixel_color" 
-        //% block="%strip|set pixel color at %pixeloffset|to %rgb"
+        //% block="%strip|set pixel color at %position|to %rgb"
         //% strip.defl=strip
         //% weight=80
         //% rgb.shadow="colorNumberPickerLarge"
         //% parts="neopixel" 
         //% group="Colors"
-        setPixelColor(pixeloffset: number, rgb: number): void {
-            this.setPixelRGB(pixeloffset >> 0, rgb >> 0);
+        setPixelColor(position: number, rgb: number): void {
+            this.setPixelRGB(position >> 0, rgb >> 0);
         }
 
         /**
@@ -168,14 +185,14 @@ namespace neopixel {
         //% weight=5
         //% parts="neopixel" 
         //% advanced=true
-        //% group="Colors"
+        //% group="Matrix"
         setMatrixWidth(width: number) {
             this._matrixWidth = Math.min(this._length, width >> 0);
         }
 
         /**
-         * Set LED to a given color (range 0-255 for r, g, b) in a matrix shaped strip
-         * You need to call ``show`` to make the changes visible.
+         * Set NeoPixel to a given color (range 0-255 for r, g, b) in a matrix shaped strip
+         * Call ``show`` to make the changes visible.
          * @param x horizontal position
          * @param y horizontal position
          * @param rgb RGB color of the LED
@@ -187,7 +204,7 @@ namespace neopixel {
         //% parts="neopixel" 
         //% rgb.shadow="colorNumberPickerLarge"
         //% advanced=true
-        //% group="Colors"
+        //% group="Matrix"
         setMatrixColor(x: number, y: number, rgb: number) {
             if (this._matrixWidth <= 0) return; // not a matrix, ignore
             x = x >> 0;
@@ -218,8 +235,9 @@ namespace neopixel {
         }
 
         /**
-         * Turn off all LEDs.
-         * You need to call ``show`` to make the changes visible.
+         * Turn off all NeoPixels.
+         * 
+         * Call ``show`` to make the changes visible.
          */
         //% blockId="neopixel_clear" 
         //% block="%strip|clear"
@@ -233,7 +251,7 @@ namespace neopixel {
         }
 
         /**
-         * Gets the number of pixels declared on the strip
+         * Gets the number of NeoPixels declared on the strip
          */
         //% blockId="neopixel_length" 
         //% block="%strip|length"
@@ -247,7 +265,7 @@ namespace neopixel {
 
         /**
          * Set the brightness of the strip. This flag only applies to future operation.
-         * @param brightness a measure of LED brightness in 0-255. eg: 255
+         * @param brightness a measure of NeoPixel brightness in 0-255. eg: 255
          */
         //% blockId="neopixel_set_brightness" 
         //% block="%strip|set brightness %brightness"
@@ -292,9 +310,10 @@ namespace neopixel {
         }
 
         /**
-         * Shift LEDs forward and clear with zeros.
-         * You need to call ``show`` to make the changes visible.
-         * @param offset number of pixels to shift forward, eg: 1
+         * Shift NeoPixel colors stored in buffer forward. Clear with zeros.
+         * 
+         * Call ``show`` to make the changes visible.
+         * @param offset number of NeoPixel to shift forward, eg: 1
          */
         //% blockId="neopixel_shift" 
         //% block="%strip|shift pixels by %offset" 
@@ -309,8 +328,9 @@ namespace neopixel {
         }
 
         /**
-         * Rotate LEDs forward.
-         * You need to call ``show`` to make the changes visible.
+         * Rotate NeoPixel colors stored in buffer forward.
+         * 
+         * Call ``show`` to make the changes visible.
          * @param offset number of pixels to rotate forward, eg: 1
          */
         //% blockId="neopixel_rotate" 
@@ -327,6 +347,8 @@ namespace neopixel {
 
         /**
          * Set the pin where the neopixel is connected, defaults to P0.
+         * 
+         * @param pin pin to connect to
          */
         //% weight=10
         //% parts="neopixel" 
@@ -439,7 +461,8 @@ namespace neopixel {
          * @param high maximum value, eg: 255
          */
         //% weight=84
-        //% blockId=neopixel_show_bar_graph block="%strip|show bar graph of %value|up to %high"
+        //% blockId=neopixel_show_bar_graph 
+        //% block="%strip|show bar graph of %value|up to %high"
         //% strip.defl=strip
         //% parts="neopixel" 
         //% advanced=true
@@ -476,25 +499,30 @@ namespace neopixel {
         * Sets the direction how the matrix is wired on the
         * board.
         * 
-        * Currently only works for 5x5 matrices
+        * It always expects the wiring to be
+        * arranged in "snake" format e.g.
+        *
+        * ---->
+        * <---' 
+        * '--->
         */
-        //% block="%strip set matrix direction to %dir"
+        //% block="%strip set NeoPixel matrix wiring to %dir"
         //% strip.defl=strip
         //% parts="neopixel"
         //% weight=0
         //% group="Matrix"
         // direction.shadow="neopixel_matrix_direction_selector"
-        setMatrixDirection(dir : NeoPixelMatrixDirection) {
+        setMatrixWiring(dir : NeoPixelMatrixDirection) {
             this._matrixDirection = dir
         }
 
         /**
-         * Sets the LED in a NeoPixel strip of
-         * 25 NeoPixels expecting them to be
-         * arranged in a 5x5 matrix.
+         * Sets the NeoPixel colors in the buffer 
+         * of a strip of 25 NeoPixels 
+         * Expecting strip to be arranged in a 5x5 matrix.
          *
-         * You will to need to use #show() to make
-         * the changes visible.
+         * Call ``show`` to make the changes visible.
+         * @param v1-v5 matrix rows as number[]
          */
         //% block="set NeoPixel 5x5 %strip | %v1 %v2 %v3 %v4 %v5"
         //% v1.shadow="rowOf5"
@@ -513,36 +541,89 @@ namespace neopixel {
             v4: number[],
             v5: number[]): void {
             if (this.length() != 25) {
-                throw "Matrix is not 5x5. Please check matrix creation!"
+                throw "Matrix is not 5x5. You need to set matrix to 25 NeoPixels. Please check your initialization!"
+            }
+            this.setMatrixWidth(5)
+
+            let rows : number[][] = [v1, v2, v3, v4, v5]
+            rows = this.adjustMatrixForDirection(rows)
+            this.setBufferWithMatrix(rows)
+        }
+
+        private setBufferWithMatrix(rows : number[][]) {
+            let index = 0
+            rows.forEach((row: number[]) => {
+                row.forEach((color: number) => {
+                    this.setPixelColor(index++, color)
+                })
+            })
+        }
+
+        private adjustMatrixForDirection(rows : number[][]) : number[][] {
+            if (this._matrixDirection == NeoPixelMatrixDirection.LeftTopToTheBottom
+                || this._matrixDirection == NeoPixelMatrixDirection.RightBottomToTheTop) {
+                rows = this.rotateMatrixClockwise(rows)
+            }
+            else if (this._matrixDirection == NeoPixelMatrixDirection.RightTopToTheBottom,
+                this._matrixDirection == NeoPixelMatrixDirection.LeftBottomToTheTop) {
+                rows = this.rotateMatrixCounterClockwise(rows)
             }
 
-            // Check here for possible rotations:
-            // https://stackoverflow.com/a/58668351
-            let rows = [v1, v2, v3, v4, v5]
-
-            if (this._matrixDirection == NeoPixelMatrixDirection.LeftBottomToTheRight 
+            if (this._matrixDirection == NeoPixelMatrixDirection.LeftBottomToTheRight
                 || this._matrixDirection == NeoPixelMatrixDirection.RightBottomToTheLeft
+                || this._matrixDirection == NeoPixelMatrixDirection.LeftBottomToTheTop
+                || this._matrixDirection == NeoPixelMatrixDirection.RightBottomToTheTop
             ) {
                 rows.reverse()
             }
 
-            if(this._matrixDirection == NeoPixelMatrixDirection.LeftTopToTheRight
-                || this._matrixDirection == NeoPixelMatrixDirection.LeftBottomToTheRight) {
-                rows[1].reverse()
-                rows[3].reverse()
+            if (this._matrixDirection == NeoPixelMatrixDirection.LeftTopToTheRight
+                || this._matrixDirection == NeoPixelMatrixDirection.LeftBottomToTheRight
+                || this._matrixDirection == NeoPixelMatrixDirection.RightTopToTheBottom
+                || this._matrixDirection == NeoPixelMatrixDirection.RightBottomToTheTop) {
+                this.reverseOddRows(rows)
             }
             else if (this._matrixDirection == NeoPixelMatrixDirection.RightTopToTheLeft
-                || this._matrixDirection == NeoPixelMatrixDirection.RightBottomToTheLeft) {
-                rows[0].reverse()
-                rows[2].reverse()
-                rows[4].reverse()
+                || this._matrixDirection == NeoPixelMatrixDirection.RightBottomToTheLeft
+                || this._matrixDirection == NeoPixelMatrixDirection.LeftTopToTheBottom
+                || this._matrixDirection == NeoPixelMatrixDirection.LeftBottomToTheTop) {
+                this.reverseEvenRows(rows)
             }
-            
-            let index = 0
-            rows.forEach((row : number[]) => {
-                row.forEach((color: number) => {
-                    this.setPixelColor(index++, color)
-                })
+
+            return rows
+        }
+
+        private rotateMatrixClockwise(rows : number[][]) : number[][] {
+            // from https://stackoverflow.com/a/58668351
+            // Nitin Jadhav under CC-BY-SA 4.0
+            return rows[0].map((_, index) => { // traverse over each element of first column
+                let row = rows.map(row => row[index]) // get elements at column given by index
+                row.reverse() // reverse order of elements in column
+                return row
+            })
+        }
+
+        private rotateMatrixCounterClockwise(rows: number[][]): number[][] {
+            // from https://stackoverflow.com/a/58668351 (see comments)
+            // Karan Ratan under CC-BY-SA 4.0
+            return rows.map((_, index) => {
+                return rows.map(row => row[row.length - 1 - index])
+            })
+        }
+
+        private reverseOddRows(rows : number[][]) {
+            rows.forEach((row, index) => {
+                if(index % 2 == 1) {
+                    row.reverse()
+                }
+            })
+        }
+
+        private reverseEvenRows(rows : number[][]) {
+            rows.forEach((row, index) => {
+                if (index % 2 == 0) {
+                    row.reverse()
+                }
             })
         }
 
@@ -575,19 +656,14 @@ namespace neopixel {
             v5: number[],
             v6: number[],
             v7: number[],
-            v8: number[]): void {
+            v8: number[]) {
             if (this.length() != 64) {
-                throw "Matrix is not 8x8. Please check matrix creation!"
+                throw "Matrix is not 8x8. You need to set matrix to 25 NeoPixels. Please check your initialization!"
             }
-            v2.reverse()
-            v4.reverse()
-            v6.reverse()
-            v8.reverse()
-            v1 = v1.concat(v2.concat(v3.concat(v4.concat(v5))))
-            v1 = v1.concat(v6.concat(v7.concat(v8)))
-            v1.forEach((color: number, index: number) => {
-                this.setPixelColor(index, color)
-            })
+            this.setMatrixWidth(8)
+            let rows = [v1, v2, v3, v4, v5, v6, v7, v8]
+            rows = this.adjustMatrixForDirection(rows)
+            this.setBufferWithMatrix(rows)
         }
 
         private setBufferRGB(offset: number, red: number, green: number, blue: number): void {
