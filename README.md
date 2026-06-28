@@ -88,6 +88,11 @@ Use ``||setWiringDirection||`` to adjust for different wiring of the NeoPixel ma
 
 Use ``||setMatrixColor||`` to set single pixels in the matrix.
 
+## Tutorials
+
+* [Introduction to NeoPixels](https://makecode.microbit.org/#tutorial:github:pasalt/neopixel-tutorial/tutorial)
+* [Introduction to NeoPixel matrices](https://makecode.microbit.org/#tutorial:github:pasalt/neopixel-tutorial/tutorial-matrix)
+
 ## Supported targets
 
 * for PXT/microbit
