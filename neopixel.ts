@@ -218,19 +218,19 @@ namespace neopixel {
 
         /**
          * For NeoPixels with RGB+W LEDs, set the white LED brightness. This only works for RGB+W NeoPixels.
-         * @param pixeloffset position of the LED in the strip
+         * @param position position of the LED in the strip
          * @param white brightness of the white LED
          */
         //% blockId="neopixel_set_pixel_white" 
-        //% block="%strip|set pixel white LED at %pixeloffset|to %white"
+        //% block="%strip|set pixel white LED at %position|to %white"
         //% strip.defl=strip
         //% weight=80
         //% parts="neopixel" 
         //% advanced=true
         //% group="Colors"
-        setPixelWhiteLED(pixeloffset: number, white: number): void {
+        setPixelWhiteLED(position: number, white: number): void {
             if (this._mode === NeoPixelMode.RGBW) {
-                this.setPixelW(pixeloffset >> 0, white >> 0);
+                this.setPixelW(position >> 0, white >> 0);
             }
         }
 
