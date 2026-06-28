@@ -121,24 +121,6 @@ namespace neopixel {
         }
 
         /**
-         * Shows all NeoPixel in a given color (range 0-255 for r, g, b).
-         * @param rgb RGB color of the NeoPixels
-         */
-        //% blockId="neopixel_set_strip_color" 
-        //% block="%strip|show color %rgb"
-        //% strip.defl=strip
-        //% weight=85 
-        //% rgb.shadow="colorNumberPickerLarge"
-        //% parts="neopixel" 
-        //% advanced=true
-        //% group="Colors"
-        showColor(rgb: number) {
-            rgb = rgb >> 0; // ensure rgb to be a (signed) integer
-            this.setAllRGB(rgb);
-            this.show();
-        }
-
-        /**
          * Sets all NeoPixel to a given color (range 0-255 for r, g, b) in the buffer.
          * Call ``show()`` to make the changes visible.
          * @param rgb RGB color of the NeoPixels
@@ -383,7 +365,23 @@ namespace neopixel {
                 + Math.idiv(p * 480, 10000); /* rought approximation */
         }
 
-
+        /**
+         * Shows all NeoPixel in a given color (range 0-255 for r, g, b).
+         * @param rgb RGB color of the NeoPixels
+         */
+        //% blockId="neopixel_set_strip_color" 
+        //% block="%strip|show color %rgb"
+        //% strip.defl=strip
+        //% weight=85 
+        //% rgb.shadow="colorNumberPickerLarge"
+        //% parts="neopixel" 
+        //% advanced=true
+        //% group="Show"
+        showColor(rgb: number) {
+            rgb = rgb >> 0; // ensure rgb to be a (signed) integer
+            this.setAllRGB(rgb);
+            this.show();
+        }
 
         /**
          * Shows a rainbow pattern on all LEDs.
