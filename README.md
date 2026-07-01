@@ -1,10 +1,6 @@
-```package
-neopixel=github:PasAlt/pxt-neopixel-matrix-extension
-```
+# Extended NeoPixel driver
 
-# NeoPixel driver
-
-This is a rework of the [Microsoft Neopixel Extension](https://github.com/microsoft/pxt-neopixel). It provides a driver for various NeoPixel LED strips, see https://www.adafruit.com/category/168.
+This is a rework of the [Microsoft Neopixel Extension](https://github.com/microsoft/pxt-neopixel). It provides a driver for various NeoPixel LED strips and matrices, e.g. https://www.adafruit.com/category/168.
 
 It provides mostly the same interface but 
 1. introduces a large color picker with 64 colors (instead of an enum selector),
