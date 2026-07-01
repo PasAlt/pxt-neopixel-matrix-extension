@@ -1,5 +1,5 @@
 {
-    let strip = neopixel.create(DigitalPin.P0, 24, NeoPixelMode.RGB);
+    let strip = neopixelExtended.create(DigitalPin.P0, 24, neopixelExtended.Format.RGB);
     strip.setPixelColor(0, 0xff0000)
     strip.setPixelColor(1, 0x00ff00)
     strip.setPixelColor(2, 0x0000ff)
@@ -73,7 +73,7 @@
         if (rotationMode) {
             strip.rotate();
         } else {
-            strip.setPixelColor(0, neopixel.rgb(x, y, -z));
+            strip.setPixelColor(0, neopixelExtended.rgb(x, y, -z));
             strip.shift(1);
         }
         strip.show();

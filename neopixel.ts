@@ -1,20 +1,20 @@
 /**
- * Different modes for RGB or RGB+W NeoPixel strips
- */
-enum NeoPixelMode {
-    //% block="RGB (GRB format)"
-    RGB = 1,
-    //% block="RGB+W"
-    RGBW = 2,
-    //% block="RGB (RGB format)"
-    RGB_RGB = 3
-}
-
-/**
  * Functions to operate NeoPixel strips.
  */
 //% weight=1000 color=#ffa500 icon="\uf110"
-namespace neopixel {
+namespace neopixelExtended {
+    /**
+    * Different formats for RGB or RGB+W NeoPixel strips
+    */
+    export enum Format {
+        //% block="RGB (GRB format)"
+        RGB = 1,
+        //% block="RGB+W"
+        RGBW = 2,
+        //% block="RGB (RGB format)"
+        RGB_RGB = 3
+    }
+
     /**
      * Create a new NeoPixel driver for `numleds` LEDs with 
      * brightness set to 128 (~50%).
@@ -28,14 +28,14 @@ namespace neopixel {
     //% trackArgs=0,2
     //% blockSetVariable=strip
     //% group="Initialization"
-    export function create(pin: DigitalPin, numleds: number, mode: NeoPixelMode): Strip {
+    export function create(pin: DigitalPin, numleds: number, format: neopixelExtended.Format): Strip {
         let strip = new Strip();
-        let stride = mode === NeoPixelMode.RGBW ? 4 : 3;
+        let stride = format === neopixelExtended.Format.RGBW ? 4 : 3;
         strip.buf = pins.createBuffer(numleds * stride);
         strip.start = 0;
         strip._length = numleds;
-        strip._matrixDirection = NeoPixelMatrixDirection.LeftTopToTheRight
-        strip._mode = mode || NeoPixelMode.RGB;
+        strip._matrixDirection = neopixelExtended.NeoPixelMatrixDirection.LeftTopToTheRight
+        strip._format = format || neopixelExtended.Format.RGB;
         strip._matrixWidth = 0;
         strip.setBrightness(128)
         strip.setPin(pin)
@@ -74,9 +74,9 @@ namespace neopixel {
         brightness: number;
         start: number; // start offset in LED strip
         _length: number; // number of LEDs
-        _mode: NeoPixelMode;
+        _format: neopixelExtended.Format;
         _matrixWidth: number; // number of leds in a matrix - if any
-        _matrixDirection: NeoPixelMatrixDirection
+        _matrixDirection: neopixelExtended.NeoPixelMatrixDirection
 
         /**
          * Send all the changes to the strip.
@@ -89,7 +89,7 @@ namespace neopixel {
         //% group="Show"
         show() {
             // only supported in beta
-            // ws2812b.setBufferMode(this.pin, this._mode);
+            // ws2812b.setBufferMode(this.pin, this._format);
             ws2812b.sendBuffer(this.buf, this.pin);
         }
 
@@ -116,7 +116,7 @@ namespace neopixel {
             strip.start = this.start + Math.clamp(0, this._length - 1, start);
             strip._length = Math.clamp(0, this._length - (strip.start - this.start), length);
             strip._matrixWidth = 0;
-            strip._mode = this._mode;
+            strip._format = this._format;
             return strip;
         }
 
@@ -211,7 +211,7 @@ namespace neopixel {
         //% advanced=true
         //% group="Colors"
         setPixelWhiteLED(position: number, white: number): void {
-            if (this._mode === NeoPixelMode.RGBW) {
+            if (this._format === neopixelExtended.Format.RGBW) {
                 this.setPixelW(position >> 0, white >> 0);
             }
         }
@@ -228,7 +228,7 @@ namespace neopixel {
         //% parts="neopixel"
         //% group="Manipulation"
         clear(): void {
-            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
+            const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
             this.buf.fill(0, this.start * stride, this._length * stride);
         }
 
@@ -271,7 +271,7 @@ namespace neopixel {
         //% advanced=true
         //% group="Colors"
         easeBrightness(): void {
-            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
+            const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
             const br = this.brightness;
             const buf = this.buf;
             const end = this.start + this._length;
@@ -305,7 +305,7 @@ namespace neopixel {
         //% group="Manipulation"
         shift(offset: number = 1): void {
             offset = offset >> 0;
-            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
+            const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
             this.buf.shift(-offset * stride, this.start * stride, this._length * stride)
         }
 
@@ -323,7 +323,7 @@ namespace neopixel {
         //% group="Manipulation"
         rotate(offset: number = 1): void {
             offset = offset >> 0;
-            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
+            const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
             this.buf.rotate(-offset * stride, this.start * stride, this._length * stride)
         }
 
@@ -352,7 +352,7 @@ namespace neopixel {
         //% advanced=true
         //% group="Variables"
         power(): number {
-            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
+            const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
             const end = this.start + this._length;
             let p = 0;
             for (let i = this.start; i < end; ++i) {
@@ -403,7 +403,7 @@ namespace neopixel {
             const saturation = 100;
             const luminance = 50;
             const steps = this._length;
-            const direction = HueInterpolationDirection.Clockwise;
+            const direction = neopixelExtended.HueInterpolationDirection.Clockwise;
 
             //hue
             const h1 = startHue;
@@ -413,9 +413,9 @@ namespace neopixel {
             const hDistCCW = ((h1 + 360) - h2) % 360;
             const hStepCCW = Math.idiv(-(hDistCCW * 100), steps);
             let hStep: number;
-            if (direction === HueInterpolationDirection.Clockwise) {
+            if (direction === neopixelExtended.HueInterpolationDirection.Clockwise) {
                 hStep = hStepCW;
-            } else if (direction === HueInterpolationDirection.CounterClockwise) {
+            } else if (direction === neopixelExtended.HueInterpolationDirection.CounterClockwise) {
                 hStep = hStepCCW;
             } else {
                 hStep = hDistCW < hDistCCW ? hStepCW : hStepCCW;
@@ -485,7 +485,7 @@ namespace neopixel {
                 for (let i = 0; i < n; ++i) {
                     if (i <= v) {
                         const b = Math.idiv(i * 255, n1);
-                        this.setPixelColor(i, neopixel.rgb(b, 0, 255 - b));
+                        this.setPixelColor(i, rgb(b, 0, 255 - b));
                     }
                     else this.setPixelColor(i, 0);
                 }
@@ -510,7 +510,7 @@ namespace neopixel {
         //% weight=0
         //% group="Matrix"
         // direction.shadow="neopixel_matrix_direction_selector"
-        setMatrixWiring(dir : NeoPixelMatrixDirection) {
+        setMatrixWiring(dir : neopixelExtended.NeoPixelMatrixDirection) {
             this._matrixDirection = dir
         }
 
@@ -558,33 +558,33 @@ namespace neopixel {
         }
 
         private adjustMatrixForDirection(rows : number[][]) : number[][] {
-            if (this._matrixDirection == NeoPixelMatrixDirection.LeftTopToTheBottom
-                || this._matrixDirection == NeoPixelMatrixDirection.RightBottomToTheTop) {
+            if (this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.LeftTopToTheBottom
+                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.RightBottomToTheTop) {
                 rows = this.rotateMatrixClockwise(rows)
             }
-            else if (this._matrixDirection == NeoPixelMatrixDirection.RightTopToTheBottom,
-                this._matrixDirection == NeoPixelMatrixDirection.LeftBottomToTheTop) {
+            else if (this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.RightTopToTheBottom,
+                this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.LeftBottomToTheTop) {
                 rows = this.rotateMatrixCounterClockwise(rows)
             }
 
-            if (this._matrixDirection == NeoPixelMatrixDirection.LeftBottomToTheRight
-                || this._matrixDirection == NeoPixelMatrixDirection.RightBottomToTheLeft
-                || this._matrixDirection == NeoPixelMatrixDirection.LeftBottomToTheTop
-                || this._matrixDirection == NeoPixelMatrixDirection.RightBottomToTheTop
+            if (this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.LeftBottomToTheRight
+                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.RightBottomToTheLeft
+                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.LeftBottomToTheTop
+                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.RightBottomToTheTop
             ) {
                 rows.reverse()
             }
 
-            if (this._matrixDirection == NeoPixelMatrixDirection.LeftTopToTheRight
-                || this._matrixDirection == NeoPixelMatrixDirection.LeftBottomToTheRight
-                || this._matrixDirection == NeoPixelMatrixDirection.RightTopToTheBottom
-                || this._matrixDirection == NeoPixelMatrixDirection.RightBottomToTheTop) {
+            if (this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.LeftTopToTheRight
+                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.LeftBottomToTheRight
+                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.RightTopToTheBottom
+                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.RightBottomToTheTop) {
                 this.reverseOddRows(rows)
             }
-            else if (this._matrixDirection == NeoPixelMatrixDirection.RightTopToTheLeft
-                || this._matrixDirection == NeoPixelMatrixDirection.RightBottomToTheLeft
-                || this._matrixDirection == NeoPixelMatrixDirection.LeftTopToTheBottom
-                || this._matrixDirection == NeoPixelMatrixDirection.LeftBottomToTheTop) {
+            else if (this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.RightTopToTheLeft
+                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.RightBottomToTheLeft
+                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.LeftTopToTheBottom
+                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.LeftBottomToTheTop) {
                 this.reverseEvenRows(rows)
             }
 
@@ -665,7 +665,7 @@ namespace neopixel {
         }
 
         private setBufferRGB(offset: number, red: number, green: number, blue: number): void {
-            if (this._mode === NeoPixelMode.RGB_RGB) {
+            if (this._format === neopixelExtended.Format.RGB_RGB) {
                 this.buf[offset + 0] = red;
                 this.buf[offset + 1] = green;
             } else {
@@ -687,14 +687,14 @@ namespace neopixel {
                 blue = (blue * br) >> 8;
             }
             const end = this.start + this._length;
-            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
+            const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
             for (let i = this.start; i < end; ++i) {
                 this.setBufferRGB(i * stride, red, green, blue)
             }
         }
 
         private setAllW(white: number) {
-            if (this._mode !== NeoPixelMode.RGBW)
+            if (this._format !== neopixelExtended.Format.RGBW)
                 return;
 
             let br = this.brightness;
@@ -714,7 +714,7 @@ namespace neopixel {
                 || pixeloffset >= this._length)
                 return;
 
-            let stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
+            let stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
             pixeloffset = (pixeloffset + this.start) * stride;
 
             let red = unpackR(rgb);
@@ -731,7 +731,7 @@ namespace neopixel {
         }
         
         private setPixelW(pixeloffset: number, white: number): void {
-            if (this._mode !== NeoPixelMode.RGBW)
+            if (this._format !== neopixelExtended.Format.RGBW)
                 return;
 
             if (pixeloffset < 0
