@@ -656,7 +656,7 @@ namespace neopixelExtended {
             v7: number[],
             v8: number[]) {
             if (this.length() != 64) {
-                throw "Matrix is not 8x8. You need to set matrix to 25 NeoPixels. Please check your initialization!"
+                throw "Matrix is not 8x8. You need to set matrix to 64 NeoPixels. Please check your initialization!"
             }
             this.setMatrixWidth(8)
             let rows = [v1, v2, v3, v4, v5, v6, v7, v8]
