@@ -1,13 +1,17 @@
-# Extended NeoPixel driver
+```package
+neopixel=github:PasAlt/pxt-neopixel-matrix-extension
+```
 
-This is a rework of the [Microsoft Neopixel Extension](https://github.com/microsoft/pxt-neopixel). It provides a driver for various NeoPixel LED strips and matrices, e.g. https://www.adafruit.com/category/168.
+# NeoPixel driver
+
+This is a rework of the [Microsoft Neopixel Extension](https://github.com/microsoft/pxt-neopixel). It provides a driver for various NeoPixel LED strips, see https://www.adafruit.com/category/168.
 
 It provides mostly the same interface but 
 1. introduces a large color picker with 64 colors (instead of an enum selector),
-2. rearranges blocks and introducing groups to make them (hopefully) more intutive to use and find, and
+2. rearranges blocks and introducing groups to make them (hopefully) more intutive to use, and
 3. adds support for 5x5 and 8x8 neopixel matrices
 
-Unfortunately many translations got lost during this rework. Help to reinstate the translations or fix mistakes (my native language is german...) is very welcome!
+Unfortunately many translations got lost during this rework. Help to reinstate the translations or fix english errors (my native language is german...) is very welcome!
 
 NeoPixels consist of programmable RGB LEDs (WS2812B), every one of them controlled
 separately.  
