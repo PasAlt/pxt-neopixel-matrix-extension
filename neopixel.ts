@@ -34,7 +34,7 @@ namespace neopixelExtended {
         strip.buf = pins.createBuffer(numleds * stride);
         strip.start = 0;
         strip._length = numleds;
-        strip._matrixDirection = neopixelExtended.NeoPixelMatrixDirection.LeftTopToTheRight
+        strip._matrixDirection = neopixelExtended.MatrixDirection.LeftTopToTheRight
         strip._format = format || neopixelExtended.Format.RGB;
         strip._matrixWidth = 0;
         strip.setBrightness(128)
@@ -45,22 +45,22 @@ namespace neopixelExtended {
     /*
     * Different matrix wiring directions
     */
-    export enum NeoPixelMatrixDirection {
-        //% block="Top right to the left"
+    export enum MatrixDirection {
+        //% block="top right to the left"
         RightTopToTheLeft,
-        //% block="Top left to the right"
+        //% block="top left to the right"
         LeftTopToTheRight,
-        //% block="Bottom left to the right"
+        //% block="bottom left to the right"
         LeftBottomToTheRight,
-        //% block="Bottom right to the left"
+        //% block="bottom right to the left"
         RightBottomToTheLeft,
-        //% block="Top left to the bottom"
+        //% block="top left to the bottom"
         LeftTopToTheBottom,
-        //% block="Top right to the bottom"
+        //% block="top right to the bottom"
         RightTopToTheBottom,
-        //% block="Bottom right to the top"
+        //% block="bottom right to the top"
         RightBottomToTheTop,
-        //% block="Bottom left to the top"
+        //% block="bottom left to the top"
         LeftBottomToTheTop
     }
 
@@ -76,7 +76,7 @@ namespace neopixelExtended {
         _length: number; // number of LEDs
         _format: neopixelExtended.Format;
         _matrixWidth: number; // number of leds in a matrix - if any
-        _matrixDirection: neopixelExtended.NeoPixelMatrixDirection
+        _matrixDirection: neopixelExtended.MatrixDirection
 
         /**
          * Send all the changes to the strip.
@@ -510,7 +510,7 @@ namespace neopixelExtended {
         //% weight=0
         //% group="Matrix"
         // direction.shadow="neopixel_matrix_direction_selector"
-        setMatrixWiring(dir : neopixelExtended.NeoPixelMatrixDirection) {
+        setMatrixWiring(dir : neopixelExtended.MatrixDirection) {
             this._matrixDirection = dir
         }
 
@@ -558,33 +558,33 @@ namespace neopixelExtended {
         }
 
         private adjustMatrixForDirection(rows : number[][]) : number[][] {
-            if (this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.LeftTopToTheBottom
-                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.RightBottomToTheTop) {
+            if (this._matrixDirection == neopixelExtended.MatrixDirection.LeftTopToTheBottom
+                || this._matrixDirection == neopixelExtended.MatrixDirection.RightBottomToTheTop) {
                 rows = this.rotateMatrixClockwise(rows)
             }
-            else if (this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.RightTopToTheBottom,
-                this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.LeftBottomToTheTop) {
+            else if (this._matrixDirection == neopixelExtended.MatrixDirection.RightTopToTheBottom,
+                this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheTop) {
                 rows = this.rotateMatrixCounterClockwise(rows)
             }
 
-            if (this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.LeftBottomToTheRight
-                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.RightBottomToTheLeft
-                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.LeftBottomToTheTop
-                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.RightBottomToTheTop
+            if (this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheRight
+                || this._matrixDirection == neopixelExtended.MatrixDirection.RightBottomToTheLeft
+                || this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheTop
+                || this._matrixDirection == neopixelExtended.MatrixDirection.RightBottomToTheTop
             ) {
                 rows.reverse()
             }
 
-            if (this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.LeftTopToTheRight
-                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.LeftBottomToTheRight
-                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.RightTopToTheBottom
-                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.RightBottomToTheTop) {
+            if (this._matrixDirection == neopixelExtended.MatrixDirection.LeftTopToTheRight
+                || this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheRight
+                || this._matrixDirection == neopixelExtended.MatrixDirection.RightTopToTheBottom
+                || this._matrixDirection == neopixelExtended.MatrixDirection.RightBottomToTheTop) {
                 this.reverseOddRows(rows)
             }
-            else if (this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.RightTopToTheLeft
-                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.RightBottomToTheLeft
-                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.LeftTopToTheBottom
-                || this._matrixDirection == neopixelExtended.NeoPixelMatrixDirection.LeftBottomToTheTop) {
+            else if (this._matrixDirection == neopixelExtended.MatrixDirection.RightTopToTheLeft
+                || this._matrixDirection == neopixelExtended.MatrixDirection.RightBottomToTheLeft
+                || this._matrixDirection == neopixelExtended.MatrixDirection.LeftTopToTheBottom
+                || this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheTop) {
                 this.reverseEvenRows(rows)
             }
 
