@@ -21,7 +21,7 @@ namespace neopixelExtended {
      * @param pin the pin where the neopixel is connected.
      * @param numleds number of leds in the strip, eg: 24,30,60,64
      */
-    //% blockId="neopixel_create" 
+    //% blockId="neopixel_extended_create" 
     //% block="NeoPixel at pin %pin|with %numleds|leds as %mode"
     //% weight=1000
     //% parts="neopixel"
@@ -81,7 +81,7 @@ namespace neopixelExtended {
         /**
          * Send all the changes to the strip.
          */
-        //% blockId="neopixel_show" 
+        //% blockId="neopixel_extended_show" 
         //% block="%strip|show"
         //% strip.defl=strip
         //% weight=10
@@ -99,7 +99,7 @@ namespace neopixelExtended {
          * @param length number of NeoPixels in the range. eg: 4
          */
         //% weight=89
-        //% blockId="neopixel_range" 
+        //% blockId="neopixel_extended_range" 
         //% block="%strip|range from %start|with %length|leds"
         //% strip.defl=strip
         //% parts="neopixel" 
@@ -125,11 +125,11 @@ namespace neopixelExtended {
          * Call ``show()`` to make the changes visible.
          * @param rgb RGB color of the NeoPixels
          */
-        //% blockId="neopixel_set_strip_color_real" 
+        //% blockId="neopixel_extended_set_strip_color_real" 
         //% block="%strip|set color %rgb"
         //% strip.defl=strip
         //% weight=85
-        //% rgb.shadow="colorNumberPickerLarge"
+        //% rgb.shadow="neopixel_extended_colornumberpickerlarge"
         //% parts="neopixel"
         //% group="Colors"
         setColor(rgb: number) {
@@ -146,11 +146,11 @@ namespace neopixelExtended {
          * @param position position of the NeoPixel in the strip
          * @param rgb RGB color of the LED
          */
-        //% blockId="neopixel_set_pixel_color" 
+        //% blockId="neopixel_extended_set_pixel_color" 
         //% block="%strip|set pixel color at %position|to %rgb"
         //% strip.defl=strip
         //% weight=80
-        //% rgb.shadow="colorNumberPickerLarge"
+        //% rgb.shadow="neopixel_extended_colornumberpickerlarge"
         //% parts="neopixel" 
         //% group="Colors"
         setPixelColor(position: number, rgb: number): void {
@@ -161,7 +161,7 @@ namespace neopixelExtended {
          * Sets the number of pixels in a matrix shaped strip
          * @param width number of pixels in a row
          */
-        //% blockId=neopixel_set_matrix_width 
+        //% blockId=neopixel_extended_set_matrix_width 
         //% block="%strip|set matrix width %width"
         //% strip.defl=strip
         //% weight=5
@@ -179,12 +179,12 @@ namespace neopixelExtended {
          * @param y horizontal position
          * @param rgb RGB color of the LED
          */
-        //% blockId="neopixel_set_matrix_color" 
+        //% blockId="neopixel_extended_set_matrix_color" 
         //% block="%strip|set matrix color at x %x|y %y|to %rgb"
         //% strip.defl=strip
         //% weight=4
         //% parts="neopixel" 
-        //% rgb.shadow="colorNumberPickerLarge"
+        //% rgb.shadow="neopixel_extended_colornumberpickerlarge"
         //% advanced=true
         //% group="Matrix"
         setMatrixColor(x: number, y: number, rgb: number) {
@@ -203,7 +203,7 @@ namespace neopixelExtended {
          * @param position position of the LED in the strip
          * @param white brightness of the white LED
          */
-        //% blockId="neopixel_set_pixel_white" 
+        //% blockId="neopixel_extended_set_pixel_white" 
         //% block="%strip|set pixel white LED at %position|to %white"
         //% strip.defl=strip
         //% weight=80
@@ -221,7 +221,7 @@ namespace neopixelExtended {
          * 
          * Call ``show`` to make the changes visible.
          */
-        //% blockId="neopixel_clear" 
+        //% blockId="neopixel_extended_clear" 
         //% block="%strip|clear"
         //% strip.defl=strip
         //% weight=76
@@ -235,7 +235,7 @@ namespace neopixelExtended {
         /**
          * Gets the number of NeoPixels declared on the strip
          */
-        //% blockId="neopixel_length" 
+        //% blockId="neopixel_extended_length" 
         //% block="%strip|length"
         //% strip.defl=strip
         //% weight=60 
@@ -249,7 +249,7 @@ namespace neopixelExtended {
          * Set the brightness of the strip. This flag only applies to future operation.
          * @param brightness a measure of NeoPixel brightness in 0-255. eg: 255
          */
-        //% blockId="neopixel_set_brightness" 
+        //% blockId="neopixel_extended_set_brightness" 
         //% block="%strip|set brightness %brightness"
         //% strip.defl=strip
         //% weight=59
@@ -263,7 +263,7 @@ namespace neopixelExtended {
         /**
          * Apply brightness to current colors using a quadratic easing function.
          **/
-        //% blockId="neopixel_each_brightness" 
+        //% blockId="neopixel_extended_each_brightness" 
         //% block="%strip|ease brightness" 
         //% strip.defl=strip
         //% weight=58
@@ -297,7 +297,7 @@ namespace neopixelExtended {
          * Call ``show`` to make the changes visible.
          * @param offset number of NeoPixel to shift forward, eg: 1
          */
-        //% blockId="neopixel_shift" 
+        //% blockId="neopixel_extended_shift" 
         //% block="%strip|shift pixels by %offset" 
         //% strip.defl=strip
         //% weight=40
@@ -315,7 +315,7 @@ namespace neopixelExtended {
          * Call ``show`` to make the changes visible.
          * @param offset number of pixels to rotate forward, eg: 1
          */
-        //% blockId="neopixel_rotate" 
+        //% blockId="neopixel_extended_rotate" 
         //% block="%strip|rotate pixels by %offset" 
         //% strip.defl=strip
         //% weight=39
@@ -346,7 +346,7 @@ namespace neopixelExtended {
          * Estimates the electrical current (mA) consumed by the current light configuration.
          */
         //% weight=9 
-        //% blockId=neopixel_power 
+        //% blockId=neopixel_extended_power 
         //% block="%strip|power (mA)"
         //% strip.defl=strip
         //% advanced=true
@@ -369,11 +369,11 @@ namespace neopixelExtended {
          * Shows all NeoPixel in a given color (range 0-255 for r, g, b).
          * @param rgb RGB color of the NeoPixels
          */
-        //% blockId="neopixel_set_strip_color" 
+        //% blockId="neopixel_extended_set_strip_color" 
         //% block="%strip|show color %rgb"
         //% strip.defl=strip
         //% weight=85 
-        //% rgb.shadow="colorNumberPickerLarge"
+        //% rgb.shadow="neopixel_extended_colornumberpickerlarge"
         //% parts="neopixel" 
         //% advanced=true
         //% group="Show"
@@ -388,7 +388,7 @@ namespace neopixelExtended {
          * @param startHue the start hue value for the rainbow, eg: 1
          * @param endHue the end hue value for the rainbow, eg: 360
          */
-        //% blockId="neopixel_set_strip_rainbow" 
+        //% blockId="neopixel_extended_set_strip_rainbow" 
         //% block="%strip|show rainbow from %startHue|to %endHue"
         //% strip.defl=strip
         //% weight=85 
@@ -459,7 +459,7 @@ namespace neopixelExtended {
          * @param high maximum value, eg: 255
          */
         //% weight=84
-        //% blockId=neopixel_show_bar_graph 
+        //% blockId=neopixel_extended_show_bar_graph 
         //% block="%strip|show bar graph of %value|up to %high"
         //% strip.defl=strip
         //% parts="neopixel" 
@@ -509,7 +509,7 @@ namespace neopixelExtended {
         //% parts="neopixel"
         //% weight=0
         //% group="Matrix"
-        // direction.shadow="neopixel_matrix_direction_selector"
+        // direction.shadow="neopixel_extended_matrix_direction_selector"
         setMatrixWiring(dir : neopixelExtended.MatrixDirection) {
             this._matrixDirection = dir
         }
@@ -523,11 +523,11 @@ namespace neopixelExtended {
          * @param v1-v5 matrix rows as number[]
          */
         //% block="set NeoPixel 5x5 %strip | %v1 %v2 %v3 %v4 %v5"
-        //% v1.shadow="rowOf5"
-        //% v2.shadow="rowOf5"
-        //% v3.shadow="rowOf5"
-        //% v4.shadow="rowOf5"
-        //% v5.shadow="rowOf5"
+        //% v1.shadow="neopixel_extended_rowof5"
+        //% v2.shadow="neopixel_extended_rowof5"
+        //% v3.shadow="neopixel_extended_rowof5"
+        //% v4.shadow="neopixel_extended_rowof5"
+        //% v5.shadow="neopixel_extended_rowof5"
         //% inlineInputMode=external
         //% strip.defl=strip
         //% parts="neopixel"
@@ -634,14 +634,14 @@ namespace neopixelExtended {
          * the changes visible.
          */
         //% block="set NeoPixel 8x8 %strip | %v1 %v2 %v3 %v4 %v5 %v6 %v7 %v8"
-        //% v1.shadow="rowOf8"
-        //% v2.shadow="rowOf8"
-        //% v3.shadow="rowOf8"
-        //% v4.shadow="rowOf8"
-        //% v5.shadow="rowOf8"
-        //% v6.shadow="rowOf8"
-        //% v7.shadow="rowOf8"
-        //% v8.shadow="rowOf8"
+        //% v1.shadow="neopixel_extended_rowof8"
+        //% v2.shadow="neopixel_extended_rowof8"
+        //% v3.shadow="neopixel_extended_rowof8"
+        //% v4.shadow="neopixel_extended_rowof8"
+        //% v5.shadow="neopixel_extended_rowof8"
+        //% v6.shadow="neopixel_extended_rowof8"
+        //% v7.shadow="neopixel_extended_rowof8"
+        //% v8.shadow="neopixel_extended_rowof8"
         //% inlineInputMode=external
         //% strip.defl=strip
         //% parts="neopixel"
@@ -756,7 +756,7 @@ namespace neopixelExtended {
      * of 64 colors.
      * @param color color
      */
-    //% blockId="colorNumberPickerLarge" 
+    //% blockId="neopixel_extended_colornumberpickerlarge" 
     //% block="%value"
     //% group="Colors"
     //% weight=1
@@ -776,7 +776,7 @@ namespace neopixelExtended {
      * @param blue value of the blue channel between 0 and 255. eg: 255
      */
     //% weight=1
-    //% blockId="neopixel_rgb" 
+    //% blockId="neopixel_extended_rgb" 
     //% block="red %red|green %green|blue %blue"
     //% group="Colors"
     export function rgb(red: number, green: number, blue: number): number {
@@ -789,7 +789,7 @@ namespace neopixelExtended {
      * @param s saturation from 0 to 99
      * @param l luminosity from 0 to 99
      */
-    //% blockId=neopixelHSL 
+    //% blockId="neopixel_extended_hsl" 
     //% block="hue %h|saturation %s|luminosity %l"
     //% advanced=true
     //% group="Colors"
@@ -836,15 +836,15 @@ namespace neopixelExtended {
     }
 
     //% block="%v1 %v2 %v3 %v4 %v5 %v6 %v7 %v8"
-    //% blockId="rowOf8"
-    //% v1.shadow="colorNumberPickerLarge"
-    //% v2.shadow="colorNumberPickerLarge"
-    //% v3.shadow="colorNumberPickerLarge"
-    //% v4.shadow="colorNumberPickerLarge"
-    //% v5.shadow="colorNumberPickerLarge"
-    //% v6.shadow="colorNumberPickerLarge"
-    //% v7.shadow="colorNumberPickerLarge"
-    //% v8.shadow="colorNumberPickerLarge"
+    //% blockId="neopixel_extended_rowof8"
+    //% v1.shadow="neopixel_extended_colornumberpickerlarge"
+    //% v2.shadow="neopixel_extended_colornumberpickerlarge"
+    //% v3.shadow="neopixel_extended_colornumberpickerlarge"
+    //% v4.shadow="neopixel_extended_colornumberpickerlarge"
+    //% v5.shadow="neopixel_extended_colornumberpickerlarge"
+    //% v6.shadow="neopixel_extended_colornumberpickerlarge"
+    //% v7.shadow="neopixel_extended_colornumberpickerlarge"
+    //% v8.shadow="neopixel_extended_colornumberpickerlarge"
     //% inlineInputMode=inline
     //% group="Matrix"
     //% weight=64
@@ -860,12 +860,12 @@ namespace neopixelExtended {
     }
 
     //% block="%v1 %v2 %v3 %v4 %v5"
-    //% blockId="rowOf5"
-    //% v1.shadow="colorNumberPickerLarge"
-    //% v2.shadow="colorNumberPickerLarge"
-    //% v3.shadow="colorNumberPickerLarge"
-    //% v4.shadow="colorNumberPickerLarge"
-    //% v5.shadow="colorNumberPickerLarge"
+    //% blockId="neopixel_extended_rowof5"
+    //% v1.shadow="neopixel_extended_colornumberpickerlarge"
+    //% v2.shadow="neopixel_extended_colornumberpickerlarge"
+    //% v3.shadow="neopixel_extended_colornumberpickerlarge"
+    //% v4.shadow="neopixel_extended_colornumberpickerlarge"
+    //% v5.shadow="neopixel_extended_colornumberpickerlarge"
     //% inlineInputMode=inline
     //% group="Matrix"
     //% weight=24
