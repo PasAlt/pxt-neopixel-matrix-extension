@@ -1,7 +1,7 @@
 /**
  * Functions to operate NeoPixel strips.
  */
-//% weight=1000 color=#3E7104 icon="\uf110"
+//% weight=1000 color=#3E7103 icon="\uf110"
 namespace neopixelExtended {
     /**
     * Different formats for RGB or RGB+W NeoPixel strips
