@@ -84,7 +84,7 @@ namespace neopixelExtended {
          */
         //% blockId="neopixel_extended_show" 
         //% block="%strip|show changes"
-        //% group="Show changes" changes"
+        //% group="Show changes"
         //% weight=10
         //% strip.defl=strip
         show() {
