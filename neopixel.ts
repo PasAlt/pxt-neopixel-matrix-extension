@@ -20,7 +20,7 @@ namespace neopixelExtended {
      * brightness set to 128 (~50%).
      * @param pin the pin where the neopixel is connected.
      * @param numNeoPixels number of NeoPixels in the strip
-     * @param format required data format sent to the NeoPixel 
+     * @param format data format used to sent data to the NeoPixels
      */
     //% blockId="neopixel_extended_create" 
     //% block="NeoPixel at pin %pin|with %numNeoPixels|leds as %format"
@@ -83,8 +83,8 @@ namespace neopixelExtended {
          * Sends all the changes to the NeoPixel strip.
          */
         //% blockId="neopixel_extended_show" 
-        //% block="%strip|show"
-        //% group="Show"
+        //% block="%strip|show changes"
+        //% group="Show changes" changes"
         //% weight=10
         //% strip.defl=strip
         show() {
@@ -96,7 +96,7 @@ namespace neopixelExtended {
         /**
          * Creates a range of NeoPixels.
          * @param start offset in the NeoPixel strip to start the range
-         * @param length number of NeoPixels in the range. eg: 4
+         * @param length number of NeoPixels in the range
          */
         //% blockId="neopixel_extended_range" 
         //% block="%strip|range from %start|with %length|leds"
@@ -120,13 +120,13 @@ namespace neopixelExtended {
         }
 
         /**
-         * Sets all NeoPixel to a given color (range 0-255 for r, g, b) in the buffer.
+         * Sets all NeoPixel to a given color in the buffer.
          * Call ``show()`` to make the changes visible.
          * @param rgb RGB color of the NeoPixels
          */
         //% blockId="neopixel_extended_set_strip_color_real" 
         //% block="%strip|set color %rgb"
-        //% group="Colors"
+        //% group="Set colors in buffer"
         //% weight=85
         //% strip.defl=strip
         //% rgb.shadow="neopixel_extended_colornumberpickerlarge"
@@ -136,7 +136,7 @@ namespace neopixelExtended {
         }
 
         /**
-         * Sets NeoPixel at the given position to a given color (range 0-255 for r, g, b) in the buffer.
+         * Sets NeoPixel at the given position to a given color in the buffer.
          * Does leave all the other NeoPixels as they were.
          * Call ``show()`` to make the changes visible.
          * @param position position of the NeoPixel in the strip
@@ -147,18 +147,20 @@ namespace neopixelExtended {
         //% strip.defl=strip
         //% weight=80
         //% rgb.shadow="neopixel_extended_colornumberpickerlarge"
-        //% group="Colors"
+        //% group="Set colors in buffer"
         setPixelColor(position: number, rgb: number): void {
             this.setPixelRGB(position >> 0, rgb >> 0);
         }
 
         /**
-         * Sets the number of pixels in a matrix shaped strip
+         * Sets the vertical number of pixels (width) in a matrix shaped strip
+         * This is used in ``setMatrixColor()`` to calculate the correct position.
          * @param width number of pixels in a row
          */
         //% blockId=neopixel_extended_set_matrix_width 
         //% block="%strip|set matrix width %width"
         //% strip.defl=strip
+        //% width.defl=5
         //% weight=5
         //% advanced=true
         //% group="Matrix"
@@ -167,11 +169,12 @@ namespace neopixelExtended {
         }
 
         /**
-         * Sets NeoPixel to a given color (range 0-255 for r, g, b) in a matrix shaped strip
+         * Sets NeoPixel to a given color in a matrix shaped strip
+         * Make sure you have set the right width with ``setMatrixWidth()``
          * Call ``show`` to make the changes visible.
-         * @param x horizontal position
+         * @param x vertical position
          * @param y horizontal position
-         * @param rgb RGB color of the LED
+         * @param rgb RGB color of the NeoPixel
          */
         //% blockId="neopixel_extended_set_matrix_color" 
         //% block="%strip|set matrix color at x %x|y %y|to %rgb"
@@ -201,7 +204,7 @@ namespace neopixelExtended {
         //% strip.defl=strip
         //% weight=80
         //% advanced=true
-        //% group="Colors"
+        //% group="Set colors in buffer"
         setPixelWhiteLED(position: number, white: number): void {
             if (this._format === neopixelExtended.Format.RGBW) {
                 this.setPixelW(position >> 0, white >> 0);
@@ -209,42 +212,43 @@ namespace neopixelExtended {
         }
 
         /**
-         * Turns off all NeoPixels.
+         * Clears all NeoPixel colors in the buffer.
          * Call ``show`` to make the changes visible.
          */
         //% blockId="neopixel_extended_clear" 
-        //% block="%strip|clear"
+        //% block="%strip|clear all colors"
         //% strip.defl=strip
         //% weight=76
-        //% group="Manipulation"
+        //% group="Set colors in buffer"
         clear(): void {
             const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
             this.buf.fill(0, this.start * stride, this._length * stride);
         }
 
         /**
-         * Gets the number of NeoPixels declared on the strip
+         * Gets the number of NeoPixels declared for the strip
          */
         //% blockId="neopixel_extended_length" 
         //% block="%strip|length"
         //% strip.defl=strip
         //% weight=60 
         //% advanced=true
-        //% group="Initialization"
+        //% group="Values"
         length() {
             return this._length;
         }
 
         /**
-         * Sets the brightness of the strip. This flag only applies to future operation.
-         * @param brightness a measure of NeoPixel brightness in 0-255. eg: 255
+         * Sets the brightness of the strip. This only applies to future operations.
+         * @param brightness a measure of NeoPixel brightness in 0-255.
          */
         //% blockId="neopixel_extended_set_brightness" 
         //% block="%strip|set brightness %brightness"
         //% strip.defl=strip
+        //% brightness.defl=128
         //% weight=59
         //% advanced=true
-        //% group="Colors"
+        //% group="Set colors in buffer"
         setBrightness(brightness: number): void {
             this.brightness = brightness & 0xff;
         }
@@ -257,7 +261,7 @@ namespace neopixelExtended {
         //% strip.defl=strip
         //% weight=58
         //% advanced=true
-        //% group="Colors"
+        //% group="Set colors in buffer"
         easeBrightness(): void {
             const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
             const br = this.brightness;
@@ -282,13 +286,14 @@ namespace neopixelExtended {
         /**
          * Shifts NeoPixel colors stored in buffer forward. Clear with zeros.
          * Call ``show`` to make the changes visible.
-         * @param offset number of NeoPixel to shift forward, eg: 1
+         * @param offset number of NeoPixel to shift forward
          */
         //% blockId="neopixel_extended_shift" 
         //% block="%strip|shift pixels by %offset" 
         //% strip.defl=strip
+        //% offset.defl=1
         //% weight=40
-        //% group="Manipulation"
+        //% group="Manipulate colors in buffer"
         shift(offset: number = 1): void {
             offset = offset >> 0;
             const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
@@ -298,13 +303,14 @@ namespace neopixelExtended {
         /**
          * Rotates NeoPixel colors stored in buffer forward.
          * Call ``show`` to make the changes visible.
-         * @param offset number of pixels to rotate forward, eg: 1
+         * @param offset number of pixels to rotate forward
          */
         //% blockId="neopixel_extended_rotate" 
         //% block="%strip|rotate pixels by %offset" 
         //% strip.defl=strip
+        //% offset.defl=1
         //% weight=39
-        //% group="Manipulation"
+        //% group="Manipulate colors in buffer"
         rotate(offset: number = 1): void {
             offset = offset >> 0;
             const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
@@ -316,6 +322,7 @@ namespace neopixelExtended {
          * @param pin pin to connect to
          */
         //% weight=10
+        //% pin.defl=DigitalPin.P0
         //% advanced=true
         //% group="Initialization"
         setPin(pin: DigitalPin): void {
@@ -332,7 +339,7 @@ namespace neopixelExtended {
         //% block="%strip|power (mA)"
         //% strip.defl=strip
         //% advanced=true
-        //% group="Variables"
+        //% group="Values"
         power(): number {
             const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
             const end = this.start + this._length;
@@ -348,7 +355,7 @@ namespace neopixelExtended {
         }
 
         /**
-         * Shows all NeoPixel in a given color (range 0-255 for r, g, b).
+         * Shows all NeoPixel in a given color.
          * @param rgb RGB color of the NeoPixels
          */
         //% blockId="neopixel_extended_set_strip_color" 
@@ -357,7 +364,7 @@ namespace neopixelExtended {
         //% weight=85 
         //% rgb.shadow="neopixel_extended_colornumberpickerlarge"
         //% advanced=true
-        //% group="Show"
+        //% group="Show changes" changes"
         showColor(rgb: number) {
             rgb = rgb >> 0; // ensure rgb to be a (signed) integer
             this.setAllRGB(rgb);
@@ -365,16 +372,18 @@ namespace neopixelExtended {
         }
 
         /**
-         * Shows a rainbow pattern on all LEDs.
-         * @param startHue the start hue value for the rainbow, eg: 1
-         * @param endHue the end hue value for the rainbow, eg: 360
+         * Shows a rainbow pattern on all NeoPixels.
+         * @param startHue the start hue value for the rainbow from 0 to 360.
+         * @param endHue the end hue value for the rainbow from 0 to 360.
          */
         //% blockId="neopixel_extended_set_strip_rainbow" 
         //% block="%strip|show rainbow from %startHue|to %endHue"
         //% strip.defl=strip
+        //% startHue.defl=1
+        //% endHue.defl=360
         //% weight=85 
         //% advanced=true
-        //% group="Show"
+        //% group="Show changes" changes"
         showRainbow(startHue: number = 1, endHue: number = 360) {
             if (this._length <= 0) return;
 
@@ -435,16 +444,18 @@ namespace neopixelExtended {
         /**
          * Displays a vertical bar graph based on the `value` and `high` value.
          * If `high` is 0, the chart gets adjusted automatically.
-         * @param value current value to plot
-         * @param high maximum value, eg: 255
+         * @param value current value to plot. 
+         * @param high maximum value. Default is 10.
          */
         //% weight=84
         //% blockId=neopixel_extended_show_bar_graph 
         //% block="%strip|show bar graph of %value|up to %high"
         //% strip.defl=strip
+        //% value.defl=5
+        //% high.defl=10
         //% advanced=true
-        //% group="Show"
-        showBarGraph(value: number, high: number): void {
+        //% group="Show changes"
+        showBarGraph(value: number, high: number = 10): void {
             if (high <= 0) {
                 this.clear();
                 this.setPixelColor(0, 0xFFFF00);
@@ -556,7 +567,7 @@ namespace neopixelExtended {
         /**
         * Sets the direction how the matrix is wired on the
         * board.
-        * This does only affects future events. You will have to reset the colors of the matrix to see its effect.
+        * This only applies to future operations. You will have to reset the colors of the matrix to see its effect.
         * It always expects the wiring to be
         * arranged in "snake" format e.g.
         * ---->
@@ -566,6 +577,7 @@ namespace neopixelExtended {
         */
         //% block="%strip set NeoPixel matrix wiring to %dir"
         //% strip.defl=strip
+        //% dir.defl=MatrixDirection.LeftTopToTheRight
         //% weight=0
         //% group="Matrix"
         // direction.shadow="neopixel_extended_matrix_direction_selector"
@@ -744,11 +756,11 @@ namespace neopixelExtended {
      */
     //% blockId="neopixel_extended_colornumberpickerlarge" 
     //% block="%value"
-    //% group="Colors"
+    //% group="Set colors in buffer"
     //% weight=1
     //% shim=TD_ID colorSecondary="#FFFFFF"
     //% value.fieldEditor="colornumber" value.fieldOptions.decompileLiterals=true
-    //% value.defl='0xff0000'
+    //% value.defl='0x888888'
     //% value.fieldOptions.colours='["#FFFFFF", "#FFF1E6", "#FFE4B5", "#FFD700", "#FFA500", "#FF8C00", "#FF4500", "#E60026", "#FFB6C1", "#FF69C1", "#FF1493", "#DA70D6", "#BA55D3", "#8A2BE2", "#4B0082", "#2E0854", "#E6E6FA", "#B0C4DE", "#87CEEB", "#00BFFF", "#1E90FF", "#0000CD", "#191970", "#000080", "#E0FFFF", "#AFEEEE", "#40E0D0", "#00CED1", "#008B8B", "#2E8B57", "#006400", "#003300", "#F0FFF0", "#ADFF2F", "#7FFF00", "#32CD32", "#228B22", "#9ACD32", "#6B8E23", "#556B2F", "#FFFFE0", "#FFFACD", "#FFEFD5", "#FFDAB9", "#D2B48C", "#A0522D", "#8B4513", "#1A1A1A", "#FAFAFA", "#E0E0E0", "#B8B8B8", "#909090", "#686868", "#404040", "#202020", "#000000", "#000000", "#0000FF", "#00FF00", "#00FFFF", "#FF0000", "#FF00FF", "#FFFF00", "#FFFFFF"]'
     //% value.fieldOptions.columns=8 value.fieldOptions.className='rgbColorPicker'
     export function colorNumberPicker(value: number) {
@@ -757,32 +769,38 @@ namespace neopixelExtended {
 
     /**
      * Converts red, green, blue channels into a RGB color
-     * @param red value of the red channel between 0 and 255. eg: 255
-     * @param green value of the green channel between 0 and 255. eg: 255
-     * @param blue value of the blue channel between 0 and 255. eg: 255
+     * @param red value of the red channel between 0 and 255
+     * @param green value of the green channel between 0 and 255
+     * @param blue value of the blue channel between 0 and 255
      */
     //% weight=1
     //% blockId="neopixel_extended_rgb" 
     //% block="red %red|green %green|blue %blue"
-    //% group="Colors"
+    //% red.defl=0
+    //% green.defl=255
+    //% blue.defl=255
+    //% group="Set colors in buffer"
     export function rgb(red: number, green: number, blue: number): number {
         return packRGB(red, green, blue);
     }
 
     /**
      * Converts a hue saturation luminosity value into a RGB color
-     * @param h hue from 0 to 360
-     * @param s saturation from 0 to 99
-     * @param l luminosity from 0 to 99
+     * @param hue hue from 0 to 360
+     * @param saturation saturation from 0 to 99
+     * @param luminosity luminosity from 0 to 99
      */
     //% blockId="neopixel_extended_hsl" 
     //% block="hue %h|saturation %s|luminosity %l"
+    //% hue.defl=180
+    //% saturation.defl=99
+    //% luminosity.defl=50
     //% advanced=true
-    //% group="Colors"
-    export function hsl(h: number, s: number, l: number): number {
-        h = Math.round(h);
-        s = Math.round(s);
-        l = Math.round(l);
+    //% group="Set colors in buffer"
+    export function hsl(hue: number, saturation: number, luminosity: number): number {
+        let h = Math.round(hue);
+        let s = Math.round(saturation);
+        let l = Math.round(luminosity);
 
         h = h % 360;
         s = Math.clamp(0, 99, s);
@@ -874,7 +892,6 @@ namespace neopixelExtended {
     //% inlineInputMode=inline
     //% group="Matrix"
     //% weight=4
-    
     export function rowOf5(rgb1: number,
         rgb2: number,
         rgb3: number,

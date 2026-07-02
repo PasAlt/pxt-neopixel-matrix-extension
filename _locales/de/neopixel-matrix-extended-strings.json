@@ -31,10 +31,10 @@
   "neopixel|block": "neopixel",
   "{id:category}Neopixel": "NeoPixel",
   "{id:category}Neopixel|block": "NeoPixel",
-  "{id:group}Colors": "Farben der NeoPixel setzen",
+  "{id:group}Set colors in buffer": "Farben der NeoPixel im Zwischenspeicher setzen",
   "{id:group}Initialization": "Vorbereitung und Initialisierung",
-  "{id:group}Manipulation": "Pixel verändern",
-  "{id:group}Matrix": "Farben als Matrix setzen",
-  "{id:group}Show": "Alle NeoPixel anzeigen",
-  "{id:group}Variables": "Informationen"
+  "{id:group}Manipulate colors in buffer": "Farben der NeoPixel im Zwischenspeicher vertauschen",
+  "{id:group}Matrix": "NeoPixel als Matrix bearbeiten",
+  "{id:group}Show changes": "Veränderung der NeoPixel anzeigen",
+  "{id:group}Values": "Informationen"
 }
