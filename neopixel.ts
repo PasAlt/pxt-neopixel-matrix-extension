@@ -86,7 +86,6 @@ namespace neopixelExtended {
         //% block="%strip|show"
         //% group="Show"
         //% weight=10
-        //% parts="neopixel"
         //% strip.defl=strip
         show() {
             // only supported in beta
@@ -105,7 +104,6 @@ namespace neopixelExtended {
         //% group="Initialization"
         //% advanced=true
         //% weight=89
-        //% parts="neopixel"
         //% strip.defl=strip
         range(start: number, length: number): Strip {
             start = start >> 0;
@@ -130,7 +128,6 @@ namespace neopixelExtended {
         //% block="%strip|set color %rgb"
         //% group="Colors"
         //% weight=85
-        //% parts="neopixel"
         //% strip.defl=strip
         //% rgb.shadow="neopixel_extended_colornumberpickerlarge"
         setColor(rgb: number) {
@@ -149,7 +146,6 @@ namespace neopixelExtended {
         //% block="%strip|set pixel color at %position|to %rgb"
         //% strip.defl=strip
         //% weight=80
-        //% parts = "neopixel"
         //% rgb.shadow="neopixel_extended_colornumberpickerlarge"
         //% group="Colors"
         setPixelColor(position: number, rgb: number): void {
@@ -164,7 +160,6 @@ namespace neopixelExtended {
         //% block="%strip|set matrix width %width"
         //% strip.defl=strip
         //% weight=5
-        //% parts = "neopixel"
         //% advanced=true
         //% group="Matrix"
         setMatrixWidth(width: number) {
@@ -182,7 +177,6 @@ namespace neopixelExtended {
         //% block="%strip|set matrix color at x %x|y %y|to %rgb"
         //% strip.defl=strip
         //% weight=4
-        //% parts = "neopixel"
         //% rgb.shadow="neopixel_extended_colornumberpickerlarge"
         //% advanced=true
         //% group="Matrix"
@@ -206,7 +200,6 @@ namespace neopixelExtended {
         //% block="%strip|set pixel white LED at %position|to %white"
         //% strip.defl=strip
         //% weight=80
-        //% parts = "neopixel"
         //% advanced=true
         //% group="Colors"
         setPixelWhiteLED(position: number, white: number): void {
@@ -223,7 +216,6 @@ namespace neopixelExtended {
         //% block="%strip|clear"
         //% strip.defl=strip
         //% weight=76
-        //% parts = "neopixel"
         //% group="Manipulation"
         clear(): void {
             const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
@@ -237,7 +229,6 @@ namespace neopixelExtended {
         //% block="%strip|length"
         //% strip.defl=strip
         //% weight=60 
-        //% parts = "neopixel"
         //% advanced=true
         //% group="Initialization"
         length() {
@@ -252,7 +243,6 @@ namespace neopixelExtended {
         //% block="%strip|set brightness %brightness"
         //% strip.defl=strip
         //% weight=59
-        //% parts = "neopixel"
         //% advanced=true
         //% group="Colors"
         setBrightness(brightness: number): void {
@@ -266,7 +256,6 @@ namespace neopixelExtended {
         //% block="%strip|ease brightness" 
         //% strip.defl=strip
         //% weight=58
-        //% parts = "neopixel"
         //% advanced=true
         //% group="Colors"
         easeBrightness(): void {
@@ -299,7 +288,6 @@ namespace neopixelExtended {
         //% block="%strip|shift pixels by %offset" 
         //% strip.defl=strip
         //% weight=40
-        //% parts = "neopixel"
         //% group="Manipulation"
         shift(offset: number = 1): void {
             offset = offset >> 0;
@@ -316,7 +304,6 @@ namespace neopixelExtended {
         //% block="%strip|rotate pixels by %offset" 
         //% strip.defl=strip
         //% weight=39
-        //% parts = "neopixel"
         //% group="Manipulation"
         rotate(offset: number = 1): void {
             offset = offset >> 0;
@@ -329,7 +316,6 @@ namespace neopixelExtended {
          * @param pin pin to connect to
          */
         //% weight=10
-        //% parts = "neopixel"
         //% advanced=true
         //% group="Initialization"
         setPin(pin: DigitalPin): void {
@@ -342,7 +328,6 @@ namespace neopixelExtended {
          * Estimates the electrical current (mA) consumed by the current light configuration.
          */
         //% weight=9 
-        //% parts = "neopixel"
         //% blockId=neopixel_extended_power 
         //% block="%strip|power (mA)"
         //% strip.defl=strip
@@ -370,7 +355,6 @@ namespace neopixelExtended {
         //% block="%strip|show color %rgb"
         //% strip.defl=strip
         //% weight=85 
-        //% parts = "neopixel"
         //% rgb.shadow="neopixel_extended_colornumberpickerlarge"
         //% advanced=true
         //% group="Show"
@@ -389,7 +373,6 @@ namespace neopixelExtended {
         //% block="%strip|show rainbow from %startHue|to %endHue"
         //% strip.defl=strip
         //% weight=85 
-        //% parts = "neopixel"
         //% advanced=true
         //% group="Show"
         showRainbow(startHue: number = 1, endHue: number = 360) {
@@ -456,7 +439,6 @@ namespace neopixelExtended {
          * @param high maximum value, eg: 255
          */
         //% weight=84
-        //% parts = "neopixel"
         //% blockId=neopixel_extended_show_bar_graph 
         //% block="%strip|show bar graph of %value|up to %high"
         //% strip.defl=strip
@@ -511,7 +493,6 @@ namespace neopixelExtended {
         //% inlineInputMode=external
         //% strip.defl=strip
         //% weight=5
-        //% parts = "neopixel"
         //% group="Matrix"
         setMatrix25(v1: number[],
             v2: number[],
@@ -555,7 +536,6 @@ namespace neopixelExtended {
         //% strip.defl=strip
         //% group="Matrix"
         //% weight=1
-        //% parts = "neopixel"
         setMatrix64(v1: number[],
             v2: number[],
             v3: number[],
@@ -586,7 +566,6 @@ namespace neopixelExtended {
         //% block="%strip set NeoPixel matrix wiring to %dir"
         //% strip.defl=strip
         //% weight=0
-        //% parts = "neopixel"
         //% group="Matrix"
         // direction.shadow="neopixel_extended_matrix_direction_selector"
         setMatrixWiring(dir: neopixelExtended.MatrixDirection) {
@@ -766,7 +745,6 @@ namespace neopixelExtended {
     //% block="%value"
     //% group="Colors"
     //% weight=1
-    //% parts = "neopixel"
     //% shim=TD_ID colorSecondary="#FFFFFF"
     //% value.fieldEditor="colornumber" value.fieldOptions.decompileLiterals=true
     //% value.defl='0xff0000'
@@ -783,7 +761,6 @@ namespace neopixelExtended {
      * @param blue value of the blue channel between 0 and 255. eg: 255
      */
     //% weight=1
-    //% parts = "neopixel"
     //% blockId="neopixel_extended_rgb" 
     //% block="red %red|green %green|blue %blue"
     //% group="Colors"
@@ -801,7 +778,6 @@ namespace neopixelExtended {
     //% block="hue %h|saturation %s|luminosity %l"
     //% advanced=true
     //% group="Colors"
-    //% parts = "neopixel"
     export function hsl(h: number, s: number, l: number): number {
         h = Math.round(h);
         s = Math.round(s);
@@ -867,7 +843,6 @@ namespace neopixelExtended {
     //% rgb8.shadow="neopixel_extended_colornumberpickerlarge"
     //% inlineInputMode=inline
     //% group="Matrix"
-    //% parts = "neopixel"
     //% weight=1
     export function rowOf8(rgb1: number,
         rgb2: number,
@@ -898,7 +873,7 @@ namespace neopixelExtended {
     //% inlineInputMode=inline
     //% group="Matrix"
     //% weight=4
-    //% parts = "neopixel"
+    
     export function rowOf5(rgb1: number,
         rgb2: number,
         rgb3: number,
