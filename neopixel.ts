@@ -556,6 +556,7 @@ namespace neopixelExtended {
         /**
         * Sets the direction how the matrix is wired on the
         * board.
+        * This does only affects future events. You will have to reset the colors of the matrix to see its effect.
         * It always expects the wiring to be
         * arranged in "snake" format e.g.
         * ---->
@@ -586,8 +587,8 @@ namespace neopixelExtended {
                 || this._matrixDirection == neopixelExtended.MatrixDirection.RightBottomToTheTop) {
                 rows = this.rotateMatrixClockwise(rows)
             }
-            else if (this._matrixDirection == neopixelExtended.MatrixDirection.RightTopToTheBottom,
-                this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheTop) {
+            else if (this._matrixDirection == neopixelExtended.MatrixDirection.RightTopToTheBottom
+                || this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheTop) {
                 rows = this.rotateMatrixCounterClockwise(rows)
             }
 
@@ -628,7 +629,7 @@ namespace neopixelExtended {
         private rotateMatrixCounterClockwise(rows: number[][]): number[][] {
             // from https://stackoverflow.com/a/58668351 (see comments)
             // Karan Ratan under CC-BY-SA 4.0
-            return rows.map((_, index) => {
+            return rows[0].map((_, index) => {
                 return rows.map(row => row[row.length - 1 - index])
             })
         }
