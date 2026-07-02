@@ -31,7 +31,7 @@
   "neopixelExtended.Strip.showRainbow|block": "%strip|zeige Regenbogen von Farbton %startHue|bis %endHue",
   "neopixelExtended.Strip.show|block": "%strip|Änderungen anzeigen",
   "neopixelExtended.colorNumberPicker|block": "%value",
-  "neopixelExtended.create|block": "Erstelle Treiber an Pin %pin|mit %numleds|NeoPixeln und Modus %mode",
+  "neopixelExtended.create|block": "Erstelle Treiber an Pin %pin|mit %numNeoPixel| NeoPixeln und dem Format %format",
   "neopixelExtended.hsl|block": "Farbwert %h|Sättigung %s|Helligkeit %l",
   "neopixelExtended.rgb|block": "rot %red|grün %green|blau %blue",
   "neopixelExtended.rowOf5|block": "%rgb1 %rgb2 %rgb3 %rgb4 %rgb5",
