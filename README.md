@@ -9,8 +9,7 @@ It provides mostly the same interface but
 
 Unfortunately many translations got lost during this rework. Help to reinstate the translations or fix mistakes (my native language is german...) is very welcome!
 
-NeoPixels consist of programmable RGB LEDs (WS2812B), every one of them controlled
-separately.  
+NeoPixels consist of programmable RGB LEDs (WS2812B), every one of them controlled separately.  
 
 ## ~ hint
 
