@@ -83,5 +83,5 @@
   "neopixelExtended.rowOf8|param|rgb5": "Fünfte RGB Farbe in der Reihe der NeoPixel",
   "neopixelExtended.rowOf8|param|rgb6": "Sechstes RGB Farbe in der Reihe der NeoPixel",
   "neopixelExtended.rowOf8|param|rgb7": "Siebte RGB Farbe in der Reihe der NeoPixel",
-  "neopixelExtended.rowOf8|param|rgb8": "Achte RGB Farbe in der Reihe der NeoPixel",
+  "neopixelExtended.rowOf8|param|rgb8": "Achte RGB Farbe in der Reihe der NeoPixel"
 }
