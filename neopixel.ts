@@ -23,7 +23,7 @@ namespace neopixelExtended {
      * @param format data format used to sent data to the NeoPixels
      */
     //% blockId="neopixel_extended_create"
-    //% block="NeoPixel at pin %pin|with %numNeoPixels|leds as %format"
+    //% block="NeoPixel strip at pin %pin|with %numNeoPixels| Neopixel as %format"
     //% weight=1000
     //% parts="neopixel"
     //% trackArgs=0,2
@@ -73,10 +73,10 @@ namespace neopixelExtended {
         pin: DigitalPin;
         // TODO: encode as bytes instead of 32bit
         brightness: number;
-        start: number; // start offset in LED strip
-        _length: number; // number of LEDs
+        start: number; // start offset in NeoPixel strip
+        _length: number; // number of Neopixels
         _format: neopixelExtended.Format;
-        _matrixWidth: number; // number of leds in a matrix - if any
+        _matrixWidth: number; // number of Neopixels in a row of the matrix - if any
         _matrixDirection: neopixelExtended.MatrixDirection
 
         /**
@@ -99,7 +99,7 @@ namespace neopixelExtended {
          * @param length number of NeoPixels in the range
          */
         //% blockId="neopixel_extended_range"
-        //% block="%strip|range from %start|with %length|leds"
+        //% block="%strip|range from %start|with %length| NeoPixels"
         //% blockSetVariable=range
         //% group="Initialization"
         //% advanced=true
@@ -140,7 +140,7 @@ namespace neopixelExtended {
          * Does leave all the other NeoPixels as they were.
          * Call ``show()`` to make the changes visible.
          * @param position position of the NeoPixel in the strip
-         * @param rgb RGB color of the LED
+         * @param rgb RGB color of the NeoPixel
          */
         //% blockId="neopixel_extended_set_pixel_color"
         //% block="%strip|set pixel color at %position|to %rgb"
@@ -196,7 +196,7 @@ namespace neopixelExtended {
 
         /**
          * For NeoPixels with RGB+W LEDs, sets the white LED brightness. This only works for RGB+W NeoPixels.
-         * @param position position of the LED in the strip
+         * @param position position of the NeoPixel in the strip
          * @param white brightness of the white LED
          */
         //% blockId="neopixel_extended_set_pixel_white"
