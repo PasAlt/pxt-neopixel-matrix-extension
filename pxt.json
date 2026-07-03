@@ -1,5 +1,5 @@
 {
-    "name": "neopixel-extended",
+    "name": "neopixelExtended",
     "version": "2.0.3",
     "description": "AdaFruit NeoPixel driver extended by Pascal Zaugg (PHBern)",
     "license": "MIT",
