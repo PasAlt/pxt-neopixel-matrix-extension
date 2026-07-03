@@ -26,6 +26,7 @@ namespace neopixelExtended {
     //% block="NeoPixel strip at pin %pin|with %numNeoPixels| Neopixel as %format"
     //% weight=1000
     //% parts="neopixel"
+    //% numNeoPixels.defl=1
     //% trackArgs=0,2
     //% blockSetVariable=strip
     //% group="Initialization"
