@@ -395,37 +395,19 @@ namespace neopixelExtended {
             const steps = this._length;
 
             //hue
-            const h1 = startHue;
-            const h2 = endHue;
-            const hDist = ((h2 + 360) - h1) % 360;
+            const hDist = ((endHue + 360) - startHue) % 360;
             let hStep = Math.idiv((hDist * 100), steps);
 
-            const h1_100 = h1 * 100; //we multiply by 100 so we keep more accurate results while doing interpolation
-
-            //sat
-            const s1 = saturation;
-            const s2 = saturation;
-            const sDist = s2 - s1;
-            const sStep = Math.idiv(sDist, steps);
-            const s1_100 = s1 * 100;
-
-            //lum
-            const l1 = luminance;
-            const l2 = luminance;
-            const lDist = l2 - l1;
-            const lStep = Math.idiv(lDist, steps);
-            const l1_100 = l1 * 100
+            const h1_100 = startHue * 100; //we multiply by 100 so we keep more accurate results while doing interpolation
 
             //interpolate
             if (steps === 1) {
-                this.setPixelColor(0, hsl(h1 + hStep, s1 + sStep, l1 + lStep))
+                this.setPixelColor(0, hsl(startHue + hStep, saturation, luminance))
             } else {
                 this.setPixelColor(0, hsl(startHue, saturation, luminance));
                 for (let i = 1; i < steps - 1; i++) {
                     const h = Math.idiv((h1_100 + i * hStep), 100) + 360;
-                    const s = Math.idiv((s1_100 + i * sStep), 100);
-                    const l = Math.idiv((l1_100 + i * lStep), 100);
-                    this.setPixelColor(i, hsl(h, s, l));
+                    this.setPixelColor(i, hsl(h, saturation, luminance));
                 }
                 this.setPixelColor(steps - 1, hsl(endHue, saturation, luminance));
             }
