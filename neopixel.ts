@@ -189,8 +189,14 @@ namespace neopixelExtended {
             x = x >> 0;
             y = y >> 0;
             rgb = rgb >> 0;
+
             const cols = Math.idiv(this._length, this._matrixWidth);
-            if (x < 0 || x >= this._matrixWidth || y < 0 || y >= cols) return;
+            if (x < 0 || x >= this._matrixWidth || y < 0 || y >= cols) return; // outside matrix, ignore
+            
+            if(y%2 == 1) {
+                x = this._matrixWidth-x-1
+            }
+
             let i = x + y * this._matrixWidth;
             this.setPixelColor(i, rgb);
         }
