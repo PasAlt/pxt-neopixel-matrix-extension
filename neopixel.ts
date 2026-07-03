@@ -393,23 +393,13 @@ namespace neopixelExtended {
             const saturation = 100;
             const luminance = 50;
             const steps = this._length;
-            const direction = neopixelExtended.HueInterpolationDirection.Clockwise;
 
             //hue
             const h1 = startHue;
             const h2 = endHue;
-            const hDistCW = ((h2 + 360) - h1) % 360;
-            const hStepCW = Math.idiv((hDistCW * 100), steps);
-            const hDistCCW = ((h1 + 360) - h2) % 360;
-            const hStepCCW = Math.idiv(-(hDistCCW * 100), steps);
-            let hStep: number;
-            if (direction === neopixelExtended.HueInterpolationDirection.Clockwise) {
-                hStep = hStepCW;
-            } else if (direction === neopixelExtended.HueInterpolationDirection.CounterClockwise) {
-                hStep = hStepCCW;
-            } else {
-                hStep = hDistCW < hDistCCW ? hStepCW : hStepCCW;
-            }
+            const hDist = ((h2 + 360) - h1) % 360;
+            let hStep = Math.idiv((hDist * 100), steps);
+
             const h1_100 = h1 * 100; //we multiply by 100 so we keep more accurate results while doing interpolation
 
             //sat
@@ -832,12 +822,6 @@ namespace neopixelExtended {
         let g = g$ + m;
         let b = b$ + m;
         return packRGB(r, g, b);
-    }
-
-    export enum HueInterpolationDirection {
-        Clockwise,
-        CounterClockwise,
-        Shortest
     }
 
     /**
