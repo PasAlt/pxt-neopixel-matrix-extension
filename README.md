@@ -22,21 +22,21 @@ See [Microsoft/pxt-neopixel](https://makecode.microbit.org/pkg/microsoft/pxt-neo
 ## Basic usage
 
 ```blocks
-// Create a NeoPixel driver - specify the pin, number of NeoPixels, and the type of 
+// Create a NeoPixel driver - specify the pin, number of NeoPixels, and the type of
 // the NeoPixel strip, either standard RGB (with GRB or RGB format) or RGB+White.
-let strip = neopixel.create(DigitalPin.P0, 24, NeoPixelMode.RGB);
+let strip = neopixelExtended.create(DigitalPin.P0, 24, neopixelExtended.Format.RGB)
 
 // set pixel colors
-strip.setPixelColor(0, 0xffffff); // white
-strip.setPixelColor(1, 0xff0000);     // red
-strip.setPixelColor(2, 0x00ff00);     // green
-strip.setPixelColor(3, 0x0000ff);    // blue
+strip.setPixelColor(0, 0xffffff) // white
+strip.setPixelColor(1, 0xff0000) // red
+strip.setPixelColor(2, 0x00ff00) // green
+strip.setPixelColor(3, 0x0000ff) // blue
 
 // send the data to the strip
 strip.show()
 ```
 
-Use ``||shift||`` or ``||rotate||`` to shift the lights around.
+Use ``||shift||`` or ``||rotate||`` to move the lights around.
 
 Always use ``||show||`` to make your changes visible.
 
@@ -48,17 +48,17 @@ This little programm flashes "o" and "k" on a NeoPixel strip arranged as a 5x5 m
 // Create a NeoPixel driver - specify the pin, number of LEDs, and the type of 
 // the NeoPixel strip, either standard RGB (with GRB or RGB format) or RGB+White.
 // For a 5x5 matrix you will need to set it to 25 NeoPixel
-let strip = neopixel.create(DigitalPin.P0, 25, NeoPixelMode.RGB);
+let strip = neopixelExtended.create(DigitalPin.P0, 25, neopixelExtended.Format.RGB);
 
 // set loop to set the pixel colors
 basic.forever(function () {
     // set colors for "o"
     strip.setMatrix25(
-    neopixel.rowOf5(0xff0000, 0xFFD700, 0xFFD700, 0xFFD700, 0xFFD700),
-    neopixel.rowOf5(0xff0000, 0xFFD700, 0xff0000, 0xff0000, 0xFFD700),
-    neopixel.rowOf5(0xff0000, 0xFFD700, 0xff0000, 0xff0000, 0xFFD700),
-    neopixel.rowOf5(0xff0000, 0xFFD700, 0xff0000, 0xff0000, 0xFFD700),
-    neopixel.rowOf5(0xff0000, 0xFFD700, 0xFFD700, 0xFFD700, 0xFFD700)
+        neopixelExtended.rowOf5(0xff0000, 0xFFD700, 0xFFD700, 0xFFD700, 0xFFD700),
+        neopixelExtended.rowOf5(0xff0000, 0xFFD700, 0xff0000, 0xff0000, 0xFFD700),
+        neopixelExtended.rowOf5(0xff0000, 0xFFD700, 0xff0000, 0xff0000, 0xFFD700),
+        neopixelExtended.rowOf5(0xff0000, 0xFFD700, 0xff0000, 0xff0000, 0xFFD700),
+        neopixelExtended.rowOf5(0xff0000, 0xFFD700, 0xFFD700, 0xFFD700, 0xFFD700)
     )
     // send data to the NeoPixel strip
     strip.show()
@@ -66,11 +66,11 @@ basic.forever(function () {
     basic.pause(1000)
     // set colors for "k"
     strip.setMatrix25(
-    neopixel.rowOf5(0xff0000, 0xFFD700, 0xff0000, 0xff0000, 0xFFD700),
-    neopixel.rowOf5(0xff0000, 0xFFD700, 0xff0000, 0xFFD700, 0xff0000),
-    neopixel.rowOf5(0xff0000, 0xFFD700, 0xFFD700, 0xff0000, 0xff0000),
-    neopixel.rowOf5(0xff0000, 0xFFD700, 0xff0000, 0xFFD700, 0xff0000),
-    neopixel.rowOf5(0xff0000, 0xFFD700, 0xff0000, 0xff0000, 0xFFD700)
+        neopixelExtended.rowOf5(0xff0000, 0xFFD700, 0xff0000, 0xff0000, 0xFFD700),
+        neopixelExtended.rowOf5(0xff0000, 0xFFD700, 0xff0000, 0xFFD700, 0xff0000),
+        neopixelExtended.rowOf5(0xff0000, 0xFFD700, 0xFFD700, 0xff0000, 0xff0000),
+        neopixelExtended.rowOf5(0xff0000, 0xFFD700, 0xff0000, 0xFFD700, 0xff0000),
+        neopixelExtended.rowOf5(0xff0000, 0xFFD700, 0xff0000, 0xff0000, 0xFFD700)
     )
     // send data to the NeoPixel strip
     strip.show()
