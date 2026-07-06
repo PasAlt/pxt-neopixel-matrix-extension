@@ -72,7 +72,6 @@ namespace neopixelExtended {
     export class Strip {
         buf: Buffer;
         pin: DigitalPin;
-        // TODO: encode as bytes instead of 32bit
         brightness: number;
         start: number; // start offset in NeoPixel strip
         _length: number; // number of Neopixels
@@ -90,8 +89,6 @@ namespace neopixelExtended {
         //% weight=10
         //% strip.defl=strip
         show() {
-            // only supported in beta
-            // ws2812b.setBufferMode(this.pin, this._format);
             ws2812b.sendBuffer(this.buf, this.pin);
         }
 
