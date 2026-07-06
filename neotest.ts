@@ -1,35 +1,53 @@
 {    
-    let strip = neopixelExtended.create(DigitalPin.P0, 9, neopixelExtended.Format.RGB);
+    let strip = neopixelExtended.create(DigitalPin.P0, 6, neopixelExtended.Format.RGB);
 
     // 0
     // setMatrixWidth, setMatrixColor, setBrightness
-    // Sets each first NeoPixel in each row on a 3x3 matrix one after another in blue
+    // Sets each first NeoPixel in each row on a 3x2 matrix one after another in blue
     // This test does not visually show up
     basic.showString("0")
     strip.setMatrixWidth(3)
+    strip.setMatrixHeight(2)
     strip.setBrightness(255)
     strip.setMatrixColor(0, 0, 0x0000ff)
     let matrix1 = "0000ff" + "000000" + "000000" 
         + "000000" + "000000" + "000000"
-        + "000000" + "000000" + "000000"
     if (strip.buf.toHex() != matrix1) {
-        throw "First pixel color in row 1 in 3x3 matrix is wrong. \n " + matrix1 + " (expected) \n " + strip.buf.toHex() + " (actual) "
+        throw "First pixel color in row 1 in 3x2 matrix is wrong. \n " + matrix1 + " (expected) \n " + strip.buf.toHex() + " (actual) "
     }
 
     strip.setMatrixColor(0, 1, 0x0000ff)
     let matrix2 = "0000ff" + "000000" + "000000"
         + "000000" + "000000" + "0000ff"
-        + "000000" + "000000" + "000000"
     if (strip.buf.toHex() != matrix2) {
-        throw "First pixel color in row 2 in 3x3 matrix is wrong. \n " + matrix2 + " (expected) \n " + strip.buf.toHex() + " (actual) "
+        throw "First pixel color in row 2 in 3x2 matrix is wrong. \n " + matrix2 + " (expected) \n " + strip.buf.toHex() + " (actual) "
     }
 
-    strip.setMatrixColor(0, 2, 0x0000ff)
-    let matrix3 = "0000ff" + "000000" + "000000"
+    strip.setMatrixColor(2, 0, 0x0000ff)
+    let matrix3 = "0000ff" + "000000" + "0000ff"
         + "000000" + "000000" + "0000ff"
-        + "0000ff" + "000000" + "000000"
     if (strip.buf.toHex() != matrix3) {
-        throw "First pixel color in row 3 in 3x3 matrix is wrong. \n " + matrix3 + " (expected) \n " + strip.buf.toHex() + " (actual) "
+        throw "Last pixel color in row 1 in 3x2 matrix is wrong. \n " + matrix3 + " (expected) \n " + strip.buf.toHex() + " (actual) "
+    }
+
+    strip.clear()
+    strip.setMatrixWiring(neopixelExtended.MatrixDirection.RightTopToTheBottom)
+    strip.setMatrixColor(0, 0, 0x00ff11)
+    let matrix4 = "000000" + "000000" 
+    + "000000" + "000000" 
+    + "ff0011" + "000000"
+    if (strip.buf.toHex() != matrix4) {
+        throw "First pixel color in row 1 in 3x2 matrix for right top to the bottom wiring is wrong. \n " + matrix4 + " (expected) \n " + strip.buf.toHex() + " (actual) "
+    }
+
+    strip.clear()
+    strip.setMatrixWiring(neopixelExtended.MatrixDirection.RightBottomToTheTop)
+    strip.setMatrixColor(0, 0, 0x00ff11)
+    let matrix5 = "000000" + "000000"
+        + "000000" + "000000"
+        + "000000" + "ff0011"
+    if (strip.buf.toHex() != matrix5) {
+        throw "First pixel color in row 1 in 3x2 matrix for right bottom to the top wiring is wrong. \n " + matrix5 + " (expected) \n " + strip.buf.toHex() + " (actual) "
     }
 
     strip = neopixelExtended.create(DigitalPin.P0, 24, neopixelExtended.Format.RGB);

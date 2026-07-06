@@ -78,6 +78,7 @@ namespace neopixelExtended {
         _length: number; // number of Neopixels
         _format: neopixelExtended.Format;
         _matrixWidth: number; // number of Neopixels in a row of the matrix - if any
+        _matrixHeight: number; // number of Neopixels in a column of the matrix - if any
         _matrixDirection: neopixelExtended.MatrixDirection
 
         /**
@@ -116,6 +117,7 @@ namespace neopixelExtended {
             strip.start = this.start + Math.clamp(0, this._length - 1, start);
             strip._length = Math.clamp(0, this._length - (strip.start - this.start), length);
             strip._matrixWidth = 0;
+            strip._matrixHeight = 0;
             strip._format = this._format;
             return strip;
         }
@@ -156,6 +158,7 @@ namespace neopixelExtended {
         /**
          * Sets the vertical number of pixels (width) in a matrix shaped strip
          * This is used in ``setMatrixColor()`` to calculate the correct position.
+         * Matrix is assumed to be squared if height is no set with ``setMatrixHeigth()``
          * @param width number of pixels in a row
          */
         //% blockId=neopixelextended_set_matrix_width
@@ -170,11 +173,35 @@ namespace neopixelExtended {
         }
 
         /**
+         * Sets the horizontal number of pixels (height) in a matrix shaped strip
+         * This is used in ``setMatrixColor()`` to calculate the correct position.
+         * @param height number of pixels in a column
+         */
+        //% blockId=neopixelextended_set_matrix_height
+        //% block="%strip|set matrix width %width"
+        //% strip.defl=strip
+        //% width.defl=5
+        //% weight=5
+        //% advanced=true
+        //% group="Set and manipulate NeoPixels as matrix"
+        setMatrixHeight(height: number) {
+            this._matrixHeight = Math.min(this._length, height >> 0);
+        }
+
+        private matrixWidth() {
+            return this._matrixWidth
+        }
+
+        private matrixHeight() {
+            return this._matrixHeight > 0 ? this._matrixHeight : this._matrixWidth
+        }
+
+        /**
          * Sets NeoPixel to a given color in a matrix shaped strip
          * Make sure you have set the right width with ``setMatrixWidth()``
          * Call ``show`` to make the changes visible.
-         * @param x vertical position
-         * @param y horizontal position
+         * @param x vertical position (column number) from 0 to matrix width minus 1
+         * @param y horizontal position (row number) from 0 to matrix height minus 1
          * @param rgb RGB color of the NeoPixel
          */
         //% blockId="neopixelextended_set_matrix_color"
@@ -185,19 +212,51 @@ namespace neopixelExtended {
         //% advanced=true
         //% group="Set and manipulate NeoPixels as matrix"
         setMatrixColor(x: number, y: number, rgb: number) {
-            if (this._matrixWidth <= 0) return; // not a matrix, ignore
+            if (this.matrixWidth() <= 0) {
+                throw "NeoPixel is not set as matrix. Please set width and height of matrix!"
+            }
+
             x = x >> 0;
             y = y >> 0;
             rgb = rgb >> 0;
 
-            const cols = Math.idiv(this._length, this._matrixWidth);
-            if (x < 0 || x >= this._matrixWidth || y < 0 || y >= cols) return; // outside matrix, ignore
-            
-            if(y%2 == 1) {
-                x = this._matrixWidth-x-1
+            if (x < 0 || x >= this.matrixWidth() || y < 0 || y >= this.matrixHeight()) {
+                throw "Given position " + x + "," + y + "is outside matrix."
             }
 
-            let i = x + y * this._matrixWidth;
+            let adjustedMatrixWidth = this.matrixWidth()
+            let adjustedMatrixHeight = this.matrixHeight()
+            // rotate
+            if(this.shouldRotateClockwise()) {
+                let tempX = this.matrixHeight()-1-y
+                y = x
+                x = tempX
+                adjustedMatrixWidth = this.matrixHeight()
+                adjustedMatrixHeight = this.matrixWidth()
+            }
+            else if(this.shouldRotateCounterClockwise()) {
+                let tempY = this.matrixWidth()-1- x
+                x = y
+                y = tempY
+                adjustedMatrixWidth = this.matrixHeight()
+                adjustedMatrixHeight = this.matrixWidth()
+            }
+
+            // reverse columns (rc)
+            if (this.shouldReverseColumns()) {
+                y = adjustedMatrixHeight-y-1
+            }
+
+            // reverse odd rows (ror)
+            if(y%2 == 1 && this.shouldReverseOddRows()) {
+                x = adjustedMatrixWidth-x-1
+            }
+            // reverse even rows (rer)
+            else if(y%2 != 1 && this.shouldReverseEvenRows()) {
+                x = adjustedMatrixWidth-x-1
+            }
+
+            let i = x + y * adjustedMatrixWidth;
             this.setPixelColor(i, rgb);
         }
 
@@ -574,37 +633,69 @@ namespace neopixelExtended {
         }
 
         private adjustMatrixForDirection(rows: number[][]): number[][] {
-            if (this._matrixDirection == neopixelExtended.MatrixDirection.LeftTopToTheBottom
-                || this._matrixDirection == neopixelExtended.MatrixDirection.RightBottomToTheTop) {
+            // cw = clockwise, ccw = counterclokwise, 
+            // rc = reverse columns, 
+            // rer = reverse even rows (0,2,4,...)
+            // ror = reverse odd rows (1,3,5,...)
+            // rbt: cw, rc, ror
+            // lbt: ccw, rc, rer
+            // ltb: cw, rer
+            // rtb: ccw, ror
+            // lbr: rc, ror
+            // rbl: rc, rer
+            // ltr: ror
+            // rtl: rer 
+
+            if (this.shouldRotateClockwise()) {
                 rows = this.rotateMatrixClockwise(rows)
             }
-            else if (this._matrixDirection == neopixelExtended.MatrixDirection.RightTopToTheBottom
-                || this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheTop) {
+            else if (this.shouldRotateCounterClockwise()) {
                 rows = this.rotateMatrixCounterClockwise(rows)
             }
 
-            if (this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheRight
-                || this._matrixDirection == neopixelExtended.MatrixDirection.RightBottomToTheLeft
-                || this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheTop
-                || this._matrixDirection == neopixelExtended.MatrixDirection.RightBottomToTheTop
-            ) {
+            if (this.shouldReverseColumns()) {
                 rows.reverse()
             }
 
-            if (this._matrixDirection == neopixelExtended.MatrixDirection.LeftTopToTheRight
-                || this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheRight
-                || this._matrixDirection == neopixelExtended.MatrixDirection.RightTopToTheBottom
-                || this._matrixDirection == neopixelExtended.MatrixDirection.RightBottomToTheTop) {
+            if (this.shouldReverseOddRows()) {
                 this.reverseOddRows(rows)
             }
-            else if (this._matrixDirection == neopixelExtended.MatrixDirection.RightTopToTheLeft
-                || this._matrixDirection == neopixelExtended.MatrixDirection.RightBottomToTheLeft
-                || this._matrixDirection == neopixelExtended.MatrixDirection.LeftTopToTheBottom
-                || this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheTop) {
+            else if (this.shouldReverseEvenRows()) {
                 this.reverseEvenRows(rows)
             }
 
             return rows
+        }
+
+        private shouldRotateClockwise(): boolean {
+            return this._matrixDirection == neopixelExtended.MatrixDirection.LeftTopToTheBottom
+                || this._matrixDirection == neopixelExtended.MatrixDirection.RightBottomToTheTop
+        }
+
+        private shouldRotateCounterClockwise(): boolean {
+            return this._matrixDirection == neopixelExtended.MatrixDirection.RightTopToTheBottom
+                || this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheTop
+        }
+
+        private shouldReverseColumns() : boolean {
+            return this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheRight
+                || this._matrixDirection == neopixelExtended.MatrixDirection.RightBottomToTheLeft
+                || this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheTop
+                || this._matrixDirection == neopixelExtended.MatrixDirection.RightBottomToTheTop
+        }
+
+        private shouldReverseOddRows() : boolean {
+            return this._matrixDirection == neopixelExtended.MatrixDirection.LeftTopToTheRight
+                || this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheRight
+                || this._matrixDirection == neopixelExtended.MatrixDirection.RightTopToTheBottom
+                || this._matrixDirection == neopixelExtended.MatrixDirection.RightBottomToTheTop
+        }
+
+        private shouldReverseEvenRows() : boolean {
+            return this._matrixDirection == neopixelExtended.MatrixDirection.RightTopToTheLeft
+                || this._matrixDirection == neopixelExtended.MatrixDirection.RightBottomToTheLeft
+                || this._matrixDirection == neopixelExtended.MatrixDirection.LeftTopToTheBottom
+                || this._matrixDirection == neopixelExtended.MatrixDirection.LeftBottomToTheTop
         }
 
         private rotateMatrixClockwise(rows: number[][]): number[][] {
