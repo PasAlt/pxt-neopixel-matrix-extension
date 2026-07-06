@@ -34,6 +34,8 @@
   "neopixelExtended.Strip.setMatrixColor|param|rgb": "RGB-Farbe des anzusprechenden NeoPixels",
   "neopixelExtended.Strip.setMatrixColor|param|x": "Horizontale Position des NeoPixels. Das erste NeoPixel hat Position 0.",
   "neopixelExtended.Strip.setMatrixColor|param|y": "Vertikale Position des NeoPixels. Das erste NeoPixel hat Position 0.",
+  "neopixelExtended.Strip.setMatrixHeight": "Setzt die Anzahl NeoPixel pro Spalte. Geht davon aus, dass die NeoPixel als Matrix angeordnet sind.",
+  "neopixelExtended.Strip.setMatrixHeight|param|height": "Anzahl NeoPixel pro Spalte",
   "neopixelExtended.Strip.setMatrixWidth": "Setzt die Anzahl NeoPixel pro Reihe. Geht davon aus, dass die NeoPixel als Matrix angeordnet sind.",
   "neopixelExtended.Strip.setMatrixWidth|param|width": "Anzahl NeoPixel pro Reihe",
   "neopixelExtended.Strip.setMatrixWiring": "Setze Matrixverdrahtung auf den angegebenen Wert.",

@@ -175,9 +175,9 @@ namespace neopixelExtended {
          * @param height number of pixels in a column
          */
         //% blockId=neopixelextended_set_matrix_height
-        //% block="%strip|set matrix width %width"
+        //% block="%strip|set matrix height %height"
         //% strip.defl=strip
-        //% width.defl=5
+        //% height.defl=5
         //% weight=5
         //% advanced=true
         //% group="Set and manipulate NeoPixels as matrix"
