@@ -32,8 +32,8 @@ namespace neopixelExtended {
     //% group="Initialization"
     export function create(pin: DigitalPin, numNeoPixels: number, format: neopixelExtended.Format): Strip {
         let strip = new Strip();
-        let stride = format === neopixelExtended.Format.RGBW ? 4 : 3;
-        strip.buf = pins.createBuffer(numNeoPixels * stride);
+        strip._stride = format === neopixelExtended.Format.RGBW ? 4 : 3;
+        strip.buf = pins.createBuffer(numNeoPixels * strip._stride);
         strip.start = 0;
         strip._length = numNeoPixels;
         strip._matrixDirection = neopixelExtended.MatrixDirection.LeftTopToTheRight
@@ -48,22 +48,37 @@ namespace neopixelExtended {
     * Different matrix wiring directions
     */
     export enum MatrixDirection {
-        //% block="top right to the left"
-        RightTopToTheLeft,
         //% block="top left to the right"
-        LeftTopToTheRight,
-        //% block="bottom left to the right"
-        LeftBottomToTheRight,
-        //% block="bottom right to the left"
-        RightBottomToTheLeft,
-        //% block="top left to the bottom"
-        LeftTopToTheBottom,
+        LeftTopToTheRight = 0,
         //% block="top right to the bottom"
         RightTopToTheBottom,
+        //% block="bottom right to the left"
+        RightBottomToTheLeft,
+        //% block="bottom left to the top"
+        LeftBottomToTheTop,
+
+        //% block="top left to the bottom"
+        LeftTopToTheBottom,
+        //% block="bottom left to the right"
+        LeftBottomToTheRight,
         //% block="bottom right to the top"
         RightBottomToTheTop,
-        //% block="bottom left to the top"
-        LeftBottomToTheTop
+        //% block="top right to the left"
+        RightTopToTheLeft
+    }
+
+    /*
+    * Different matrix wiring directions
+    */
+    export enum MoveDirection {
+        //% block="left to right"
+        LeftToRight,
+        //% block="top to bottom"
+        TopToBottom,
+        //% block="right to left"
+        RightToLeft,
+        //% block="bottom to top"
+        BottomToTop
     }
 
     /**
@@ -75,6 +90,7 @@ namespace neopixelExtended {
         brightness: number;
         start: number; // start offset in NeoPixel strip
         _length: number; // number of Neopixels
+        _stride: number; // length of stride. Depends on _format.
         _format: neopixelExtended.Format;
         _matrixWidth: number; // number of Neopixels in a row of the matrix - if any
         _matrixHeight: number; // number of Neopixels in a column of the matrix - if any
@@ -284,8 +300,7 @@ namespace neopixelExtended {
         //% weight=76
         //% group="Set colors in buffer"
         clear(): void {
-            const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
-            this.buf.fill(0, this.start * stride, this._length * stride);
+            this.buf.fill(0, this.start * this._stride, this._length * this._stride);
         }
 
         /**
@@ -326,21 +341,20 @@ namespace neopixelExtended {
         //% advanced=true
         //% group="Set colors in buffer"
         easeBrightness(): void {
-            const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
             const br = this.brightness;
             const buf = this.buf;
             const end = this.start + this._length;
             const mid = Math.idiv(this._length, 2);
             for (let i = this.start; i < end; ++i) {
                 const k = i - this.start;
-                const ledoffset = i * stride;
+                const ledoffset = i * this._stride;
                 const br = k > mid
                     ? Math.idiv(255 * (this._length - 1 - k) * (this._length - 1 - k), (mid * mid))
                     : Math.idiv(255 * k * k, (mid * mid));
                 const r = (buf[ledoffset + 0] * br) >> 8; buf[ledoffset + 0] = r;
                 const g = (buf[ledoffset + 1] * br) >> 8; buf[ledoffset + 1] = g;
                 const b = (buf[ledoffset + 2] * br) >> 8; buf[ledoffset + 2] = b;
-                if (stride == 4) {
+                if (this._stride == 4) {
                     const w = (buf[ledoffset + 3] * br) >> 8; buf[ledoffset + 3] = w;
                 }
             }
@@ -359,8 +373,51 @@ namespace neopixelExtended {
         //% group="Manipulate colors in buffer"
         shift(offset: number = 1): void {
             offset = offset >> 0;
-            const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
-            this.buf.shift(-offset * stride, this.start * stride, this._length * stride)
+            this.buf.shift(-offset * this._stride, this.start * this._stride, this._length * this._stride)
+        }
+
+        shiftMatrix(offset: number = 1, moveDirection? : neopixelExtended.MoveDirection): void {
+            if(! moveDirection) {
+                moveDirection = neopixelExtended.MoveDirection.LeftToRight
+            }
+
+            let direction : number = this._matrixDirection as number
+            let moveDirectionIndex : NumberFormat = moveDirection as number
+            let isCcw : boolean = direction > 3
+            console.log("---")
+            console.log("d: " + direction)
+            console.log("md: " + moveDirectionIndex)
+
+            let adjustedDirectionIndex = (direction+moveDirectionIndex)%4
+            if(isCcw) {
+                adjustedDirectionIndex += 4
+            }
+
+            console.log("adj:" + adjustedDirectionIndex)
+
+            let adjustedDirection = adjustedDirectionIndex as neopixelExtended.MatrixDirection //dirs[adjustedDirectionIndex]
+
+            if (adjustedDirection == neopixelExtended.MatrixDirection.RightTopToTheLeft
+                || adjustedDirection == neopixelExtended.MatrixDirection.LeftBottomToTheRight) {
+                offset = offset * -1
+            }
+
+            if(adjustedDirection == neopixelExtended.MatrixDirection.LeftTopToTheRight 
+              || adjustedDirection == neopixelExtended.MatrixDirection.RightBottomToTheLeft
+              || adjustedDirection == neopixelExtended.MatrixDirection.RightTopToTheLeft
+              || adjustedDirection == neopixelExtended.MatrixDirection.LeftBottomToTheRight ) {
+                for (let row = 0; row < this.matrixHeight(); row++) {
+                    let tempBuf = this.buf.slice(row * this.matrixWidth() * this._stride, this.matrixWidth() * this._stride)
+                    offset = offset * -1 
+                    tempBuf.shift(offset * this._stride)
+                    this.buf.write(row * this.matrixWidth() * this._stride, tempBuf)
+                }
+            }
+
+            if (adjustedDirection == neopixelExtended.MatrixDirection.LeftTopToTheBottom
+                || adjustedDirection == neopixelExtended.MatrixDirection.LeftBottomToTheTop) {
+                this.buf.shift(-this._stride*this.matrixHeight(), 0)
+            }
         }
 
         /**
@@ -376,8 +433,7 @@ namespace neopixelExtended {
         //% group="Manipulate colors in buffer"
         rotate(offset: number = 1): void {
             offset = offset >> 0;
-            const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
-            this.buf.rotate(-offset * stride, this.start * stride, this._length * stride)
+            this.buf.rotate(-offset * this._stride, this.start * this._stride, this._length * this._stride)
         }
 
         /**
@@ -404,12 +460,11 @@ namespace neopixelExtended {
         //% advanced=true
         //% group="Values"
         power(): number {
-            const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
             const end = this.start + this._length;
             let p = 0;
             for (let i = this.start; i < end; ++i) {
-                const ledoffset = i * stride;
-                for (let j = 0; j < stride; ++j) {
+                const ledoffset = i * this._stride;
+                for (let j = 0; j < this._stride; ++j) {
                     p += this.buf[i + j];
                 }
             }
@@ -564,7 +619,7 @@ namespace neopixelExtended {
          * @param v2 second matrix row as array of rgb colors
          * @param v3 third matrix row as array of rgb colors
          * @param v4 fourth matrix row as array of rgb colors
-         * @param v5 fifth matrix row as array of rgb colors
+      shiftMatrix   * @param v5 fifth matrix row as array of rgb colors
          * @param v6 sixth matrix row as array of rgb colors
          * @param v7 seventh matrix row as array of rgb colors
          * @param v8 eighth matrix row as array of rgb colors
@@ -752,9 +807,8 @@ namespace neopixelExtended {
                 blue = (blue * br) >> 8;
             }
             const end = this.start + this._length;
-            const stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
             for (let i = this.start; i < end; ++i) {
-                this.setBufferRGB(i * stride, red, green, blue)
+                this.setBufferRGB(i * this._stride, red, green, blue)
             }
         }
 
@@ -779,8 +833,7 @@ namespace neopixelExtended {
                 || pixeloffset >= this._length)
                 return;
 
-            let stride = this._format === neopixelExtended.Format.RGBW ? 4 : 3;
-            pixeloffset = (pixeloffset + this.start) * stride;
+            pixeloffset = (pixeloffset + this.start) * this._stride;
 
             let red = unpackR(rgb);
             let green = unpackG(rgb);

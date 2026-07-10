@@ -1,6 +1,55 @@
 {    
-    let strip = neopixelExtended.create(DigitalPin.P0, 6, neopixelExtended.Format.RGB);
+    let strip = neopixelExtended.create(DigitalPin.P0, 9, neopixelExtended.Format.RGB);
 
+    basic.showString("-1")
+    strip.setBrightness(255)
+    strip.setMatrixWidth(3)
+
+    strip.setColor(0x00ff11)
+    strip.setMatrixWiring(neopixelExtended.MatrixDirection.LeftTopToTheRight)
+    strip.shiftMatrix()
+
+    let matrixShift1 = "000000" + "ff0011" + "ff0011"
+      + "ff0011" + "ff0011" + "000000"
+      + "000000" + "ff0011" + "ff0011"
+    if (strip.buf.toHex() != matrixShift1) {
+        throw "Shift with top left to the right wiring shifting from right to left did not work. \n " + matrixShift1 + " (expected) \n " + strip.buf.toHex() + " (actual) "
+    }
+
+    strip.setColor(0x00ff11)
+    strip.setMatrixWiring(neopixelExtended.MatrixDirection.RightTopToTheLeft)
+    strip.shiftMatrix()
+
+    let matrixShift2 = "ff0011" + "ff0011" + "000000"
+        + "000000" + "ff0011" + "ff0011"
+        + "ff0011" + "ff0011" + "000000"
+    if (strip.buf.toHex() != matrixShift2) {
+        throw "Shift with top right to the left wiring shifting from right to left did not work. \n " + matrixShift2 + " (expected) \n " + strip.buf.toHex() + " (actual) "
+    }
+
+    strip.setColor(0x00ff11)
+    strip.setMatrixWiring(neopixelExtended.MatrixDirection.RightTopToTheLeft)
+    strip.shiftMatrix(1, neopixelExtended.MoveDirection.TopToBottom)
+
+    let matrixShift4 = "000000" + "000000" + "000000"
+        + "ff0011" + "ff0011" + "ff0011"
+        + "ff0011" + "ff0011" + "ff0011"
+    if (strip.buf.toHex() != matrixShift4) {
+        throw "Shift with top right to the left wiring shifting from top to bottom did not work. \n " + matrixShift4 + " (expected) \n " + strip.buf.toHex() + " (actual) "
+    }
+
+    strip.setColor(0x00ff11)
+    strip.setMatrixWiring(neopixelExtended.MatrixDirection.RightTopToTheLeft)
+    strip.shiftMatrix(1, neopixelExtended.MoveDirection.LeftToRight)
+
+    let matrixShift5 = "ff0011" + "ff0011" + "000000"
+        + "000000" + "ff0011" + "ff0011"
+        + "ff0011" + "ff0011" + "000000"
+    if (strip.buf.toHex() != matrixShift5) {
+        throw "Shift from with top right to the left wiring from left to right did not work. \n " + matrixShift5 + " (expected) \n " + strip.buf.toHex() + " (actual) "
+    }
+
+    strip = neopixelExtended.create(DigitalPin.P0, 6, neopixelExtended.Format.RGB);
     // 0
     // setMatrixWidth, setMatrixColor, setBrightness
     // Sets each first NeoPixel in each row on a 3x2 matrix one after another in blue
