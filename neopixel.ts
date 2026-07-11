@@ -73,12 +73,12 @@ namespace neopixelExtended {
     export enum MoveDirection {
         //% block="left to right"
         LeftToRight,
-        //% block="top to bottom"
-        TopToBottom,
+        //% block="bottom to top"
+        BottomToTop,
         //% block="right to left"
         RightToLeft,
-        //% block="bottom to top"
-        BottomToTop
+        //% block="top to bottom"
+        TopToBottom
     }
 
     /**
@@ -382,7 +382,7 @@ namespace neopixelExtended {
             }
 
             let direction : number = this._matrixDirection as number
-            let moveDirectionIndex : NumberFormat = moveDirection as number
+            let moveDirectionIndex : number = moveDirection as number
             let isCcw : boolean = direction > 3
             console.log("---")
             console.log("d: " + direction)
@@ -398,7 +398,9 @@ namespace neopixelExtended {
             let adjustedDirection = adjustedDirectionIndex as neopixelExtended.MatrixDirection //dirs[adjustedDirectionIndex]
 
             if (adjustedDirection == neopixelExtended.MatrixDirection.RightTopToTheLeft
-                || adjustedDirection == neopixelExtended.MatrixDirection.LeftBottomToTheRight) {
+                || adjustedDirection == neopixelExtended.MatrixDirection.RightBottomToTheLeft
+                || adjustedDirection == neopixelExtended.MatrixDirection.RightTopToTheBottom
+                || adjustedDirection == neopixelExtended.MatrixDirection.RightBottomToTheTop ) {
                 offset = offset * -1
             }
 
@@ -412,11 +414,15 @@ namespace neopixelExtended {
                     tempBuf.shift(offset * this._stride)
                     this.buf.write(row * this.matrixWidth() * this._stride, tempBuf)
                 }
+                console.log("y")
             }
 
             if (adjustedDirection == neopixelExtended.MatrixDirection.LeftTopToTheBottom
-                || adjustedDirection == neopixelExtended.MatrixDirection.LeftBottomToTheTop) {
-                this.buf.shift(-this._stride*this.matrixHeight(), 0)
+                || adjustedDirection == neopixelExtended.MatrixDirection.LeftBottomToTheTop
+                || adjustedDirection == neopixelExtended.MatrixDirection.RightTopToTheBottom
+                || adjustedDirection == neopixelExtended.MatrixDirection.RightBottomToTheTop ) {
+                this.buf.shift(-offset*this._stride*this.matrixHeight(), 0)
+                console.log("z")
             }
         }
 

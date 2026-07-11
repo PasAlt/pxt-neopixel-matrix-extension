@@ -5,49 +5,185 @@
     strip.setBrightness(255)
     strip.setMatrixWidth(3)
 
-    strip.setColor(0x00ff11)
-    strip.setMatrixWiring(neopixelExtended.MatrixDirection.LeftTopToTheRight)
-    strip.shiftMatrix()
-
-    let matrixShift1 = "000000" + "ff0011" + "ff0011"
-      + "ff0011" + "ff0011" + "000000"
-      + "000000" + "ff0011" + "ff0011"
-    if (strip.buf.toHex() != matrixShift1) {
-        throw "Shift with top left to the right wiring shifting from right to left did not work. \n " + matrixShift1 + " (expected) \n " + strip.buf.toHex() + " (actual) "
-    }
-
-    strip.setColor(0x00ff11)
-    strip.setMatrixWiring(neopixelExtended.MatrixDirection.RightTopToTheLeft)
-    strip.shiftMatrix()
-
-    let matrixShift2 = "ff0011" + "ff0011" + "000000"
-        + "000000" + "ff0011" + "ff0011"
+    let matrixStartWith0 = "000000" + "ff0011" + "ff0011"
         + "ff0011" + "ff0011" + "000000"
-    if (strip.buf.toHex() != matrixShift2) {
-        throw "Shift with top right to the left wiring shifting from right to left did not work. \n " + matrixShift2 + " (expected) \n " + strip.buf.toHex() + " (actual) "
-    }
+        + "000000" + "ff0011" + "ff0011"
 
-    strip.setColor(0x00ff11)
-    strip.setMatrixWiring(neopixelExtended.MatrixDirection.RightTopToTheLeft)
-    strip.shiftMatrix(1, neopixelExtended.MoveDirection.TopToBottom)
-
-    let matrixShift4 = "000000" + "000000" + "000000"
+    let matrixStartWithRowOf0s = "000000" + "000000" + "000000"
         + "ff0011" + "ff0011" + "ff0011"
         + "ff0011" + "ff0011" + "ff0011"
-    if (strip.buf.toHex() != matrixShift4) {
-        throw "Shift with top right to the left wiring shifting from top to bottom did not work. \n " + matrixShift4 + " (expected) \n " + strip.buf.toHex() + " (actual) "
-    }
 
-    strip.setColor(0x00ff11)
-    strip.setMatrixWiring(neopixelExtended.MatrixDirection.RightTopToTheLeft)
-    strip.shiftMatrix(1, neopixelExtended.MoveDirection.LeftToRight)
-
-    let matrixShift5 = "ff0011" + "ff0011" + "000000"
+    let matrixEndWith0 = "ff0011" + "ff0011" + "000000"
         + "000000" + "ff0011" + "ff0011"
         + "ff0011" + "ff0011" + "000000"
-    if (strip.buf.toHex() != matrixShift5) {
-        throw "Shift from with top right to the left wiring from left to right did not work. \n " + matrixShift5 + " (expected) \n " + strip.buf.toHex() + " (actual) "
+
+    let matrixEndWithRowOf0s = "ff0011" + "ff0011" + "ff0011"
+        + "ff0011" + "ff0011" + "ff0011"
+        + "000000" + "000000" + "000000"
+
+    function resetMatrix(strip : any,
+        wiring : neopixelExtended.MatrixDirection,
+        direction : neopixelExtended.MoveDirection) {
+        
+        strip.setColor(0x00ff11)
+        strip.setMatrixWiring(wiring)
+        strip.shiftMatrix(1, direction)
     }
+
+    function testResult(strip : neopixelExtended.Strip,
+      expectedMatrix : string, 
+      testNr : number, 
+      wiring : string, 
+      shiftDirection : string) {
+        if (strip.buf.toHex() != expectedMatrix) {
+            throw "("+testNr+") Shift with " + wiring + " wiring shifting from " + shiftDirection + " did not work. \n "
+            + expectedMatrix + " (expected) \n " + strip.buf.toHex() + " (actual) "
+        }
+    }
+
+    function runTest(strip : neopixelExtended.Strip,
+        wiring: neopixelExtended.MatrixDirection,
+        direction: neopixelExtended.MoveDirection,
+        expectedMatrix: string,
+        testNr: number,
+        wiringString: string,
+        shiftDirection: string) {
+            resetMatrix(strip, wiring, direction)
+            testResult(strip, expectedMatrix, testNr, wiringString, shiftDirection)
+    }
+
+    runTest(strip,
+        neopixelExtended.MatrixDirection.LeftTopToTheRight,
+        neopixelExtended.MoveDirection.LeftToRight,
+        matrixStartWith0,
+        1,
+        "top left to the right",
+        "left to right"
+        )
+
+    runTest(strip,
+        neopixelExtended.MatrixDirection.LeftBottomToTheRight,
+        neopixelExtended.MoveDirection.LeftToRight,
+        matrixStartWith0,
+        2,
+        "bottom left to the right",
+        "left to right"
+    )
+
+    // 3-4
+
+    runTest(strip,
+        neopixelExtended.MatrixDirection.LeftTopToTheBottom,
+        neopixelExtended.MoveDirection.LeftToRight,
+        matrixStartWithRowOf0s,
+        3,
+        "top left to the bottom",
+        "left to right"
+    )
+
+    runTest(strip,
+        neopixelExtended.MatrixDirection.LeftBottomToTheTop,
+        neopixelExtended.MoveDirection.LeftToRight,
+        matrixStartWithRowOf0s,
+        4,
+        "bottom left to the top",
+        "left to right"
+    )
+
+    // 5-6
+
+    runTest(strip,
+        neopixelExtended.MatrixDirection.RightTopToTheLeft,
+        neopixelExtended.MoveDirection.LeftToRight,
+        matrixEndWith0,
+        5,
+        "top right to the left",
+        "left to right"
+    )
+
+    runTest(strip,
+        neopixelExtended.MatrixDirection.RightBottomToTheLeft,
+        neopixelExtended.MoveDirection.LeftToRight,
+        matrixEndWith0,
+        6,
+        "bottom right to the left",
+        "left to right"
+    )
+
+    // 7-8
+
+    runTest(strip,
+        neopixelExtended.MatrixDirection.RightTopToTheBottom,
+        neopixelExtended.MoveDirection.LeftToRight,
+        matrixEndWithRowOf0s,
+        7,
+        "top right to the bottom",
+        "left to right"
+    )
+
+    runTest(strip,
+        neopixelExtended.MatrixDirection.RightBottomToTheTop,
+        neopixelExtended.MoveDirection.LeftToRight,
+        matrixEndWithRowOf0s,
+        8,
+        "top right to the bottom",
+        "left to right"
+    )
+
+    // 9
+
+    runTest(strip,
+        neopixelExtended.MatrixDirection.LeftTopToTheRight,
+        neopixelExtended.MoveDirection.TopToBottom,
+        matrixStartWithRowOf0s,
+        9,
+        "top left to right",
+        "top to bottom"
+    )
+
+    // 10
+
+    runTest(strip,
+        neopixelExtended.MatrixDirection.RightTopToTheLeft,
+        neopixelExtended.MoveDirection.LeftToRight,
+        matrixEndWith0,
+        10,
+        "top right to left",
+        "left to right"
+    )
+
+    // 11
+
+    runTest(strip,
+        neopixelExtended.MatrixDirection.RightTopToTheLeft,
+        neopixelExtended.MoveDirection.RightToLeft,
+        matrixStartWith0,
+        11,
+        "top right to left",
+        "right to left"
+    )
+
+    // 12
+
+    runTest(strip,
+        neopixelExtended.MatrixDirection.LeftTopToTheBottom,
+        neopixelExtended.MoveDirection.LeftToRight,
+        matrixStartWithRowOf0s,
+        12,
+        "top left to bottom",
+        "left to right"
+    )
+
+    // 13
+
+    runTest(strip,
+        neopixelExtended.MatrixDirection.LeftTopToTheBottom,
+        neopixelExtended.MoveDirection.RightToLeft,
+        matrixEndWithRowOf0s,
+        13,
+        "top left to bottom",
+        "right to left"
+    )
 
     strip = neopixelExtended.create(DigitalPin.P0, 6, neopixelExtended.Format.RGB);
     // 0
