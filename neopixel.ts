@@ -167,6 +167,7 @@ namespace neopixelExtended {
         //% group="Set and manipulate NeoPixels as matrix"
         setMatrixWidth(width: number) {
             this._matrixWidth = Math.min(this._length, width >> 0);
+            pins.setMatrixWidth(this.pin, this._matrixWidth)
         }
 
         /**
