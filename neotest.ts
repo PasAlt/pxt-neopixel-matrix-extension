@@ -617,6 +617,22 @@
     // shows estimated power consumption
     basic.showString("17: " + strip.power()+" mA")
 
+    strip = neopixelExtended.create(DigitalPin.P0, 9, neopixelExtended.Format.RGB);
+
+    // 18
+    // shiftMatrix, setMatrixWidth, setColor, show
+    // Shifts a green 3x3 out from top to bottom
+    basic.showString("18")
+    strip.setMatrixWidth(3)
+    strip.setColor(0x00ff00)
+    strip.show()
+    basic.pause(500)
+    for (let i = 0; i < 3; i++) {
+        strip.shiftMatrix(1, neopixelExtended.MoveDirection.TopToBottom)
+        strip.show()
+        basic.pause(500)
+    }
+
     // END
     strip.clear()
     strip.show()
