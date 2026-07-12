@@ -236,6 +236,7 @@
     }
 
     strip = neopixelExtended.create(DigitalPin.P0, 24, neopixelExtended.Format.RGB);
+    strip.setMatrixWidth(1)
 
     // 1
     // setPixelColor, show, length
