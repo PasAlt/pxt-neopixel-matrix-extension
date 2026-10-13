@@ -50,6 +50,17 @@
         throw "First pixel color in row 1 in 3x2 matrix for right bottom to the top wiring is wrong. \n " + matrix5 + " (expected) \n " + strip.buf.toHex() + " (actual) "
     }
 
+    strip.clear()
+    strip.setMatrixWiring(neopixelExtended.MatrixDirection.LeftTopToTheRight)
+    strip.setMatrixLayout(neopixelExtended.MatrixLayout.RowByRow)
+    strip.setMatrixColor(0, 1, 0x00ff11)
+    let matrix6 = "000000" + "000000" + "000000"
+        + "ff0011" + "000000" + "000000"
+    if (strip.buf.toHex() != matrix6) {
+        throw "First pixel color in row 2 in 3x2 matrix for row by row layout is wrong. \n " + matrix6 + " (expected) \n " + strip.buf.toHex() + " (actual) "
+    }
+    strip.setMatrixLayout(neopixelExtended.MatrixLayout.Snake)
+
     strip = neopixelExtended.create(DigitalPin.P0, 24, neopixelExtended.Format.RGB);
     strip.setMatrixWidth(1)
 
