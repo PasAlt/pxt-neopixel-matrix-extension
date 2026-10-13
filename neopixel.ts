@@ -37,6 +37,7 @@ namespace neopixelExtended {
         strip.start = 0;
         strip._length = numNeoPixels;
         strip._matrixDirection = neopixelExtended.MatrixDirection.LeftTopToTheRight
+        strip._matrixLayout = neopixelExtended.MatrixLayout.Snake
         strip._format = format || neopixelExtended.Format.RGB;
         strip._matrixWidth = 0;
         strip.setBrightness(128)
@@ -66,6 +67,17 @@ namespace neopixelExtended {
         LeftBottomToTheTop
     }
 
+    /*
+    * Different matrix layouts: snake (every other row runs back)
+    * or row by row (every row runs in the same direction)
+    */
+    export enum MatrixLayout {
+        //% block="snake"
+        Snake,
+        //% block="row by row"
+        RowByRow
+    }
+
     /**
      * A NeoPixel strip
      */
@@ -79,6 +91,7 @@ namespace neopixelExtended {
         _matrixWidth: number; // number of Neopixels in a row of the matrix - if any
         _matrixHeight: number; // number of Neopixels in a column of the matrix - if any
         _matrixDirection: neopixelExtended.MatrixDirection
+        _matrixLayout: neopixelExtended.MatrixLayout
 
         /**
          * Sends all the changes to the NeoPixel strip.
@@ -245,8 +258,14 @@ namespace neopixelExtended {
                 y = adjustedMatrixHeight-y-1
             }
 
+            // row by row: every row runs like the first one
+            if (this._matrixLayout == neopixelExtended.MatrixLayout.RowByRow) {
+                if (this.shouldReverseEvenRows()) {
+                    x = adjustedMatrixWidth-x-1
+                }
+            }
             // reverse odd rows (ror)
-            if(y%2 == 1 && this.shouldReverseOddRows()) {
+            else if(y%2 == 1 && this.shouldReverseOddRows()) {
                 x = adjustedMatrixWidth-x-1
             }
             // reverse even rows (rer)
@@ -604,11 +623,12 @@ namespace neopixelExtended {
         * Sets the direction how the matrix is wired on the
         * board.
         * This only applies to future operations. You will have to reset the colors of the matrix to see its effect.
-        * It always expects the wiring to be
+        * It expects the wiring to be
         * arranged in "snake" format e.g.
         * ---->
         * <---'
         * '--->
+        * unless the layout is set to row by row with ``setMatrixLayout()``.
         * @param dir direction of matrix wiring looking from the first NeoPixel to the second
         */
         //% block="%strip set NeoPixel matrix wiring to %dir"
@@ -619,6 +639,22 @@ namespace neopixelExtended {
         // direction.shadow="neopixelextended_matrix_direction_selector"
         setMatrixWiring(dir: neopixelExtended.MatrixDirection) {
             this._matrixDirection = dir
+        }
+
+        /**
+        * Sets the layout of the matrix wiring on the board:
+        * snake (every other row runs back) or row by row
+        * (every row runs in the same direction).
+        * This only applies to future operations. You will have to reset the colors of the matrix to see its effect.
+        * @param layout layout of the matrix wiring
+        */
+        //% block="%strip set NeoPixel matrix layout to %layout"
+        //% strip.defl=strip
+        //% layout.defl=neopixelExtended.MatrixLayout.Snake
+        //% weight=0
+        //% group="Set and manipulate NeoPixels as matrix"
+        setMatrixLayout(layout: neopixelExtended.MatrixLayout) {
+            this._matrixLayout = layout
         }
 
         private setBufferWithMatrix(rows: number[][]) {
@@ -655,7 +691,13 @@ namespace neopixelExtended {
                 rows.reverse()
             }
 
-            if (this.shouldReverseOddRows()) {
+            if (this._matrixLayout == neopixelExtended.MatrixLayout.RowByRow) {
+                // every row runs like the first one
+                if (this.shouldReverseEvenRows()) {
+                    rows.forEach(row => row.reverse())
+                }
+            }
+            else if (this.shouldReverseOddRows()) {
                 this.reverseOddRows(rows)
             }
             else if (this.shouldReverseEvenRows()) {

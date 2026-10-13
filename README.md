@@ -81,6 +81,8 @@ basic.forever(function () {
 
 Use ``||setWiringDirection||`` to adjust for different wiring of the NeoPixel matrix.
 
+Use ``||setMatrixLayout||`` if your matrix is wired row by row (every row runs in the same direction) instead of in snake format.
+
 Use ``||setMatrixColor||`` to set single pixels in the matrix.
 
 ## Tutorials
